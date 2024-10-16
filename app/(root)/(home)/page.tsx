@@ -2,11 +2,11 @@ import MeetingTypeList from '@/components/MeetingTypeList';
 
 const Home = () => {
   // Set time zone to Asia/Manila
-  const now: Date = new Date().toLocaleString('en-US', {timeZone: 'Asia/Manila'});
-
-  const time = now.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
-  const date = (new Intl.DateTimeFormat('en-PH', { dateStyle: 'full' })).format(now);
-
+  const now: Date = new Date().toLocaleString('en-US', { timeZone: 'Asia/Manila' });
+  
+const time = now.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
+const date = new Intl.DateTimeFormat('en-PH', { dateStyle: 'full' }).format(now);
+  
   return (
     <section className="flex size-full flex-col gap-5 text-white">
       <div className="h-[303px] w-full rounded-[20px] bg-hero bg-cover">
