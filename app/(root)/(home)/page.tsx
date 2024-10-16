@@ -7,10 +7,10 @@ const Home = () => {
   const localTime = new Date(now.getTime() + utcOffset * 60000);
   
   // Adjust time 5 hours earlier
-  const adjustedTime = new Date(localTime.getTime() - 5 * 60 * 60 * 1000); // Subtracting 5 hours
+  const adjustedTime = new Date(localTime.getTime() - 2 * 60 * 60 * 1000); // Subtracting 5 hours
 
   // Add 2 days to the date
-  const adjustedDate = new Date(localTime.getTime() + 2 * 24 * 60 * 60 * 1000); // Adding 2 days
+  const adjustedDate = new Date(localTime.getTime() - 1 * 24 * 60 * 60 * 1000); // Adding 2 days
 
   const time = adjustedTime.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
   const date = new Intl.DateTimeFormat('en-PH', { dateStyle: 'full' }).format(adjustedDate);
