@@ -7,7 +7,7 @@ const Home = () => {
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   // Format the time for the user's local time zone
-  const options = { timeZone: userTimeZone, hour: '2-digit', minute: '2-digit' };
+  const options = { timeZone: userTimeZone };
   const time = now.toLocaleTimeString('en-PH', options);
 
   // Format the date for the user's local time zone
