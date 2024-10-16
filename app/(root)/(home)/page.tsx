@@ -4,8 +4,8 @@ const Home = () => {
   const now = new Date();
   const options = { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone };
   const time = now.toLocaleTimeString(undefined, options);
-  const options2 = { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  const date = (new Intl.DateTimeFormat(undefined, options2)).format(now);
+  const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const date = now.toLocaleDateString(undefined, dateOptions);
 
   return (
     <section className="flex size-full flex-col gap-5 text-white">
