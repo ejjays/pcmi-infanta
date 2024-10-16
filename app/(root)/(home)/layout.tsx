@@ -5,8 +5,8 @@ import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 
 export const metadata: Metadata = {
-  title: 'YOOM',
-  description: 'A workspace for your team, powered by Stream Chat and Clerk.',
+  title: 'PCMI - Infanta',
+  description: 'Designed for your Youths of Pag-ibig Christian Ministres Infanta Quezon.',
 };
 
 const RootLayout = ({ children }: Readonly<{children: ReactNode}>) => {
