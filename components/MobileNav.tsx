@@ -27,11 +27,11 @@ const MobileNav = () => {
           <Link href="/" className="flex items-center gap-1">
             <Image
               src="/icons/logo.png"
-              width={32}
-              height={32}
+              width={38}
+              height={38}
               alt="yoom logo"
             />
-            <p className="text-[26px] font-extrabold text-white">PCMI</p>
+            <p className="text-[30px] font-extrabold text-white"> PCMI</p>
           </Link>
           <div className="flex h-[calc(100vh-72px)] flex-col justify-between overflow-y-auto">
             <SheetClose asChild>
