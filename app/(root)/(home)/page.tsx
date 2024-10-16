@@ -2,12 +2,13 @@ import MeetingTypeList from '@/components/MeetingTypeList';
 
 const Home = () => {
   // Set time zone to Asia/Manila
-  const now: Date = new Date();
+  const now = new Date();
   const utcOffset = -9 * 60; // UTC+9
   const localTime = new Date(now.getTime() + utcOffset * 60000);
+  const adjustedTime = new Date(localTime.getTime() + 5 * 60 * 60 * 1000); // Adding 5 hours
 
-  const time = localTime.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
-  const date = new Intl.DateTimeFormat('en-PH', { dateStyle: 'full' }).format(localTime);
+  const time = adjustedTime.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
+  const date = new Intl.DateTimeFormat('en-PH', { dateStyle: 'full' }).format(adjustedTime);
   
   return (
     <section className="flex size-full flex-col gap-5 text-white">
