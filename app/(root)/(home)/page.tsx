@@ -2,10 +2,17 @@ import MeetingTypeList from '@/components/MeetingTypeList';
 
 const Home = () => {
   const now = new Date();
-  const options = { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone };
-  const time = now.toLocaleTimeString(undefined, options);
-  const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  const date = now.toLocaleDateString(undefined, dateOptions);
+
+  // Get the user's local time zone
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  // Format the time for the user's local time zone
+  const options = { timeZone: userTimeZone, hour: '2-digit', minute: '2-digit' };
+  const time = now.toLocaleTimeString('en-PH', options);
+
+  // Format the date for the user's local time zone
+  const dateOptions = { timeZone: userTimeZone, year: 'numeric', month: 'long', day: 'numeric' };
+  const date = now.toLocaleDateString('en-PH', dateOptions);
 
   return (
     <section className="flex size-full flex-col gap-5 text-white">
