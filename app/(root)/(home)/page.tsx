@@ -5,17 +5,16 @@ const Home = () => {
   const now = new Date();
   const utcOffset = -9 * 60; // UTC+9
   const localTime = new Date(now.getTime() + utcOffset * 60000);
-  const adjustedTime = new Date(localTime.getTime() + 5 * 60 * 60 * 1000); // Adding 5 hours
+  
+  // Adjust time 5 hours earlier
+  const adjustedTime = new Date(localTime.getTime() - 5 * 60 * 60 * 1000); // Subtracting 5 hours
 
-  // Adjust date to yesterday
-  const adjustedDate = new Date(adjustedTime.getTime() - 24 * 60 * 60 * 1000); // Subtracting 1 day
-
-  // Set time to AM
-  adjustedTime.setHours(6); // Set to 6 AM
+  // Add 2 days to the date
+  const adjustedDate = new Date(localTime.getTime() + 2 * 24 * 60 * 60 * 1000); // Adding 2 days
 
   const time = adjustedTime.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
   const date = new Intl.DateTimeFormat('en-PH', { dateStyle: 'full' }).format(adjustedDate);
-  
+
   return (
     <section className="flex size-full flex-col gap-5 text-white">
       <div className="h-[303px] w-full rounded-[20px] bg-hero bg-cover">
