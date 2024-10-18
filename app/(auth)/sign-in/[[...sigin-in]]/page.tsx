@@ -1,6 +1,18 @@
 import { SignIn } from '@clerk/nextjs';
+import { useEffect } from 'react';
 
 export default function SignInPage() {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const swipeIndicator = document.getElementById('swipeIndicator');
+      if (swipeIndicator) {
+        swipeIndicator.classList.add('hidden');
+      }
+    }, 2900);
+
+    return () => clearTimeout(timer); // Cleanup on unmount
+  }, []);
+
   return (
     <main className="flex h-screen w-full items-center justify-center relative">
       <SignIn />
@@ -40,13 +52,6 @@ export default function SignInPage() {
           transition: opacity 1s; /* Smooth transition for hiding */
         }
       `}</style>
-
-      <script>
-        {/* After 3 seconds, add the 'hidden' class to the swipe indicator */}
-        setTimeout(() => {
-          document.getElementById('swipeIndicator').classList.add('hidden');
-        }, 2900);
-      </script>
     </main>
   );
 }
