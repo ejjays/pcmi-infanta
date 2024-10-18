@@ -6,7 +6,7 @@ import Sidebar from '@/components/Sidebar';
 
 export const metadata: Metadata = {
   title: 'PCMI - Infanta',
-  description: 'Designed for your Youths of Pag-ibig Christian Ministres Infanta Quezon.',
+  description: 'Designed for the Youths of Pag-ibig Christian Ministres from Infanta Quezon.',
 };
 
 const RootLayout = ({ children }: Readonly<{children: ReactNode}>) => {
