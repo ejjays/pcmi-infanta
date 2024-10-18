@@ -55,7 +55,7 @@ const MeetingTypeList = () => {
       });
       setCallDetail(call);
       if (!values.description) {
-        router.push(`/meeting/${call.id}`);
+        router.push(`/meeting/meeting${call.id}`);
       }
       toast({
         title: 'Meeting Created',
@@ -68,7 +68,7 @@ const MeetingTypeList = () => {
 
   if (!client || !user) return <Loader />;
 
-  const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/meeting/${callDetail?.id}?personal=true`;
+  const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetail?.id}?personal=true`;
 
   return (
     <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
