@@ -27,7 +27,7 @@ const Home = () => {
     <section className="flex size-full flex-col gap-5 text-white">
       <div className="h-[303px] w-full rounded-[20px] bg-hero bg-cover">
         <div className="flex h-full flex-col justify-between max-md:px-5 max-md:py-8 lg:p-11">
-          <h2 className="glassmorphism max-w-[273px] rounded py-2 text-left text-base font-normal ml-4">
+          <h2 className="glassmorphism max-w-[273px] rounded py-2 text-right text-base font-normal mr-4">
             Cellgroup Saturday at 9:00 PM
           </h2>
           <div className="flex flex-col gap-2">
