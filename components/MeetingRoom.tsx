@@ -83,7 +83,9 @@ const MeetingRoom = () => {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          <CallStatsButton />
+          <div className="lg:block hidden">
+            <CallStatsButton />
+          </div>
         </div>
         <button onClick={() => setShowParticipants((prev) => !prev)}>
           <div className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
