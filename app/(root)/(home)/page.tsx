@@ -16,7 +16,9 @@ const Home = () => {
 
   const localTime = new Date(dateTime.toLocaleString('en-PH', { timeZone: 'Asia/Manila' }));
 
-  const time = localTime.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
+  const hoursMinutes = localTime.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
+  const seconds = localTime.getSeconds().toString().padStart(2, '0'); // Ensure 2 digits
+
   const date = new Intl.DateTimeFormat('en-PH', { dateStyle: 'full' }).format(localTime);
 
   return (
@@ -27,7 +29,10 @@ const Home = () => {
             Cellgroup Saturday at 9:00 PM
           </h2>
           <div className="flex flex-col gap-2">
-            <h1 className="text-4xl font-extrabold lg:text-7xl">{time}</h1>
+            <h1 className="text-4xl font-extrabold lg:text-7xl">
+              {hoursMinutes}
+              <span className="text-base font-normal text-white">:{seconds}</span>
+            </h1>
             <p className="text-lg font-medium text-sky-1 lg:text-2xl">{date}</p>
           </div>
         </div>
