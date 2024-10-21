@@ -157,7 +157,7 @@ const MeetingTypeList = () => {
   className="text-center"
   buttonText="Join Meeting"
   handleClick={() => {
-    const fullLink = `https://pcmi-infanta.vercel.app/meeting/${values.link}`;
+    const fullLink = `https://pcmi-infanta.vercel.app/meeting/user_${values.link}?personal=true`;
     router.push(fullLink);
   }}
 >
