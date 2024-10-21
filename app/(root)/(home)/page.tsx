@@ -1,3 +1,5 @@
+'use client'; // This enables the use of useEffect and useState
+
 import React, { useEffect, useState } from 'react';
 import MeetingTypeList from '@/components/MeetingTypeList';
 
