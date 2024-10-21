@@ -1,10 +1,8 @@
 'use client';
 import { useCall, useCallStateHooks } from '@stream-io/video-react-sdk';
-import { useRouter } from 'next/navigation';
 
 const EndCallButton = () => {
   const call = useCall();
-  const router = useRouter();
 
   if (!call) {
     throw new Error('useStreamCall must be used within a StreamCall component.');
