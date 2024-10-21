@@ -7,10 +7,10 @@ const Home = () => {
   const localTime = new Date(now.getTime() + utcOffset * 60000);
   
   // Adjust time 5 hours earlier
-  const adjustedTime = new Date(localTime.getTime() - 7 * 60 * 60 * 1000); // Subtracting 5 hours
+  const adjustedTime = new Date(localTime.getTime() - 7 * 60 * 60 * 1000); // Subtracting 7 hours
 
   // Add 2 days to the date
-  const adjustedDate = new Date(localTime.getTime() + 1 * 24 * 60 * 60 * 1000); // Adding 2 days
+  const adjustedDate = new Date(localTime.getTime() + 1 * 24 * 60 * 60 * 1000); // Adding 1 days
 
   const time = adjustedTime.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
   const date = new Intl.DateTimeFormat('en-PH', { dateStyle: 'full' }).format(adjustedDate);
@@ -19,7 +19,7 @@ const Home = () => {
     <section className="flex size-full flex-col gap-5 text-white">
       <div className="h-[303px] w-full rounded-[20px] bg-hero bg-cover">
         <div className="flex h-full flex-col justify-between max-md:px-5 max-md:py-8 lg:p-11">
-          <h2 className="glassmorphism max-w-[273px] rounded py-2 text-base font-normal">
+          <h2 className="glassmorphism max-w-[273px] rounded py-2 text-left text-base font-normal">
   Cellgroup Saturday at 9:00 PM
 </h2>
           <div className="flex flex-col gap-2">
