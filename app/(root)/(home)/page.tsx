@@ -1,10 +1,19 @@
+import React, { useEffect, useState } from 'react';
 import MeetingTypeList from '@/components/MeetingTypeList';
 
 const Home = () => {
-  // Set time zone to Asia/Manila
-  const now = new Date();
+  const [dateTime, setDateTime] = useState(new Date());
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setDateTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(intervalId); // Clean up the interval on unmount
+  }, []);
+
   const utcOffset = 8 * 60; // UTC+8
-  const localTime = new Date(now.getTime() + utcOffset * 60000);
+  const localTime = new Date(dateTime.getTime() + utcOffset * 60000);
 
   const time = localTime.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
   const date = new Intl.DateTimeFormat('en-PH', { dateStyle: 'full' }).format(localTime);
