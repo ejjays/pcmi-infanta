@@ -55,7 +55,7 @@ const PersonalRoom = () => {
     router.push(`/meeting/${meetingId}?personal=true`);
   };
 
-  const meetingLink = `link${meetingId}`;
+  const meetingLink = `personalink${meetingId}`;
 
 
   return (
