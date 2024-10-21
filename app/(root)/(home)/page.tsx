@@ -6,13 +6,8 @@ const Home = () => {
   const utcOffset = 8 * 60; // UTC+8
   const localTime = new Date(now.getTime() + utcOffset * 60000);
 
-  // Adjust the time as needed (no further adjustments, just local time)
-  const adjustedTime = new Date(localTime.getTime()); // No further adjustments
-  // Add 2 days to the date
-  const adjustedDate = new Date(localTime.getTime() + 2 * 24 * 60 * 60 * 1000); // Adding 2 days
-
-  const time = adjustedTime.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
-  const date = new Intl.DateTimeFormat('en-PH', { dateStyle: 'full' }).format(adjustedDate);
+  const time = localTime.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
+  const date = new Intl.DateTimeFormat('en-PH', { dateStyle: 'full' }).format(localTime);
 
   return (
     <section className="flex size-full flex-col gap-5 text-white">
