@@ -10,7 +10,7 @@ import {
   useCallStateHooks,
 } from '@stream-io/video-react-sdk';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Users, LayoutList } from 'lucide-react';
+import { Users, LayoutList, MicrophoneOff, Video, Phone } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -65,8 +65,20 @@ const MeetingRoom = () => {
       </div>
       {/* video layout and call controls */}
       <div className="fixed bottom-0 flex w-full flex-wrap items-center justify-center gap-5 px-4 md:px-0">
-        <CallControls onLeave={() => router.push(`/`)} />
-
+        <div className="flex items-center gap-5 md:flex-1">
+          <button
+            className="rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]"
+            onClick={() => setShowParticipants((prev) => !prev)}
+          >
+            <Users size={20} className="text-white" />
+          </button>
+          <button className="rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
+            <MicrophoneOff size={20} className="text-white" />
+          </button>
+          <button className="rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
+            <Video size={20} className="text-white" />
+          </button>
+        </div>
         <DropdownMenu>
           <div className="flex items-center">
             <DropdownMenuTrigger className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
@@ -88,14 +100,13 @@ const MeetingRoom = () => {
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        <CallStatsButton />
-        <button
-          onClick={() => setShowParticipants((prev) => !prev)}
-          className="rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]"
-        >
-          <Users size={20} className="text-white" />
-        </button>
-        {!isPersonalRoom && <EndCallButton />}
+        <div className="flex items-center gap-5 md:flex-1 justify-end">
+          <CallStatsButton className="hidden md:block" />
+          {!isPersonalRoom && <EndCallButton />}
+          <button className="rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
+            <Phone size={20} className="text-white" />
+          </button>
+        </div>
       </div>
     </section>
   );
