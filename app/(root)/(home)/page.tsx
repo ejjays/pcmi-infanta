@@ -16,7 +16,9 @@ const Home = () => {
 
   const localTime = new Date(dateTime.toLocaleString('en-PH', { timeZone: 'Asia/Manila' }));
 
-  const hoursMinutes = localTime.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
+  const hoursMinutes = localTime.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' }).split(' ');
+  const hoursMinutesPart = hoursMinutes[0];
+  const amPmPart = hoursMinutes[1];
   const seconds = localTime.getSeconds().toString().padStart(2, '0'); // Ensure 2 digits
 
   const date = new Intl.DateTimeFormat('en-PH', { dateStyle: 'full' }).format(localTime);
@@ -30,8 +32,8 @@ const Home = () => {
           </h2>
           <div className="flex flex-col gap-2">
             <h1 className="text-4xl font-extrabold lg:text-7xl">
-              {hoursMinutes}
-              <span className="text-base font-normal text-white">:{seconds}</span>
+              {hoursMinutesPart}
+              <span className="text-base font-normal text-white">:{seconds}</span> {amPmPart}
             </h1>
             <p className="text-lg font-medium text-sky-1 lg:text-2xl">{date}</p>
           </div>
