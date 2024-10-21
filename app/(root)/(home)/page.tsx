@@ -32,8 +32,8 @@ const Home = () => {
           </h2>
           <div className="flex flex-col gap-2">
             <h1 className="text-4xl font-extrabold lg:text-7xl">
-              {hoursMinutesPart}
-              <span className="text-base font-normal text-white">:{seconds}</span> {amPmPart}
+              {hoursMinutesPart} {amPmPart}
+              <span className="text-3xl font-extrabold text-white align-text-top">{seconds}s</span>
             </h1>
             <p className="text-lg font-medium text-sky-1 lg:text-2xl">{date}</p>
           </div>
