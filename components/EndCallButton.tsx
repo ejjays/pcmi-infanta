@@ -30,11 +30,8 @@ const EndCallButton = () => {
     router.push('/');
   };
 
-  return (
-    <Button onClick={endCall} className="bg-red-500">
-      End call for everyone
-    </Button>
-  );
+ 
+
 };
 
 export default EndCallButton;
