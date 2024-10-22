@@ -33,7 +33,7 @@ const Home = () => {
           <div className="flex flex-col gap-2">
             <h1 className="text-4xl font-extrabold lg:text-7xl">
               {hoursMinutesPart} {amPmPart}
-              <span style={{ fontSize: '0.55em', fontWeight: 'bold', color: 'white', verticalAlign: 'baseline' }}> {seconds}s</span>
+              <span style={{ fontSize: '0.50em', fontWeight: 'bold', color: 'white', verticalAlign: 'baseline' }}> {seconds}s</span>
             </h1>
             <p className="text-lg font-medium text-sky-1 lg:text-2xl">{date}</p>
           </div>
