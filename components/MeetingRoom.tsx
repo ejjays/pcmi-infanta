@@ -1,9 +1,10 @@
 'use client';
 import { useState } from 'react';
-// Commenting out unused imports
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import {
+  CallControls,
   CallParticipantsList,
+  CallStatsButton,
   CallingState,
   PaginatedGridLayout,
   SpeakerLayout,
@@ -19,12 +20,13 @@ import {
 //   DropdownMenuTrigger,
 // } from './ui/dropdown-menu';
 import Loader from './Loader';
-// import EndCallButton from './EndCallButton';
+import EndCallButton from './EndCallButton';
 import { cn } from '@/lib/utils';
 
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
 const MeetingRoom = () => {
+  const router = useRouter();
   const [layout] = useState<CallLayoutType>('speaker-left');
   const [showParticipants, setShowParticipants] = useState(false);
   const { useCallCallingState } = useCallStateHooks();
@@ -60,6 +62,7 @@ const MeetingRoom = () => {
       </div>
       {/* video layout and call controls */}
       <div className="fixed bottom-0 flex w-full flex-wrap items-center justify-center gap-5 scale-90">
+        <CallControls onLeave={() => router.push(`/`)} />
         {/* <DropdownMenu>
           <div className="flex items-center">
             <DropdownMenuTrigger className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
@@ -81,12 +84,13 @@ const MeetingRoom = () => {
             ))}
           </DropdownMenuContent>
         </DropdownMenu> */}
-        {/* <CallStatsButton /> */}
+        <CallStatsButton />
         {/* <button onClick={() => setShowParticipants((prev) => !prev)}>
           <div className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
             <Users size={20} className="text-white" />
           </div>
         </button> */}
+        {!isPersonalRoom && <EndCallButton />}
       </div>
     </section>
   );
