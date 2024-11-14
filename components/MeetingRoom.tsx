@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+// Commenting out unused imports
+// import { useSearchParams } from 'next/navigation';
 import {
   CallParticipantsList,
   CallingState,
@@ -24,6 +25,10 @@ import { cn } from '@/lib/utils';
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
 const MeetingRoom = () => {
+  // Commenting out unused variables
+  // const searchParams = useSearchParams();
+  // const isPersonalRoom = !!searchParams.get('personal');
+  // const router = useRouter();
   const [layout, setLayout] = useState<CallLayoutType>('speaker-left');
   const [showParticipants, setShowParticipants] = useState(false);
   const { useCallCallingState } = useCallStateHooks();
@@ -45,12 +50,12 @@ const MeetingRoom = () => {
 
   return (
     <section className="relative h-screen w-full overflow-hidden pt-4 text-white">
-      <div className="relative flex size-full items-center justify-center">
-        <div className="flex size-full max-w-[1000px] items-center">
+      <div className="relative flex h-full w-full items-center justify-center">
+        <div className="flex w-full max-w-[1000px] items-center">
           <CallLayout />
         </div>
         <div
-          className={cn('h-[calc(100vh-86px)] hidden ml-2', {
+          className={cn('ml-2 h-[calc(100vh-86px)] hidden', {
             'show-block': showParticipants,
           })}
         >
@@ -58,7 +63,7 @@ const MeetingRoom = () => {
         </div>
       </div>
       {/* video layout and call controls */}
-      <div className="fixed bottom-0 flex w-full items-center justify-center gap-5 flex-wrap scale-90">
+      <div className="fixed bottom-0 flex w-full flex-wrap items-center justify-center gap-5 scale-90">
         {/* <DropdownMenu>
           <div className="flex items-center">
             <DropdownMenuTrigger className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
