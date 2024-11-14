@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import {
   CallParticipantsList,
   CallingState,
@@ -24,10 +24,6 @@ import { cn } from '@/lib/utils';
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
 const MeetingRoom = () => {
-  const searchParams = useSearchParams();
-  // Commenting out unused variables
-  // const isPersonalRoom = !!searchParams.get('personal');
-  const router = useRouter();
   const [layout, setLayout] = useState<CallLayoutType>('speaker-left');
   const [showParticipants, setShowParticipants] = useState(false);
   const { useCallCallingState } = useCallStateHooks();
@@ -62,7 +58,7 @@ const MeetingRoom = () => {
         </div>
       </div>
       {/* video layout and call controls */}
-      <div className="fixed bottom-0 flex w-full items-center justify-center gap-5 flex-wrap transform scale-90">
+      <div className="fixed bottom-0 flex w-full items-center justify-center gap-5 flex-wrap scale-90">
         {/* <DropdownMenu>
           <div className="flex items-center">
             <DropdownMenuTrigger className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
