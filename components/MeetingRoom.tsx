@@ -90,7 +90,7 @@ const MeetingRoom = () => {
             <Users size={20} className="text-white" />
           </div>
         </button> */}
-        {!isPersonalRoom && <EndCallButton />}
+        <EndCallButton />
       </div>
     </section>
   );
