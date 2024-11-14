@@ -8,19 +8,15 @@ import {
   SpeakerLayout,
   useCallStateHooks,
 } from '@stream-io/video-react-sdk';
-import { Users } from 'lucide-react';
-// Removed the unused `cn` import
-// Removed the unused `CallParticipantsList` import
+// Removed unused imports for `Users` and `CallParticipantsList`
 import Loader from './Loader';
 import EndCallButton from './EndCallButton';
-// Removed the unused `cn` import
 
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
 const MeetingRoom = () => {
   const router = useRouter();
   const [layout] = useState<CallLayoutType>('speaker-left');
-  // Removed the unused `showParticipants` state
   const { useCallCallingState } = useCallStateHooks();
 
   const callingState = useCallCallingState();
@@ -50,11 +46,12 @@ const MeetingRoom = () => {
         <CallControls onLeave={() => router.push(`/`)} />
         {/* Hide CallStatsButton */}
         {/* <CallStatsButton /> */}
-        <button>
+        {/* Hide Participants Button */}
+        {/* <button onClick={() => setShowParticipants((prev) => !prev)}>
           <div className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
             <Users size={20} className="text-white" />
           </div>
-        </button>
+        </button> */}
         <EndCallButton />
       </div>
     </section>
