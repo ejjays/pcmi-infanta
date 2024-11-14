@@ -16,7 +16,7 @@ type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
 const MeetingRoom = () => {
   const router = useRouter();
-  const [layout] = useState<CallLayoutType>('speaker-left');
+  const [layout] = useState<CallLayoutType>('grid');
   const { useCallCallingState } = useCallStateHooks();
 
   const callingState = useCallCallingState();
@@ -42,7 +42,7 @@ const MeetingRoom = () => {
         </div>
       </div>
       {/* video layout and call controls */}
-      <div className="fixed bottom-10 flex w-full flex-wrap items-center justify-center gap-5 scale-90">
+      <div className="fixed bottom-5 flex w-full flex-wrap items-center justify-center gap-5 scale-90">
         <CallControls onLeave={() => router.push(`/`)} />
         {/* Hide CallStatsButton */}
         {/* <CallStatsButton /> */}
