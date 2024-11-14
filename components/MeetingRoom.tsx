@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 // Commenting out unused imports
-// import { useSearchParams } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import {
   CallParticipantsList,
   CallingState,
@@ -25,11 +25,7 @@ import { cn } from '@/lib/utils';
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
 const MeetingRoom = () => {
-  // Commenting out unused variables
-  // const searchParams = useSearchParams();
-  // const isPersonalRoom = !!searchParams.get('personal');
-  // const router = useRouter();
-  const [layout, setLayout] = useState<CallLayoutType>('speaker-left');
+  const [layout] = useState<CallLayoutType>('speaker-left');
   const [showParticipants, setShowParticipants] = useState(false);
   const { useCallCallingState } = useCallStateHooks();
 
