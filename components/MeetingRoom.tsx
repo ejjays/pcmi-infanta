@@ -9,8 +9,9 @@ import {
   SpeakerLayout,
   useCallStateHooks,
 } from '@stream-io/video-react-sdk';
+import { Users } from 'lucide-react'; // Re-add the Users icon import
 // Commenting out unused imports
-// import { Users, LayoutList } from 'lucide-react';
+// import { LayoutList } from 'lucide-react';
 // import {
 //   DropdownMenu,
 //   DropdownMenuContent,
