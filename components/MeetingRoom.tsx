@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   CallControls,
-  CallParticipantsList,
   CallingState,
   PaginatedGridLayout,
   SpeakerLayout,
@@ -52,13 +51,14 @@ const MeetingRoom = () => {
         <div className="flex w-full max-w-[1000px] items-center">
           <CallLayout />
         </div>
-        <div
+        {/* Hide CallParticipantsList */}
+        {/* <div
           className={cn('ml-2 h-[calc(100vh-86px)] hidden', {
             'show-block': showParticipants,
           })}
         >
           <CallParticipantsList onClose={() => setShowParticipants(false)} />
-        </div>
+        </div> */}
       </div>
       {/* video layout and call controls */}
       <div className="fixed bottom-0 flex w-full flex-wrap items-center justify-center gap-5 scale-90">
