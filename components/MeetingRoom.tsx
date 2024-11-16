@@ -6,13 +6,14 @@ import {
   CallingState,
   PaginatedGridLayout,
   SpeakerLayout,
+  SpotlightLayout, // Import SpotlightLayout
   useCallStateHooks,
 } from '@stream-io/video-react-sdk';
 // Removed unused imports for `Users` and `CallParticipantsList`
 import Loader from './Loader';
 import EndCallButton from './EndCallButton';
 
-type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
+type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right' | 'spotlight'; // Add 'spotlight'
 
 const MeetingRoom = () => {
   const router = useRouter();
@@ -29,6 +30,8 @@ const MeetingRoom = () => {
         return <PaginatedGridLayout />;
       case 'speaker-right':
         return <SpeakerLayout participantsBarPosition="left" />;
+      case 'spotlight':
+        return <SpotlightLayout />; // Handle spotlight layout
       default:
         return <SpeakerLayout participantsBarPosition="right" />;
     }
