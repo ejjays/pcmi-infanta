@@ -111,26 +111,29 @@
   }
 }
 
-
-.participant-video {
-  width: 150px; /* Adjust the width as needed */
-  height: auto;
-  border: 1px solid #fff; /* Optional: Add a border */
-  margin: 5px; /* Optional: Add some margin */
+/* Ensure the video covers the entire box */
+.participant-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the video covers the entire box */
 }
 
 /* Example for grid layout participants */
-.grid-layout .participant-video {
-  width: 100px;
-  height: auto;
+.grid-layout .participant-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Example for speaker layout participants */
-.speaker-layout .main-participant {
-  width: 300px;
-  height: auto;
+.speaker-layout .main-participant-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.speaker-layout .other-participant {
-  width: 100px;
-  height: auto;
+
+.speaker-layout .other-participant-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
