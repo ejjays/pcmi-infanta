@@ -6,19 +6,18 @@ import {
   CallingState,
   PaginatedGridLayout,
   SpeakerLayout,
-  ParticipantsSpotlight,  // Import ParticipantsSpotlight
   useCallStateHooks,
+  ParticipantView,
 } from '@stream-io/video-react-sdk';
-// Removed unused imports for `Users` and `CallParticipantsList`
 import Loader from './Loader';
 import EndCallButton from './EndCallButton';
 
-type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right' | 'spotlight';  // Add 'spotlight'
+type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right' | 'spotlight'; // Add 'spotlight'
 
 const MeetingRoom = () => {
   const router = useRouter();
-  const [layout] = useState<CallLayoutType>('grid');
-  const { useCallCallingState } = useCallStateHooks();
+  const [layout] = useState<CallLayoutType>('spotlight'); // Set default to spotlight
+  const { useCallCallingState, useParticipants } = useCallStateHooks();
 
   const callingState = useCallCallingState();
 
@@ -28,13 +27,31 @@ const MeetingRoom = () => {
     switch (layout) {
       case 'grid':
         return <PaginatedGridLayout />;
-      case 'speaker-right':
+      case 'speaker-left':
         return <SpeakerLayout participantsBarPosition="left" />;
       case 'spotlight':
-        return <ParticipantsSpotlight orientation="horizontal" />;  // Use ParticipantsSpotlight
+        return <SpotlightLayout />; // Use custom spotlight layout
       default:
         return <SpeakerLayout participantsBarPosition="right" />;
     }
+  };
+
+  const SpotlightLayout = () => {
+    const participants = useParticipants();
+    const participantInSpotlight = participants[0]; // Assuming the first participant is in spotlight
+
+    return (
+      <div className="spotlight-layout">
+        {participantInSpotlight && (
+          <ParticipantView participant={participantInSpotlight} />
+        )}
+        <div className="participants-bar">
+          {participants.slice(1).map(participant => (
+            <ParticipantView key={participant.sessionId} participant={participant} />
+          ))}
+        </div>
+      </div>
+    );
   };
 
   return (
