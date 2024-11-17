@@ -112,65 +112,25 @@
 }
 
 
-.spotlight-layout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
-}
-
-.main-participant {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.main-participant video {
-  max-width: 100%;
+.participant-video {
+  width: 150px; /* Adjust the width as needed */
   height: auto;
+  border: 1px solid #fff; /* Optional: Add a border */
+  margin: 5px; /* Optional: Add some margin */
 }
 
-.other-participants {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
-  overflow-x: auto;
-  background-color: #000; /* Optional: to separate the bottom section visually */
-  padding: 10px 0; /* Optional: for spacing */
-}
-
-.other-participants .participant {
-  flex: 0 0 auto;
-  margin: 0 5px;
-}
-
-.other-participants video {
+/* Example for grid layout participants */
+.grid-layout .participant-video {
   width: 100px;
   height: auto;
 }
 
-/* Mobile Specific Styles */
-@media (max-width: 600px) {
-  .spotlight-layout {
-    flex-direction: column;
-  }
-  
-  .main-participant video {
-    width: 100%;
-    height: auto;
-  }
-
-  .other-participants {
-    flex-direction: row;
-    width: 100%;
-  }
-
-  .other-participants video {
-    width: 80px;
-    height: auto;
-  }
+/* Example for speaker layout participants */
+.speaker-layout .main-participant {
+  width: 300px;
+  height: auto;
+}
+.speaker-layout .other-participant {
+  width: 100px;
+  height: auto;
 }
