@@ -56,9 +56,3 @@ const MeetingRoom = () => {
           </div>
         </button> */}
         <EndCallButton />
-      </div>
-    </section>
-  );
-};
-
-export default MeetingRoom;
