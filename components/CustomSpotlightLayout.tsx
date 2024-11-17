@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCallStateHooks } from '@stream-io/video-react-sdk';
+import { useCallStateHooks, VideoTrack } from '@stream-io/video-react-sdk';
 
 const CustomSpotlightLayout = () => {
   const { useParticipants } = useCallStateHooks();
@@ -13,14 +13,14 @@ const CustomSpotlightLayout = () => {
       {mainParticipant && (
         <div className="main-participant">
           {/* Main participant video stream */}
-          <video autoPlay playsInline ref={mainParticipant.videoRef} />
+          <VideoTrack participant={mainParticipant} />
         </div>
       )}
       <div className="other-participants">
         {otherParticipants.map(participant => (
           <div key={participant.id} className="participant">
             {/* Other participants video stream */}
-            <video autoPlay playsInline ref={participant.videoRef} />
+            <VideoTrack participant={participant} />
           </div>
         ))}
       </div>
