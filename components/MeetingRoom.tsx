@@ -11,9 +11,8 @@ import {
 // Removed unused imports for `Users` and `CallParticipantsList`
 import Loader from './Loader';
 import EndCallButton from './EndCallButton';
-import CustomSpotlightLayout from './CustomSpotlightLayout'; // Import custom spotlight layout
 
-type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right' | 'spotlight'; // Add 'spotlight'
+type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
 const MeetingRoom = () => {
   const router = useRouter();
@@ -30,8 +29,6 @@ const MeetingRoom = () => {
         return <PaginatedGridLayout />;
       case 'speaker-right':
         return <SpeakerLayout participantsBarPosition="left" />;
-      case 'spotlight':
-        return <CustomSpotlightLayout />; // Use custom spotlight layout
       default:
         return <SpeakerLayout participantsBarPosition="right" />;
     }
@@ -56,3 +53,9 @@ const MeetingRoom = () => {
           </div>
         </button> */}
         <EndCallButton />
+      </div>
+    </section>
+  );
+};
+
+export default MeetingRoom;
