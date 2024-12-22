@@ -1,0 +1,8 @@
+# Created by Vercel CLI
+CLERK_SECRET_KEY="sk_test_pp4SyZS52mDCj3YdM9xnbn0PuR9HILlk7yC420REr1"
+NEXT_PUBLIC_BASE_URL="https://pcmi-infanta.vercel.app"
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_Z2VuZXJvdXMtY2l2ZXQtMTIuY2xlcmsuYWNjb3VudHMuZGV2JA"
+NEXT_PUBLIC_CLERK_SIGN_IN_URL="/sign-in"
+NEXT_PUBLIC_CLERK_SIGN_UP_URL="/sign-up"
+NEXT_PUBLIC_STREAM_API_KEY="zw32z2yacc4r"
+STREAM_SECRET_KEY="crjb5xz2ps4vx5w3d33s3y8q3svmqfvyu4mcbxk3mfq9kvfg79hgtdxgu7rbqumv"
