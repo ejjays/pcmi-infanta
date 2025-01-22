@@ -180,36 +180,41 @@ const MeetingTypeList = () => {
     }
   }}
 >
-  <div className="flex justify-center gap-4 my-4">
-    {[0, 1, 2, 3].map((index) => (
-      <Input
-        key={index}
-        ref={inputRefs[index]}
-        type="text"
-        maxLength={1}
-        value={code[index]}
-        onChange={(e) => {
-          const value = e.target.value.replace(/[^0-9]/g, '');
-          const newCode = [...code];
-          newCode[index] = value;
-          setCode(newCode);
-          
-          // Auto-focus next input
-          if (value && index < 3) {
-            inputRefs[index + 1].current?.focus();
-          }
-        }}
-        onKeyDown={(e) => {
-          // Handle backspace
-          if (e.key === 'Backspace' && !code[index] && index > 0) {
-            inputRefs[index - 1].current?.focus();
-          }
-        }}
-        className="w-12 h-12 text-center text-2xl border-2 rounded-md 
-                   focus:border-blue-500 focus:ring-blue-500
-                   dark:bg-slate-800 dark:border-slate-600"
-      />
-    ))}
+  {/* Add this div right here, after the opening MeetingModal tag */}
+  <div className="flex flex-col items-center gap-4">
+    <label className="text-base font-normal leading-[22.4px] text-sky-2">
+      Enter 4-digit meeting code
+    </label>
+    <div className="flex justify-center gap-4 my-4">
+      {[0, 1, 2, 3].map((index) => (
+        <Input
+          key={index}
+          ref={inputRefs[index]}
+          type="text"
+          maxLength={1}
+          value={code[index]}
+          onChange={(e) => {
+            const value = e.target.value.replace(/[^0-9]/g, '');
+            const newCode = [...code];
+            newCode[index] = value;
+            setCode(newCode);
+            
+            if (value && index < 3) {
+              inputRefs[index + 1].current?.focus();
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Backspace' && !code[index] && index > 0) {
+              inputRefs[index - 1].current?.focus();
+            }
+          }}
+          className="w-12 h-12 text-center text-2xl border-2 rounded-md 
+                     border-none bg-dark-3 
+                     focus:border-blue-500 focus:ring-blue-500
+                     focus-visible:ring-0 focus-visible:ring-offset-0"
+        />
+      ))}
+    </div>
   </div>
 </MeetingModal>
 
