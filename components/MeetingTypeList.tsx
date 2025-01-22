@@ -26,17 +26,17 @@ const MeetingTypeList = () => {
   >(undefined);
   const [values, setValues] = useState(initialValues);
   const [callDetail, setCallDetail] = useState<Call>();
+  const [code, setCode] = useState(['', '', '', '']);
   const client = useStreamVideoClient();
   const { user } = useUser();
   const { toast } = useToast();
-  
-  const [code, setCode] = useState(['', '', '', '']);
-const inputRefs = [
-  React.useRef<HTMLInputElement>(null),
-  React.useRef<HTMLInputElement>(null),
-  React.useRef<HTMLInputElement>(null),
-  React.useRef<HTMLInputElement>(null),
-];
+
+  const inputRefs = [
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+  ];
   
   const MEETING_CODE = "4321"; // Your hardcoded 4-digit code
   const HOST_LINK = "PersonaLinkuser_2pNCBfYw8wI4GvlHswdGLgxNVF5"; 
