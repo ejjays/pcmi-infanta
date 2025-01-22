@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 import HomeCard from './HomeCard';
@@ -26,9 +26,20 @@ const MeetingTypeList = () => {
   >(undefined);
   const [values, setValues] = useState(initialValues);
   const [callDetail, setCallDetail] = useState<Call>();
+  const [code, setCode] = useState(['', '', '', '']);
   const client = useStreamVideoClient();
   const { user } = useUser();
   const { toast } = useToast();
+
+  const inputRefs = [
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+  ];
+  
+  const MEETING_CODE = "4321"; // Your hardcoded 4-digit code
+  const HOST_LINK = "PersonaLinkuser_2pNCBfYw8wI4GvlHswdGLgxNVF5"; 
 
   const createMeeting = async () => {
     if (!client || !user) return;
@@ -79,7 +90,7 @@ const MeetingTypeList = () => {
       <HomeCard
         img="/icons/join-meeting.svg"
         title="Join Meeting"
-        description="via invitation link"
+        description="Via passcode"
         className="bg-blue-1"
         handleClick={() => setMeetingState('isJoiningMeeting')}
       />
@@ -148,23 +159,65 @@ const MeetingTypeList = () => {
         />
       )}
 
-      <MeetingModal
+<MeetingModal
   isOpen={meetingState === 'isJoiningMeeting'}
   onClose={() => setMeetingState(undefined)}
   title="Join a Meeting"
   className="text-center"
   buttonText="Join Meeting"
   handleClick={() => {
-    const userId = values.link.replace('PersonaLink', ''); // Remove 'PersonaLink'
-    const fullLink = `https://pcmi-infanta.vercel.app/meeting/${userId}?personal=true`;
-    router.push(fullLink);
+    const enteredCode = code.join('');
+    if (enteredCode === MEETING_CODE) {
+      const userId = HOST_LINK.replace('PersonaLink', '');
+      const fullLink = `https://pcmi-infanta.vercel.app/meeting/${userId}?personal=true`;
+      router.push(fullLink);
+    } else {
+      toast({
+        title: "Invalid Code",
+        description: "The meeting code you entered is incorrect",
+        variant: "destructive",
+      });
+    }
   }}
 >
+  {/* Add this div right here, after the opening MeetingModal tag */}
+  <div className="flex flex-col items-center gap-4">
+    <label className="text-base font-normal leading-[22.4px] text-sky-2">
+      Enter Meeting Passcode
+    </label>
+    <div className="flex justify-center gap-4 my-4">
+     {[0, 1, 2, 3].map((index) => (
   <Input
-    placeholder="Paste link here"
-    onChange={(e) => setValues({ ...values, link: e.target.value })}
-    className="border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0"
+    key={index}
+    ref={inputRefs[index]}
+    type="tel" // Change this from "text" to "tel"
+    inputMode="numeric" // Add this to ensure numeric keyboard
+    pattern="[0-9]*" // Add this to ensure only numbers are accepted
+    maxLength={1}
+    value={code[index]}
+    onChange={(e) => {
+      const value = e.target.value.replace(/[^0-9]/g, '');
+      const newCode = [...code];
+      newCode[index] = value;
+      setCode(newCode);
+      
+      if (value && index < 3) {
+        inputRefs[index + 1].current?.focus();
+      }
+    }}
+    onKeyDown={(e) => {
+      if (e.key === 'Backspace' && !code[index] && index > 0) {
+        inputRefs[index - 1].current?.focus();
+      }
+    }}
+    className="w-12 h-12 text-center text-2xl border-2 rounded-md 
+               border-none bg-dark-3 
+               focus:border-blue-500 focus:ring-blue-500
+               focus-visible:ring-0 focus-visible:ring-offset-0"
   />
+))}
+    </div>
+  </div>
 </MeetingModal>
 
       <MeetingModal
