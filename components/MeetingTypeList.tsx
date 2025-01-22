@@ -183,7 +183,7 @@ const MeetingTypeList = () => {
   {/* Add this div right here, after the opening MeetingModal tag */}
   <div className="flex flex-col items-center gap-4">
     <label className="text-base font-normal leading-[22.4px] text-sky-2">
-      Enter 4-digit meeting code
+      Enter Meeting Passcode
     </label>
     <div className="flex justify-center gap-4 my-4">
      {[0, 1, 2, 3].map((index) => (
