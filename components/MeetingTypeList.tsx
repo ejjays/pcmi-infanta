@@ -1,5 +1,3 @@
-/* MeetingTypeList.tsx */
- 
 'use client';
 
 import { useState } from 'react';
@@ -31,6 +29,9 @@ const MeetingTypeList = () => {
   const client = useStreamVideoClient();
   const { user } = useUser();
   const { toast } = useToast();
+  
+  const MEETING_CODE = "4321"; // Your hardcoded 4-digit code
+  const HOST_LINK = "PersonaLinkuser_2pNCBfYw8wI4GvlHswdGLgxNVF5"; 
 
   const createMeeting = async () => {
     if (!client || !user) return;
@@ -150,22 +151,39 @@ const MeetingTypeList = () => {
         />
       )}
 
-      <MeetingModal
+<MeetingModal
   isOpen={meetingState === 'isJoiningMeeting'}
   onClose={() => setMeetingState(undefined)}
   title="Join a Meeting"
   className="text-center"
   buttonText="Join Meeting"
   handleClick={() => {
-    const userId = values.link.replace('PersonaLink', ''); // Remove 'PersonaLink'
-    const fullLink = `https://pcmi-infanta.vercel.app/meeting/${userId}?personal=true`;
-    router.push(fullLink);
+    // Replace the existing handleClick with this code
+    if (values.link === MEETING_CODE) {
+      // If code matches, extract userId from HOST_LINK
+      const userId = HOST_LINK.replace('PersonaLink', '');
+      const fullLink = `https://pcmi-infanta.vercel.app/meeting/${userId}?personal=true`;
+      router.push(fullLink);
+    } else {
+      // Show error for incorrect code
+      toast({
+        title: "Invalid Code",
+        description: "The meeting code you entered is incorrect",
+        variant: "destructive",
+      });
+    }
   }}
 >
+  {/* Replace or modify the existing Input component */}
   <Input
-    placeholder="Paste link here"
-    onChange={(e) => setValues({ ...values, link: e.target.value })}
-    className="border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0"
+    placeholder="Enter 4-digit code"
+    maxLength={4}
+    type="password"
+    onChange={(e) => {
+      const value = e.target.value.replace(/[^0-9]/g, '');
+      setValues({ ...values, link: value });
+    }}
+    className="border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0 text-center text-2xl tracking-wider"
   />
 </MeetingModal>
 
@@ -182,8 +200,3 @@ const MeetingTypeList = () => {
 };
 
 export default MeetingTypeList;
-
-
-
-
-
