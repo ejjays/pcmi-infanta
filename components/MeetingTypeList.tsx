@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 import HomeCard from './HomeCard';
@@ -29,6 +29,14 @@ const MeetingTypeList = () => {
   const client = useStreamVideoClient();
   const { user } = useUser();
   const { toast } = useToast();
+  
+  const [code, setCode] = useState(['', '', '', '']);
+const inputRefs = [
+  React.useRef<HTMLInputElement>(null),
+  React.useRef<HTMLInputElement>(null),
+  React.useRef<HTMLInputElement>(null),
+  React.useRef<HTMLInputElement>(null),
+];
   
   const MEETING_CODE = "4321"; // Your hardcoded 4-digit code
   const HOST_LINK = "PersonaLinkuser_2pNCBfYw8wI4GvlHswdGLgxNVF5"; 
@@ -158,14 +166,12 @@ const MeetingTypeList = () => {
   className="text-center"
   buttonText="Join Meeting"
   handleClick={() => {
-    // Replace the existing handleClick with this code
-    if (values.link === MEETING_CODE) {
-      // If code matches, extract userId from HOST_LINK
+    const enteredCode = code.join('');
+    if (enteredCode === MEETING_CODE) {
       const userId = HOST_LINK.replace('PersonaLink', '');
       const fullLink = `https://pcmi-infanta.vercel.app/meeting/${userId}?personal=true`;
       router.push(fullLink);
     } else {
-      // Show error for incorrect code
       toast({
         title: "Invalid Code",
         description: "The meeting code you entered is incorrect",
@@ -174,17 +180,37 @@ const MeetingTypeList = () => {
     }
   }}
 >
-  {/* Replace or modify the existing Input component */}
-  <Input
-    placeholder="Enter 4-digit code"
-    maxLength={4}
-    type="password"
-    onChange={(e) => {
-      const value = e.target.value.replace(/[^0-9]/g, '');
-      setValues({ ...values, link: value });
-    }}
-    className="border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0 text-center text-2xl tracking-wider"
-  />
+  <div className="flex justify-center gap-4 my-4">
+    {[0, 1, 2, 3].map((index) => (
+      <Input
+        key={index}
+        ref={inputRefs[index]}
+        type="text"
+        maxLength={1}
+        value={code[index]}
+        onChange={(e) => {
+          const value = e.target.value.replace(/[^0-9]/g, '');
+          const newCode = [...code];
+          newCode[index] = value;
+          setCode(newCode);
+          
+          // Auto-focus next input
+          if (value && index < 3) {
+            inputRefs[index + 1].current?.focus();
+          }
+        }}
+        onKeyDown={(e) => {
+          // Handle backspace
+          if (e.key === 'Backspace' && !code[index] && index > 0) {
+            inputRefs[index - 1].current?.focus();
+          }
+        }}
+        className="w-12 h-12 text-center text-2xl border-2 rounded-md 
+                   focus:border-blue-500 focus:ring-blue-500
+                   dark:bg-slate-800 dark:border-slate-600"
+      />
+    ))}
+  </div>
 </MeetingModal>
 
       <MeetingModal
