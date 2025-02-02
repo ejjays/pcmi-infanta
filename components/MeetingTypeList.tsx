@@ -38,8 +38,8 @@ const MeetingTypeList = () => {
     useRef<HTMLInputElement>(null),
   ];
   
-  const MEETING_CODE = "4321"; // Your hardcoded 4-digit code
-  const HOST_LINK = "PersonaLinkuser_2pNCBfYw8wI4GvlHswdGLgxNVF5"; 
+  const MEETING_CODE = "0618"; // Your hardcoded 4-digit code
+  const HOST_LINK = "PersonaLinkuser_2qbNobut11rUklLIMzmd5nQ8yc1"; 
 
   const createMeeting = async () => {
     if (!client || !user) return;
