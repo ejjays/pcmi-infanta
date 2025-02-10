@@ -4,5 +4,12 @@
     "standard",
     "plugin:tailwindcss/recommended",
     "prettier"
-  ] 
+  ],
+  "rules": {
+    "react/jsx-no-comment-textnodes": "warn",
+    "tailwindcss/classnames-order": "warn",
+    "tailwindcss/enforces-shorthand": "warn",
+    "tailwindcss/no-custom-classname": "warn",
+    "object-shorthand": "warn"
+  }
 }
