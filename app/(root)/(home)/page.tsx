@@ -27,7 +27,8 @@ const Home = () => {
     <section className="flex size-full flex-col gap-5 text-white">
       <div className="h-[303px] w-full rounded-[20px] bg-hero bg-cover">
         <div className="flex h-full flex-col justify-between max-md:px-5 max-md:py-8 lg:p-11">
-          <h2 className="glassmorphism max-w-[273px] rounded py-2 text-center mr-4 text-base font-normal">
+          // Fix the classnames order in line 30
+<h2 className="mr-4 max-w-[273px] rounded py-2 text-center text-base font-normal glassmorphism">
             Cellgroup Saturday at 9:00 PM
           </h2>
           <div className="flex flex-col gap-2">

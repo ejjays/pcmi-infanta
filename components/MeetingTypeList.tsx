@@ -188,14 +188,14 @@ const MeetingTypeList = () => {
     <div className="flex justify-center gap-4 my-4">
      {[0, 1, 2, 3].map((index) => (
   <Input
-    key={index}
-    ref={inputRefs[index]}
-    type="tel" // Change this from "text" to "tel"
-    inputMode="numeric" // Add this to ensure numeric keyboard
-    pattern="[0-9]*" // Add this to ensure only numbers are accepted
-    maxLength={1}
-    value={code[index]}
-    onChange={(e) => {
+  key={index}
+  ref={inputRefs[index]}
+  type="tel"
+  inputMode="numeric"
+  pattern="[0-9]*"
+  maxLength={1}
+  value={code[index]}
+  onChange={(e) => {
       const value = e.target.value.replace(/[^0-9]/g, '');
       const newCode = [...code];
       newCode[index] = value;
@@ -210,11 +210,10 @@ const MeetingTypeList = () => {
         inputRefs[index - 1].current?.focus();
       }
     }}
-    className="w-12 h-12 text-center text-2xl border-2 rounded-md 
-               border-none bg-dark-3 
-               focus:border-blue-500 focus:ring-blue-500
-               focus-visible:ring-0 focus-visible:ring-offset-0"
-  />
+    className="size-12 rounded-md border-none bg-dark-3 text-center text-2xl 
+             focus:border-blue-500 focus:ring-blue-500
+             focus-visible:ring-0 focus-visible:ring-offset-0"
+/>
 ))}
     </div>
   </div>
