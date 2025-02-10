@@ -175,7 +175,7 @@ const MeetingTypeList = () => {
       toast({
         title: "Invalid Code",
         description: "The meeting code you entered is incorrect",
-        variant: "destructive",
+        variant: "error",
       });
     }
   }}
