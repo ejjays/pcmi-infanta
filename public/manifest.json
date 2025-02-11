@@ -49,5 +49,16 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "prefer_related_applications": false,
+  "scope": "/",
+  "display_override": ["standalone"],
+  "categories": ["social", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Start Meeting",
+      "url": "/meeting/new",
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
+    }
   ]
 }

@@ -24,8 +24,13 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
+  // Corrected this part
+};
+
+export const viewport = {
+  themeColor: '#0E78F9',
   viewport: {
-    width: "device-width",
+    width: 'device-width',
     initialScale: 1,
     maximumScale: 1,
     userScalable: false,
