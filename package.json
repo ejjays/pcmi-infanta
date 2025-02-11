@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "vercel-build": "next build && rm -rf .next/cache", 
+    "postbuild": "next-pwa-clearcache"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.0.0-beta.35",

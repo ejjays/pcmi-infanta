@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pcmi-cache-v2';
+const CACHE_NAME = 'pcmi-cache-v2-' + new Date().getTime();
 const urlsToCache = [
   '/',
   '/offline',
