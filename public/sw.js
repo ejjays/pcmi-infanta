@@ -4,14 +4,9 @@ const urlsToCache = [
   '/offline',
   '/manifest.json',
   '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png', // Add this
+  // Add more critical assets
 ];
-
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(urlsToCache))
-  );
-});
 
 self.addEventListener('fetch', (event) => {
   event.respondWith(
@@ -31,10 +26,14 @@ self.addEventListener('fetch', (event) => {
                 cache.put(event.request, responseToCache);
               });
             return response;
+          })
+          .catch(() => {
+            // Return offline page for navigation requests
+            if (event.request.mode === 'navigate') {
+              return caches.match('/offline');
+            }
+            return null;
           });
-      })
-      .catch(() => {
-        return caches.match('/offline');
       })
   );
 });
