@@ -7,8 +7,8 @@ import {
   PaginatedGridLayout,
   SpeakerLayout,
   useCallStateHooks,
+  useCall,
 } from '@stream-io/video-react-sdk';
-// Removed unused imports for `Users` and `CallParticipantsList`
 import Loader from './Loader';
 import EndCallButton from './EndCallButton';
 
@@ -18,6 +18,11 @@ const MeetingRoom = () => {
   const router = useRouter();
   const [layout] = useState<CallLayoutType>('grid');
   const { useCallCallingState } = useCallStateHooks();
+  const call = useCall();
+
+  if (!call) {
+    throw new Error('useCall must be used within a StreamCall component');
+  }
 
   const callingState = useCallCallingState();
 
@@ -35,16 +40,15 @@ const MeetingRoom = () => {
   };
 
   return (
-<section className="relative h-screen w-full overflow-hidden pt-4 text-white">
+    <section className="relative h-screen w-full overflow-hidden pt-4 text-white">
       <div className="relative flex size-full items-center justify-center">
         <div className="flex size-full max-w-[1000px] items-center">
           <CallLayout />
         </div>
       </div>
-      {/* video layout and call controls */}
       <div className="fixed bottom-5 flex w-full flex-wrap items-center justify-center gap-5 scale-90">
         <CallControls onLeave={() => router.push(`/`)} />
-        {/* Hide CallStatsButton */}
+         {/* Hide CallStatsButton */}
         {/* <CallStatsButton /> */}
         {/* Hide Participants Button */}
         {/* <button onClick={() => setShowParticipants((prev) => !prev)}>
