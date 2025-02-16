@@ -47,15 +47,18 @@ const MeetingRoom = () => {
         </div>
       </div>
       <div className="fixed bottom-5 flex w-full flex-wrap items-center justify-center gap-5 scale-90">
-        <CallControls onLeave={() => router.push(`/`)} />
-         {/* Hide CallStatsButton */}
-        {/* <CallStatsButton /> */}
-        {/* Hide Participants Button */}
-        {/* <button onClick={() => setShowParticipants((prev) => !prev)}>
-          <div className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
-            <Users size={20} className="text-white" />
-          </div>
-        </button> */}
+        <CallControls 
+          // Use the built-in controls from Stream SDK
+          camera={{
+            enabled: true, // This enables the camera control
+            defaultOn: true // Camera starts enabled by default
+          }}
+          microphone={{
+            enabled: true, // This enables the microphone control
+            defaultOn: true // Microphone starts enabled by default
+          }}
+          onLeave={() => router.push(`/`)}
+        />
         <EndCallButton />
       </div>
     </section>
