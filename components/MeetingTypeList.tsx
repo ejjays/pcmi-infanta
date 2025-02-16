@@ -38,8 +38,16 @@ const MeetingTypeList = () => {
     useRef<HTMLInputElement>(null),
   ];
   
-  const MEETING_CODE = "0618"; // Your hardcoded 4-digit code
-  const HOST_LINK = "PersonaLinkuser_2qbNobut11rUklLIMzmd5nQ8yc1"; 
+  const ADMIN_CREDENTIALS = [
+  {
+    code: "0618",
+    link: "PersonaLinkuser_2qbNobut11rUklLIMzmd5nQ8yc1"
+  },
+  {
+    code: "7777",
+    link: "PersonaLinkuser_2sABqr7qHlfl0Sf3Goi4UAYk1Z7"
+  }
+];
 
   const createMeeting = async () => {
     if (!client || !user) return;
@@ -166,19 +174,21 @@ const MeetingTypeList = () => {
   className="text-center"
   buttonText="Join Meeting"
   handleClick={() => {
-    const enteredCode = code.join('');
-    if (enteredCode === MEETING_CODE) {
-      const userId = HOST_LINK.replace('PersonaLink', '');
-      const fullLink = `https://pcmi-infanta.vercel.app/meeting/${userId}?personal=true`;
-      router.push(fullLink);
-    } else {
-      toast({
-        title: "Invalid Code",
-        description: "The meeting code you entered is incorrect",
-        variant: "error",
-      });
-    }
-  }}
+  const enteredCode = code.join('');
+  const matchingAdmin = ADMIN_CREDENTIALS.find(admin => admin.code === enteredCode);
+  
+  if (matchingAdmin) {
+    const userId = matchingAdmin.link.replace('PersonaLink', '');
+    const fullLink = `https://pcmi-infanta.vercel.app/meeting/${userId}?personal=true`;
+    router.push(fullLink);
+  } else {
+    toast({
+      title: "Invalid Code",
+      description: "The meeting code you entered is incorrect",
+      variant: "error",
+    });
+  }
+}}
 >
   {/* Add this div right here, after the opening MeetingModal tag */}
   <div className="flex flex-col items-center gap-4">
