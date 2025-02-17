@@ -20,9 +20,9 @@ const MeetingRoom = () => {
   const { useCallCallingState } = useCallStateHooks();
   const call = useCall();
 
-  if (!call) {
+  if (!call) { 
     throw new Error('useCall must be used within a StreamCall component');
-  }
+  }  
 
   const callingState = useCallCallingState();
 
@@ -47,18 +47,7 @@ const MeetingRoom = () => {
         </div>
       </div>
       <div className="fixed bottom-5 flex w-full flex-wrap items-center justify-center gap-5 scale-90">
-        <CallControls 
-          // Use the built-in controls from Stream SDK
-          camera={{
-            enabled: true, // This enables the camera control
-            defaultOn: true // Camera starts enabled by default
-          }}
-          microphone={{
-            enabled: true, // This enables the microphone control
-            defaultOn: true // Microphone starts enabled by default
-          }}
-          onLeave={() => router.push(`/`)}
-        />
+        <CallControls onLeave={() => router.push(`/`)} />
         <EndCallButton />
       </div>
     </section>
