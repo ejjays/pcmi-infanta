@@ -18,13 +18,12 @@ export const metadata: Metadata = {
   themeColor: "#0E78F9",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent", // Change to black-translucent
     title: "PCMI - Infanta",
   },
   formatDetection: {
     telephone: false,
   },
-  // Corrected this part
 };
 
 export const viewport = {
