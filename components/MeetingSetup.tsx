@@ -76,15 +76,15 @@ const MeetingSetup = ({
         <DeviceSettings />
       </div>
       <Button
-        className="rounded-md bg-green-500 px-4 py-2.5"
-        onClick={() => {
-          call.join();
-
-          setIsSetupComplete(true);
-        }}
-      >
-        Join meeting
-      </Button>
+  className="rounded-md bg-green-500 px-4 py-2.5"
+  onClick={() => {
+    console.log("Joining call with MicCamToggled:", isMicCamToggled);
+    call.join();
+    setIsSetupComplete(true);
+  }}
+>
+  Join meeting
+</Button>
     </div>
   );
 };
