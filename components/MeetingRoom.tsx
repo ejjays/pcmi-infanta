@@ -42,10 +42,10 @@ const MeetingRoom = () => {
   return (
     <section className="relative h-screen w-full overflow-hidden pt-4 text-white">
       <div className="relative flex size-full items-center justify-center">
-        <div className="flex size-full max-w-[1000px] items-center">
-          <CallLayout />
-        </div>
-      </div>
+      <div className="flex size-full max-w-[1000px] items-center overflow-hidden">
+        <CallLayout />
+      </div> 
+    </div>
       <div className="fixed bottom-5 flex w-full flex-wrap items-center justify-center gap-5 scale-90">
         <CallControls onLeave={() => router.push(`/`)} />
         <EndCallButton />
