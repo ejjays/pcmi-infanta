@@ -31,38 +31,37 @@ const MeetingRoom = () => {
   const isPersonalRoom = !!searchParams.get('personal');
   const [layout, setLayout] = useState<CallLayoutType>('grid');
   const [showParticipants, setShowParticipants] = useState(false);
-  const { useCallCallingState } = useCallStateHooks();
+  const { useCallCallingState, useScreenShareState } = useCallStateHooks();
   const call = useCall();
+  const { status: screenShareStatus } = useScreenShareState();
+  const callingState = useCallCallingState();
 
   if (!call) {
     throw new Error('useCall must be used within a StreamCall component');
   }
 
-  const callingState = useCallCallingState();
+  useEffect(() => {
+    if (!call) return;
 
- useEffect(() => {
-  if (!call) return;
+    // Monitor screen share status changes
+    const handleScreenShareChange = () => {
+      if (screenShareStatus === 'enabled' && window.innerWidth >= 1024) {
+        setLayout('speaker-left');
+      } else if (screenShareStatus === 'disabled' && window.innerWidth >= 1024) {
+        setLayout('grid');
+      }
+    };
 
-  const { useScreenShareState } = useCallStateHooks();
-  const { status } = useScreenShareState();
+    // Initial check
+    handleScreenShareChange();
 
-  // Monitor screen share status changes
-  const handleScreenShareChange = () => {
-    if (status === 'enabled' && window.innerWidth >= 1024) {
-      setLayout('speaker-left');
-    } else if (status === 'disabled' && window.innerWidth >= 1024) {
-      setLayout('grid');
-    }
-  };
+    // Set up subscription to screen share state changes
+    const unsubscribe = call.screenShare.state.subscribe(handleScreenShareChange);
 
-  // Set up subscription to screen share state changes
-  const unsubscribe = call.screenShare.state.subscribe(handleScreenShareChange);
-
-  return () => {
-    // Clean up subscription
-    unsubscribe();
-  };
-}, [call]);
+    return () => {
+      unsubscribe();
+    };
+  }, [call, screenShareStatus]);
 
   if (callingState !== CallingState.JOINED) return <Loader />;
 
