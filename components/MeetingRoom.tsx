@@ -31,7 +31,6 @@ const MeetingRoom = () => {
   const isPersonalRoom = !!searchParams.get('personal');
   const [layout, setLayout] = useState<CallLayoutType>('grid');
   const [showParticipants, setShowParticipants] = useState(false);
-  const [isScreenSharing, setIsScreenSharing] = useState(false); // Added screen sharing state
   const { useCallCallingState } = useCallStateHooks();
   const call = useCall();
 
