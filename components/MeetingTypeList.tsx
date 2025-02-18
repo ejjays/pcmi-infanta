@@ -246,13 +246,13 @@ const ALLOWED_ADMIN_IDS = [
   title="Restricted Access"
   className="text-center"
   buttonText="Close"
-  image="/icons/lock.svg" // Make sure to add a lock icon to your public/icons folder
+  image="/icons/lock.svg"
 >
-  <div className="flex flex-col items-center gap-4">
-    <p className="text-base text-sky-2">
-      This feature is only available for administrators.
-    </p>
-  </div>
+<div className="flex flex-col items-center gap-4 justify-center">
+  <p className="text-base text-sky-2">
+    This feature is only available for administrators.
+  </p>
+</div>
 </MeetingModal>
 
       <MeetingModal
