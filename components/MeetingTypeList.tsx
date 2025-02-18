@@ -243,7 +243,7 @@ const ALLOWED_ADMIN_IDS = [
 <MeetingModal
   isOpen={meetingState === 'isUnauthorized'}
   onClose={() => setMeetingState(undefined)}
-  title="Restricted Access"
+  title="For Admins Only"
   className="text-center"
   buttonText="Close"
   image="/icons/lock.svg"
