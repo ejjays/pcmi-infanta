@@ -247,6 +247,7 @@ const ALLOWED_ADMIN_IDS = [
   className="text-center"
   buttonText="Close"
   image="/icons/lock.svg"
+  handleClick={() => setMeetingState(undefined)}  // Add this line
 >
   <div className="flex flex-col items-center justify-center w-full gap-4">
     <p className="text-base text-sky-2 text-center w-full">
