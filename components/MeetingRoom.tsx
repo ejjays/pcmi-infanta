@@ -10,7 +10,7 @@ import {
   useCall,
 } from '@stream-io/video-react-sdk';
 import Loader from './Loader';
-import EndCallButton from './EndCallButton';
+import EndCallButton from './EndCallButton'; 
 
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
