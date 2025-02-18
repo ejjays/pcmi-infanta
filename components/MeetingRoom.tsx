@@ -40,30 +40,28 @@ const MeetingRoom = () => {
 
   const callingState = useCallCallingState();
 
-  // Move useEffect before any conditional returns
-  useEffect(() => {
-    if (!call) return;
+ useEffect(() => {
+  if (!call) return;
 
-    const handleScreenShare = () => {
-      // Switch to speaker layout on desktop only
-      if (window.innerWidth >= 1024) { // lg breakpoint
-        setLayout('speaker-left');
-      }
-    };
+  const handleScreenShare = () => {
+    if (window.innerWidth >= 1024) {
+      setLayout('speaker-left');
+    }
+  };
 
-    call.on('screenShareEnabled', handleScreenShare);
-    call.on('screenShareDisabled', () => {
-      // Optionally reset layout when screen sharing ends
-      if (window.innerWidth >= 1024) {
-        setLayout('grid');
-      }
-    });
+  // Use the correct event names from the SDK
+  call.on('screen_share_enabled', handleScreenShare);
+  call.on('screen_share_disabled', () => {
+    if (window.innerWidth >= 1024) {
+      setLayout('grid');
+    }
+  });
     
-    return () => {
-      call.off('screenShareEnabled', handleScreenShare);
-      call.off('screenShareDisabled', () => {});
-    };
-  }, [call]);
+  return () => {
+    call.off('screen_share_enabled', handleScreenShare);
+    call.off('screen_share_disabled', () => {});
+  };
+}, [call]);
 
   if (callingState !== CallingState.JOINED) return <Loader />;
 
