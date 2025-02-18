@@ -52,7 +52,7 @@ const MeetingTypeList = () => {
 const ALLOWED_ADMIN_IDS = [
   "user_2sABqr7qHlfl0Sf3Goi4UAYk1Z7",
   "user_2qbNobut11rUklLIMzmd5nQ8yc1",
-  "user_2qaEXfvaq5TCAuIhBuH29ng3dtc"
+  "user_2pNBsKMcT3yj2PXM3XbImRjcYVG"
 ];
 
   const createMeeting = async () => {
