@@ -22,8 +22,8 @@ const initialValues = {
 const MeetingTypeList = () => {
   const router = useRouter();
   const [meetingState, setMeetingState] = useState<
-    'isScheduleMeeting' | 'isJoiningMeeting' | 'isInstantMeeting' | undefined
-  >(undefined);
+  'isScheduleMeeting' | 'isJoiningMeeting' | 'isInstantMeeting' | 'isUnauthorized' | undefined
+>(undefined);
   const [values, setValues] = useState(initialValues);
   const [callDetail, setCallDetail] = useState<Call>();
   const [code, setCode] = useState(['', '', '', '']);
@@ -47,6 +47,11 @@ const MeetingTypeList = () => {
     code: "7777",
     link: "PersonaLinkuser_2sABqr7qHlfl0Sf3Goi4UAYk1Z7"
   }
+];
+
+const ALLOWED_ADMIN_IDS = [
+  "user_2sABqr7qHlfl0Sf3Goi4UAYk1Z7",
+  "user_2qbNobut11rUklLIMzmd5nQ8yc1"
 ];
 
   const createMeeting = async () => {
@@ -90,11 +95,17 @@ const MeetingTypeList = () => {
   return (
     <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
       <HomeCard
-        img="/icons/add-meeting.svg"
-        title="New Meeting"
-        description="Start an instant meeting"
-        handleClick={() => setMeetingState('isInstantMeeting')}
-      />
+  img="/icons/add-meeting.svg"
+  title="New Meeting"
+  description="Start an instant meeting"
+  handleClick={() => {
+    if (ALLOWED_ADMIN_IDS.includes(user?.id)) {
+      setMeetingState('isInstantMeeting');
+    } else {
+      setMeetingState('isUnauthorized');
+    }
+  }}
+/>
       <HomeCard
         img="/icons/join-meeting.svg"
         title="Join Meeting"
@@ -190,7 +201,6 @@ const MeetingTypeList = () => {
   }
 }}
 >
-  {/* Add this div right here, after the opening MeetingModal tag */}
   <div className="flex flex-col items-center gap-4">
     <label className="text-base font-normal leading-[22.4px] text-sky-2">
       Enter Meeting Passcode
@@ -226,6 +236,21 @@ const MeetingTypeList = () => {
 />
 ))}
     </div>
+  </div>
+</MeetingModal>
+
+<MeetingModal
+  isOpen={meetingState === 'isUnauthorized'}
+  onClose={() => setMeetingState(undefined)}
+  title="Restricted Access"
+  className="text-center"
+  buttonText="Close"
+  image="/icons/lock.svg" // Make sure to add a lock icon to your public/icons folder
+>
+  <div className="flex flex-col items-center gap-4">
+    <p className="text-base text-sky-2">
+      This feature is only available for administrators.
+    </p>
   </div>
 </MeetingModal>
 
