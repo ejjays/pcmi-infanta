@@ -43,23 +43,24 @@ const MeetingRoom = () => {
  useEffect(() => {
   if (!call) return;
 
-  const handleScreenShare = () => {
-    if (window.innerWidth >= 1024) {
+  const { useScreenShareState } = useCallStateHooks();
+  const { status } = useScreenShareState();
+
+  // Monitor screen share status changes
+  const handleScreenShareChange = () => {
+    if (status === 'enabled' && window.innerWidth >= 1024) {
       setLayout('speaker-left');
+    } else if (status === 'disabled' && window.innerWidth >= 1024) {
+      setLayout('grid');
     }
   };
 
-  // Using the correct event names from the SDK
-  call.on('screenshareStarted', handleScreenShare);
-  call.on('screenshareStopped', () => {
-    if (window.innerWidth >= 1024) {
-      setLayout('grid');
-    }
-  });
-    
+  // Set up subscription to screen share state changes
+  const unsubscribe = call.screenShare.state.subscribe(handleScreenShareChange);
+
   return () => {
-    call.off('screenshareStarted', handleScreenShare);
-    call.off('screenshareStopped', () => {});
+    // Clean up subscription
+    unsubscribe();
   };
 }, [call]);
 
