@@ -49,17 +49,17 @@ const MeetingRoom = () => {
     }
   };
 
-  // Use the correct event names from the SDK
-  call.on('screen_share_enabled', handleScreenShare);
-  call.on('screen_share_disabled', () => {
+  // Using the correct event names from the SDK
+  call.on('screenShareStarted', handleScreenShare);
+  call.on('screenShareStopped', () => {
     if (window.innerWidth >= 1024) {
       setLayout('grid');
     }
   });
     
   return () => {
-    call.off('screen_share_enabled', handleScreenShare);
-    call.off('screen_share_disabled', () => {});
+    call.off('screenShareStarted', handleScreenShare);
+    call.off('screenShareStopped', () => {});
   };
 }, [call]);
 
