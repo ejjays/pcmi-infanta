@@ -41,43 +41,50 @@ const MeetingRoom = () => {
 
   const callingState = useCallCallingState();
 
-  if (callingState !== CallingState.JOINED) return <Loader />;
-
-  // Add this effect to detect screen sharing
+  // Move useEffect before any conditional returns
   useEffect(() => {
+    if (!call) return;
+
     const handleScreenShare = () => {
-      setIsScreenSharing(call?.state.screenShareEnabled || false);
       // Switch to speaker layout on desktop only
       if (window.innerWidth >= 1024) { // lg breakpoint
         setLayout('speaker-left');
       }
     };
 
-    call?.on('screenShareEnabled', handleScreenShare);
-    call?.on('screenShareDisabled', () => setIsScreenSharing(false));
+    call.on('screenShareEnabled', handleScreenShare);
+    call.on('screenShareDisabled', () => {
+      // Optionally reset layout when screen sharing ends
+      if (window.innerWidth >= 1024) {
+        setLayout('grid');
+      }
+    });
     
     return () => {
-      call?.off('screenShareEnabled', handleScreenShare);
-      call?.off('screenShareDisabled', () => setIsScreenSharing(false));
+      call.off('screenShareEnabled', handleScreenShare);
+      call.off('screenShareDisabled', () => {});
     };
   }, [call]);
 
-  const CallLayout = () => {
-  // On mobile, always use grid layout for better screen sharing display
-  if (window.innerWidth < 1024) {
-    return <PaginatedGridLayout />;
-  }
+  if (callingState !== CallingState.JOINED) return <Loader />;
 
-  // On desktop, use the selected layout
-  switch (layout) {
-    case 'grid':
+  const CallLayout = () => {
+    // Use window check in a more React-friendly way
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+
+    if (isMobile) {
       return <PaginatedGridLayout />;
-    case 'speaker-right':
-      return <SpeakerLayout participantsBarPosition="left" />;
-    default:
-      return <SpeakerLayout participantsBarPosition="right" />;
-  }
-};
+    }
+
+    switch (layout) {
+      case 'grid':
+        return <PaginatedGridLayout />;
+      case 'speaker-right':
+        return <SpeakerLayout participantsBarPosition="left" />;
+      default:
+        return <SpeakerLayout participantsBarPosition="right" />;
+    }
+  };
 
   return (
     <section className="relative h-screen w-full overflow-hidden pt-4 text-white">
