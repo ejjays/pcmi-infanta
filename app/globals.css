@@ -14,11 +14,19 @@
 }
 
 img {
-  -webkit-touch-callout: none;
   -webkit-user-drag: none;
   user-drag: none;
-  pointer-events: none;
+  -webkit-touch-callout: none;
 }
+
+button,
+a,
+input,
+textarea,
+.hamburger-trigger {
+  pointer-events: auto !important;
+}
+
 
 /* ======== stream css overrides ======== */
 .str-video__call-stats {
