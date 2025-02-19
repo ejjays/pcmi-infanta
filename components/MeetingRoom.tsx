@@ -10,8 +10,7 @@ import {
   SpeakerLayout,
   useCallStateHooks,
   useCall,
-  Video,
-  ParticipantView,
+  ParticipantView, 
 } from '@stream-io/video-react-sdk';
 import { Users, LayoutList } from 'lucide-react';
 import {
