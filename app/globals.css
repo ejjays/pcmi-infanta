@@ -294,3 +294,53 @@ textarea {
   background: rgba(255, 255, 255, 0.3);
   border-radius: 4px;
 }
+
+.grid-2x2-mobile {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 8px;
+  height: 100%;
+  width: 100%;
+}
+
+.scrollable-grid-mobile {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  height: 100%;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.active-speaker {
+  grid-column: 1 / -1;
+  height: 200px;
+}
+
+/* Mobile video layout styles */
+@media (max-width: 1024px) {
+  .str-video__participant-view {
+    aspect-ratio: 16/9;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .str-video__participant-view video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Smooth transitions for layout changes */
+  .mobile-layout-transition {
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* Active speaker highlight */
+  .active-speaker-highlight {
+    border: 2px solid #0E78F9;
+    transform: scale(1.02);
+  }
+}

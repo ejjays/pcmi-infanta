@@ -27,21 +27,69 @@ import { cn } from '@/lib/utils';
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
 const MobileCallLayout = () => {
-  const { useParticipants } = useCallStateHooks();
+  const { useParticipants, useActiveSpeaker } = useCallStateHooks();
   const participants = useParticipants();
+  const activeSpeaker = useActiveSpeaker();
+  
+  // For 2 Participants - Split Screen
+  if (participants.length === 2) {
+    return (
+      <div className="flex flex-col h-full w-full">
+        {participants.map((participant) => (
+          <div key={participant.sessionId} className="h-1/2 w-full">
+            <ParticipantView 
+              participant={participant}
+              className="h-full w-full rounded-lg overflow-hidden"
+            />
+          </div>
+        ))}
+      </div>
+    );
+  }
 
-  return (
-    <div className="flex flex-col h-full w-full gap-2">
-      {participants.map((participant) => (
-        <div key={participant.sessionId} className="flex-1 w-full">
-          <ParticipantView 
-            participant={participant}
-            className="h-full w-full rounded-lg overflow-hidden"
-          />
-        </div>
-      ))}
-    </div>
-  );
+  // For 3-4 Participants - 2x2 Grid
+  if (participants.length <= 4) {
+    return (
+      <div className="grid-2x2-mobile">
+        {participants.map((participant) => (
+          <div key={participant.sessionId}>
+            <ParticipantView 
+              participant={participant}
+              className="h-full w-full rounded-lg overflow-hidden"
+            />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // For 5+ Participants - Scrollable Grid with Active Speaker
+  if (participants.length >= 5) {
+    return (
+      <div className="scrollable-grid-mobile">
+        {activeSpeaker && (
+          <div className="active-speaker">
+            <ParticipantView 
+              participant={activeSpeaker}
+              className="h-full w-full rounded-lg overflow-hidden"
+            />
+          </div>
+        )}
+        {participants.map((participant) => (
+          participant !== activeSpeaker && (
+            <div key={participant.sessionId}>
+              <ParticipantView 
+                participant={participant}
+                className="h-full w-full rounded-lg overflow-hidden"
+              />
+            </div>
+          )
+        ))}
+      </div>
+    );
+  }
+  
+  return null;
 };
 
 const MeetingRoom = () => {
