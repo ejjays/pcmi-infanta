@@ -15,15 +15,28 @@
 
 img {
   -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
   user-drag: none;
-  -webkit-touch-callout: none;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: none;
 }
 
+/* Re-enable pointer events specifically for interactive images */
+.hamburger-trigger,
+button img,
+a img {
+  pointer-events: auto !important;
+}
+
+/* Re-enable pointer events on interactive elements */
 button,
 a,
 input,
-textarea,
-.hamburger-trigger {
+textarea {
   pointer-events: auto !important;
 }
 
