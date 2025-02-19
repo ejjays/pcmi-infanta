@@ -11,6 +11,7 @@ import {
   useCallStateHooks,
   useCall,
   Video,
+  ParticipantView,
 } from '@stream-io/video-react-sdk';
 import { Users, LayoutList } from 'lucide-react';
 import {
@@ -27,42 +28,17 @@ import { cn } from '@/lib/utils';
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
 const MobileCallLayout = () => {
-  const call = useCall();
-  const participants = Array.from(call?.state.participants.values() || []);
-  const participantCount = participants.length;
-
-  const getParticipantStyle = (index: number) => {
-    if (participantCount === 2) {
-      return `h-[50vh] w-full`;
-    } else if (participantCount === 3) {
-      if (index === 0) {
-        return `h-[60vh] w-full`;
-      }
-      return `h-[40vh] w-1/2`;
-    } else {
-      return `h-[33vh] w-1/2 min-w-[160px]`;
-    }
-  };
+  const { useParticipants } = useCallStateHooks();
+  const participants = useParticipants();
 
   return (
-    <div className="flex flex-wrap overflow-y-auto h-[calc(100vh-100px)]">
-      {participants.map((participant, index) => (
-        <div
-          key={participant.sessionId}
-          className={`${getParticipantStyle(index)} p-1`}
-        >
-          <div className="relative size-full rounded-lg overflow-hidden bg-dark-2">
-            <Video
-              participant={participant}
-              className="size-full object-cover"
-              autoPlay
-              muted={participant.audio?.muted}
-              trackType="videoTrack"
-            />
-            <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
-              {participant.name || 'Participant'}
-            </div>
-          </div>
+    <div className="flex flex-col h-full w-full gap-2">
+      {participants.map((participant) => (
+        <div key={participant.sessionId} className="flex-1 w-full">
+          <ParticipantView 
+            participant={participant}
+            className="h-full w-full rounded-lg overflow-hidden"
+          />
         </div>
       ))}
     </div>
