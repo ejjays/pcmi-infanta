@@ -10,6 +10,7 @@ import {
   SpeakerLayout,
   useCallStateHooks,
   useCall,
+  Video,
 } from '@stream-io/video-react-sdk';
 import { Users, LayoutList } from 'lucide-react';
 import {
@@ -24,6 +25,49 @@ import EndCallButton from './EndCallButton';
 import { cn } from '@/lib/utils';
 
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
+
+const MobileCallLayout = () => {
+  const call = useCall();
+  const participants = Array.from(call?.state.participants.values() || []);
+  const participantCount = participants.length;
+
+  const getParticipantStyle = (index: number) => {
+    if (participantCount === 2) {
+      return `h-[50vh] w-full`;
+    } else if (participantCount === 3) {
+      if (index === 0) {
+        return `h-[60vh] w-full`;
+      }
+      return `h-[40vh] w-1/2`;
+    } else {
+      return `h-[33vh] w-1/2 min-w-[160px]`;
+    }
+  };
+
+  return (
+    <div className="flex flex-wrap overflow-y-auto h-[calc(100vh-100px)]">
+      {participants.map((participant, index) => (
+        <div
+          key={participant.sessionId}
+          className={`${getParticipantStyle(index)} p-1`}
+        >
+          <div className="relative size-full rounded-lg overflow-hidden bg-dark-2">
+            <Video
+              participant={participant}
+              className="size-full object-cover"
+              autoPlay
+              muted={participant.audio?.muted}
+              trackType="videoTrack"
+            />
+            <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
+              {participant.name || 'Participant'}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const MeetingRoom = () => {
   const router = useRouter();
@@ -48,16 +92,15 @@ const MeetingRoom = () => {
     } else if (screenShareStatus === 'disabled' && window.innerWidth >= 1024) {
       setLayout('grid');
     }
-  }, [call, screenShareStatus]); 
+  }, [call, screenShareStatus]);
 
   if (callingState !== CallingState.JOINED) return <Loader />;
 
   const CallLayout = () => {
-    // Use window check in a more React-friendly way
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
 
     if (isMobile) {
-      return <PaginatedGridLayout />;
+      return <MobileCallLayout />;
     }
 
     switch (layout) {
@@ -89,7 +132,6 @@ const MeetingRoom = () => {
       <div className="fixed bottom-5 flex w-full flex-wrap items-center justify-center gap-5 scale-90">
         <CallControls onLeave={() => router.push(`/`)} />
         
-        {/* Desktop-only controls */}
         <div className="hidden lg:flex items-center gap-5">
           <DropdownMenu>
             <DropdownMenuTrigger className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">

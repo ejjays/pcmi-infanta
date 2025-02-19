@@ -250,3 +250,47 @@ textarea {
     width: 100% !important;
   }
 }
+
+
+/* Mobile-specific video layout styles */
+@media (max-width: 1024px) {
+  .grid-participants-mobile {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 8px;
+  }
+
+  /* Participant view styles */
+  .str-video__participant-view {
+    aspect-ratio: 16/9;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  /* Video element styles */
+  .str-video__participant-view video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Scrollbar styling for mobile grid */
+.grid-participants-mobile::-webkit-scrollbar {
+  width: 4px;
+}
+
+.grid-participants-mobile::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.grid-participants-mobile::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
