@@ -27,10 +27,10 @@ import { cn } from '@/lib/utils';
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
 const MobileCallLayout = () => {
-  const { useParticipants, useActiveSpeaker } = useCallStateHooks();
+  const { useParticipants, useDominantSpeaker } = useCallStateHooks();
   const participants = useParticipants();
-  const activeSpeaker = useActiveSpeaker();
-  
+  const dominantSpeaker = useDominantSpeaker();
+
   // For 2 Participants - Split Screen
   if (participants.length === 2) {
     return (
@@ -63,20 +63,20 @@ const MobileCallLayout = () => {
     );
   }
 
-  // For 5+ Participants - Scrollable Grid with Active Speaker
+  // For 5+ Participants - Scrollable Grid with Dominant Speaker
   if (participants.length >= 5) {
     return (
       <div className="scrollable-grid-mobile">
-        {activeSpeaker && (
+        {dominantSpeaker && (
           <div className="active-speaker">
             <ParticipantView 
-              participant={activeSpeaker}
+              participant={dominantSpeaker}
               className="h-full w-full rounded-lg overflow-hidden"
             />
           </div>
         )}
         {participants.map((participant) => (
-          participant !== activeSpeaker && (
+          participant !== dominantSpeaker && (
             <div key={participant.sessionId}>
               <ParticipantView 
                 participant={participant}
@@ -88,7 +88,7 @@ const MobileCallLayout = () => {
       </div>
     );
   }
-  
+
   return null;
 };
 
