@@ -198,26 +198,40 @@ if (participants.length === 4) {
 }
 
   // For 5+ Participants
-  return (
-    <div className="h-[calc(100vh-120px)] w-full max-w-[400px] mx-auto p-2">
-      <div className="mobile-participants-grid">
-        {participants.map((participant) => (
-          <div key={participant.sessionId} className="relative aspect-[4/3]">
-            <ParticipantView 
-              participant={participant}
-              className="h-full w-full rounded-lg overflow-hidden"
-            />
-            {participant === localParticipant && (
-              <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
-                You
+  if (participants.length >= 5) {
+    return (
+      <div className="h-[calc(100vh-120px)] w-full flex flex-col gap-2 pb-20 p-2">
+        <div className="grid grid-cols-2 gap-2 auto-rows-fr h-full">
+          {participants.map((participant, index) => {
+            // If it's the last participant and total count is odd
+            const isLastAndOdd = index === participants.length - 1 && participants.length % 2 !== 0;
+            
+            return (
+              <div 
+                key={participant.sessionId}
+                className={`
+                  min-h-[200px]
+                  ${isLastAndOdd ? 'col-span-2 mx-auto w-[calc(50%-0.25rem)]' : 'w-full'}
+                `}
+              >
+                <div className="relative size-full">
+                  <ParticipantView
+                    participant={participant}
+                    className="size-full rounded-lg overflow-hidden bg-dark-1"
+                  />
+                  {participant === localParticipant && (
+                    <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
+                      You
+                    </div>
+                  )}
+                </div>
               </div>
-            )}
-          </div>
-        ))}
+            );
+          })}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
 
 const MeetingRoom = () => {
   const router = useRouter();
