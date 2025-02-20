@@ -4,35 +4,34 @@ const urlsToCache = [
   '/offline',
   '/manifest.json',
   '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png', // Add this
-  // Add more critical assets
+  '/icons/icon-512x512.png', 
 ];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(urlsToCache);
+    })
+  );
+});
 
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request)
+    fetch(event.request)
+      .catch(() => {
+        return caches.match(event.request)
           .then((response) => {
-            if (!response || response.status !== 200 || response.type !== 'basic') {
+            if (response) {
               return response;
             }
-            const responseToCache = response.clone();
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
-            return response;
-          })
-          .catch(() => {
-            // Return offline page for navigation requests
+            
+            // If the request is for a page navigation and we're offline,
+            // return the offline page
             if (event.request.mode === 'navigate') {
               return caches.match('/offline');
             }
-            return null;
+            
+            return Promise.reject('no-match');
           });
       })
   );
