@@ -197,11 +197,11 @@ if (participants.length === 4) {
   );
 }
 
-  // For 5+ Participants
+// For 5+ Participants
 if (participants.length >= 5) {
   return (
     <div className="w-full h-[calc(100vh-120px)] overflow-y-auto p-2">
-      <div className="grid grid-cols-2 gap-2 pb-20">
+      <div className="grid grid-cols-2 gap-2">
         {participants.map((participant, index) => {
           const isLastAndOdd = index === participants.length - 1 && participants.length % 2 !== 0;
           
@@ -209,7 +209,7 @@ if (participants.length >= 5) {
             <div 
               key={participant.sessionId}
               className={`
-                h-[calc((100vh-120px)/2 - 20px)] // Similar height as 3-4 participant layout
+                h-[calc((100vh-140px)/2)] // Exact same height as 3-4 layout
                 ${isLastAndOdd ? 'col-span-2 mx-auto w-[calc(50%-0.25rem)]' : 'w-full'}
               `}
             >
@@ -229,8 +229,8 @@ if (participants.length >= 5) {
         })}
       </div>
     </div>
-  );
-} return null;
+   );
+ } return null;
 };
 
 const MeetingRoom = () => {
