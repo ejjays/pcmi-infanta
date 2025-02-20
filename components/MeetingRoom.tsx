@@ -232,7 +232,8 @@ if (participants.length >= 5) {
       </div>
     </div>
   );
-}
+} return null;
+};
 
 const MeetingRoom = () => {
   const router = useRouter();
