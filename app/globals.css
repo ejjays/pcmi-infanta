@@ -11,8 +11,14 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  touch-action: pan-y pinch-zoom; 
-  -ms-touch-action: pan-y pinch-zoom;
+  touch-action: manipulation; 
+  -ms-touch-action: manipulation;
+  overscroll-behavior: contain;
+}
+
+html,
+body {
+  overscroll-behavior-y: contain;
 }
 
 img {
