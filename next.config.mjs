@@ -14,7 +14,7 @@ const pwaConfig = withPWA({
     urlPattern: /^https?.*/,
     handler: 'NetworkFirst',
     options: {
-      cacheName: 'offline-cache', // Use a static name here instead of CACHE_NAME
+      cacheName: 'offline-cache',
       networkTimeoutSeconds: 10,
       plugins: [
         {

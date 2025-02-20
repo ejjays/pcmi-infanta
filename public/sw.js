@@ -13,23 +13,22 @@ self.addEventListener('install', (event) => {
       return cache.addAll(urlsToCache);
     })
   );
+  self.skipWaiting(); 
 });
 
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    fetch(event.request)
-      .catch(() => {
-        return caches.match(event.request)
-          .then((response) => {
-            if (response) {
-              return response;
-            }
-            if (event.request.mode === 'navigate') {
-              return caches.match('/offline');
-            }
-            return Promise.reject('no-match');
-          });
-      })
+    fetch(event.request).catch(() => {
+      return caches.match(event.request).then((response) => {
+        if (response) {
+          return response;
+        }
+        if (event.request.mode === 'navigate') {
+          return caches.match('/offline');
+        }
+        return Promise.reject('no-match');
+      });
+    })
   );
 });
 
