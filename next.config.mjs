@@ -1,5 +1,7 @@
 import withPWA from 'next-pwa';
 
+const CACHE_NAME = 'pcmi-cache-v2-' + new Date().getTime();
+
 const pwaConfig = withPWA({
   dest: 'public',
   register: true,
@@ -12,7 +14,7 @@ const pwaConfig = withPWA({
     urlPattern: /^https?.*/,
     handler: 'NetworkFirst',
     options: {
-      cacheName: CACHE_NAME,
+      cacheName: 'offline-cache', // Use a static name here instead of CACHE_NAME
       networkTimeoutSeconds: 10,
       plugins: [
         {
