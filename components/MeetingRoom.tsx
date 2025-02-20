@@ -53,26 +53,29 @@ const MobileCallLayout = () => {
 
   // For 2 Participants
   if (participants.length === 2) {
-    return (
-      <div className="h-[calc(100vh-120px)] w-full max-w-[400px] mx-auto p-2">
-        <div className="flex flex-col h-full gap-2">
-          {participants.map((participant) => (
-            <div key={participant.sessionId} className="relative flex-1">
-              <ParticipantView 
-                participant={participant}
-                className="h-full w-full rounded-lg overflow-hidden"
-              />
-              {participant === localParticipant && (
-                <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
-                  You
-                </div>
-              )}
-            </div>
-          ))}
+  return (
+    <div className="h-[calc(100vh-120px)] w-full flex flex-col justify-center gap-2 p-2 pb-16"> {/* Added pb-16 for button spacing */}
+      {participants.map((participant, index) => (
+        <div 
+          key={participant.id}
+          className="w-full flex-1 min-h-[45%]" // Ensures each participant takes equal space
+        >
+          <div className="relative h-full w-full">
+            <ParticipantView
+              participant={participant}
+              className="h-full w-full rounded-lg overflow-hidden bg-dark-1"
+            />
+            {participant === localParticipant && (
+              <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
+                You
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    );
-  }
+      ))}
+    </div>
+  );
+}
 
   // For 3-4 Participants
   if (participants.length <= 4) {
