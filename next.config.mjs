@@ -5,18 +5,17 @@ const pwaConfig = withPWA({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development',
+  fallbacks: {
+    document: '/offline',
+  },
   runtimeCaching: [{
     urlPattern: /^https?.*/,
     handler: 'NetworkFirst',
     options: {
-      cacheName: 'offlineCache',
-      expiration: {
-        maxEntries: 200,
-      },
-      networkTimeoutSeconds: 10, // Add timeout
+      cacheName: CACHE_NAME,
+      networkTimeoutSeconds: 10,
       plugins: [
         {
-          // Return custom offline page for navigation requests
           handlerDidError: async () => await caches.match('/offline'),
         },
       ],
