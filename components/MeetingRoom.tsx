@@ -231,7 +231,8 @@ if (participants.length === 4) {
         </div>
       </div>
     );
-  }
+  } return null;
+};
 
 const MeetingRoom = () => {
   const router = useRouter();
