@@ -57,7 +57,7 @@ const MobileCallLayout = () => {
     <div className="h-[calc(100vh-120px)] w-full flex flex-col justify-center gap-2 p-2 pb-16"> {/* Added pb-16 for button spacing */}
       {participants.map((participant, index) => (
         <div 
-          key={participant.id}
+          key={participant.sessionId}
           className="w-full flex-1 min-h-[45%]" // Ensures each participant takes equal space
         >
           <div className="relative h-full w-full">
