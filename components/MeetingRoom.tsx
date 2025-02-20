@@ -200,10 +200,8 @@ if (participants.length === 4) {
   // For 5+ Participants
 if (participants.length >= 5) {
   return (
-    // Remove the fixed height and add overflow-y-auto to enable scrolling
-    <div className="w-full flex flex-col gap-2 pb-20 p-2 overflow-y-auto">
-      {/* Change the grid layout to be more flexible */}
-      <div className="grid grid-cols-2 gap-2">
+    <div className="w-full h-[calc(100vh-120px)] overflow-y-auto p-2">
+      <div className="grid grid-cols-2 gap-2 pb-20">
         {participants.map((participant, index) => {
           const isLastAndOdd = index === participants.length - 1 && participants.length % 2 !== 0;
           
@@ -211,14 +209,14 @@ if (participants.length >= 5) {
             <div 
               key={participant.sessionId}
               className={`
-                aspect-[4/3] // This maintains video aspect ratio
+                h-[calc((100vh-120px)/2 - 20px)] // Similar height as 3-4 participant layout
                 ${isLastAndOdd ? 'col-span-2 mx-auto w-[calc(50%-0.25rem)]' : 'w-full'}
               `}
             >
-              <div className="relative h-full w-full">
+              <div className="relative size-full">
                 <ParticipantView
                   participant={participant}
-                  className="h-full w-full rounded-lg overflow-hidden bg-dark-1"
+                  className="size-full rounded-lg overflow-hidden bg-dark-1"
                 />
                 {participant === localParticipant && (
                   <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
