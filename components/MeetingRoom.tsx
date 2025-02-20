@@ -27,69 +27,76 @@ import { cn } from '@/lib/utils';
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
 const MobileCallLayout = () => {
-  const { useParticipants, useDominantSpeaker } = useCallStateHooks();
+  const { useParticipants, useLocalParticipant } = useCallStateHooks();
   const participants = useParticipants();
-  const dominantSpeaker = useDominantSpeaker();
+  const localParticipant = useLocalParticipant();
 
-  // For 2 Participants - Split Screen
+  // For 2 Participants
   if (participants.length === 2) {
     return (
-      <div className="flex flex-col h-full w-full">
-        {participants.map((participant) => (
-          <div key={participant.sessionId} className="h-1/2 w-full">
-            <ParticipantView 
-              participant={participant}
-              className="h-full w-full rounded-lg overflow-hidden"
-            />
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  // For 3-4 Participants - 2x2 Grid
-  if (participants.length <= 4) {
-    return (
-      <div className="grid-2x2-mobile">
-        {participants.map((participant) => (
-          <div key={participant.sessionId}>
-            <ParticipantView 
-              participant={participant}
-              className="h-full w-full rounded-lg overflow-hidden"
-            />
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  // For 5+ Participants - Scrollable Grid with Dominant Speaker
-  if (participants.length >= 5) {
-    return (
-      <div className="scrollable-grid-mobile">
-        {dominantSpeaker && (
-          <div className="active-speaker">
-            <ParticipantView 
-              participant={dominantSpeaker}
-              className="h-full w-full rounded-lg overflow-hidden"
-            />
-          </div>
-        )}
-        {participants.map((participant) => (
-          participant !== dominantSpeaker && (
-            <div key={participant.sessionId}>
+      <div className="h-[calc(100vh-120px)] w-full max-w-[400px] mx-auto p-2">
+        <div className="flex flex-col h-full gap-2">
+          {participants.map((participant) => (
+            <div key={participant.sessionId} className="relative flex-1">
               <ParticipantView 
                 participant={participant}
                 className="h-full w-full rounded-lg overflow-hidden"
               />
+              {participant === localParticipant && (
+                <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
+                  You
+                </div>
+              )}
             </div>
-          )
-        ))}
+          ))}
+        </div>
       </div>
     );
   }
 
-  return null;
+  // For 3-4 Participants
+  if (participants.length <= 4) {
+    return (
+      <div className="h-[calc(100vh-120px)] w-full max-w-[400px] mx-auto p-2">
+        <div className="grid grid-cols-2 gap-2 h-full">
+          {participants.map((participant) => (
+            <div key={participant.sessionId} className="relative aspect-[4/3]">
+              <ParticipantView 
+                participant={participant}
+                className="h-full w-full rounded-lg overflow-hidden"
+              />
+              {participant === localParticipant && (
+                <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
+                  You
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // For 5+ Participants
+  return (
+    <div className="h-[calc(100vh-120px)] w-full max-w-[400px] mx-auto p-2">
+      <div className="mobile-participants-grid">
+        {participants.map((participant) => (
+          <div key={participant.sessionId} className="relative aspect-[4/3]">
+            <ParticipantView 
+              participant={participant}
+              className="h-full w-full rounded-lg overflow-hidden"
+            />
+            {participant === localParticipant && (
+              <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
+                You
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 const MeetingRoom = () => {
