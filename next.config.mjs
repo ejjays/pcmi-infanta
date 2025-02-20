@@ -13,6 +13,13 @@ const pwaConfig = withPWA({
       expiration: {
         maxEntries: 200,
       },
+      networkTimeoutSeconds: 10, // Add timeout
+      plugins: [
+        {
+          // Return custom offline page for navigation requests
+          handlerDidError: async () => await caches.match('/offline'),
+        },
+      ],
     },
   }],
   buildExcludes: [/middleware-manifest.json$/],
