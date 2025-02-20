@@ -30,6 +30,26 @@ const MobileCallLayout = () => {
   const { useParticipants, useLocalParticipant } = useCallStateHooks();
   const participants = useParticipants();
   const localParticipant = useLocalParticipant();
+  
+  if (participants.length === 1) {
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-120px)] w-full max-w-[400px] mx-auto p-2">
+        <div className="w-full aspect-[4/3] max-h-[400px]"> {/* Adjusted size container */}
+          <div className="relative h-full w-full">
+            <ParticipantView 
+              participant={participants[0]}
+              className="h-full w-full rounded-lg overflow-hidden bg-dark-1"
+            />
+            {participants[0] === localParticipant && (
+              <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
+                You
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // For 2 Participants
   if (participants.length === 2) {
