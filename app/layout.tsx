@@ -24,16 +24,7 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
-};
-
-export const viewport = {
-  themeColor: '#0E78F9',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
+    
   icons: {
     icon: [
       { url: "/icons/icon-72x72.png", sizes: "72x72", type: "image/png" },
@@ -57,6 +48,15 @@ export const viewport = {
     ],
   },
 };
+
+export const viewport = {
+  themeColor: '#0E78F9',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1.0,
+    maximumScale: 1.0,
+    userScalable: 'no',
+  },    
 
 export default function RootLayout({
   children,
