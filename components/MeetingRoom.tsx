@@ -77,8 +77,61 @@ const MobileCallLayout = () => {
   );
 }
 
+if (participants.length === 3) {
+  return (
+    <div className="h-[calc(100vh-120px)] w-full flex flex-col gap-2 pb-20 p-2">
+      {/* Top row with 2 participants */}
+      <div className="flex flex-row gap-2 flex-1">
+        <div className="w-1/2">
+          <div className="relative size-full">
+            <ParticipantView
+              participant={participants[0]}
+              className="size-full rounded-lg overflow-hidden bg-dark-1"
+            />
+            {participants[0] === localParticipant && (
+              <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
+                You
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="w-1/2">
+          <div className="relative size-full">
+            <ParticipantView
+              participant={participants[1]}
+              className="size-full rounded-lg overflow-hidden bg-dark-1"
+            />
+            {participants[1] === localParticipant && (
+              <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
+                You
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom row with 1 participant centered */}
+      <div className="flex justify-center flex-1">
+        <div className="w-1/2">
+          <div className="relative size-full">
+            <ParticipantView
+              participant={participants[2]}
+              className="size-full rounded-lg overflow-hidden bg-dark-1"
+            />
+            {participants[2] === localParticipant && (
+              <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
+                You
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
   // For 3-4 Participants
-  if (participants.length <= 4) {
+  if (participants.length === 4) {
     return (
       <div className="h-[calc(100vh-120px)] w-full max-w-[400px] mx-auto p-2">
         <div className="grid grid-cols-2 gap-2 h-full">
