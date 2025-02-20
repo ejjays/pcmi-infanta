@@ -17,9 +17,31 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match(event.request);
-    })
+    caches.match(event.request)
+      .then((cachedResponse) => {
+        // Return cached response if available
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        
+        // If not in cache, try network
+        return fetch(event.request)
+          .then((response) => {
+            // Cache the new response
+            if (response.status === 200) {
+              const responseToCache = response.clone();
+              caches.open(CACHE_NAME)
+                .then((cache) => {
+                  cache.put(event.request, responseToCache);
+                });
+            }
+            return response;
+          })
+          .catch(() => {
+            // If both cache and network fail, show offline page
+            return caches.match('/offline');
+          });
+      })
   );
 });
 
