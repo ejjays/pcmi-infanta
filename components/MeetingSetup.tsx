@@ -61,34 +61,36 @@ const MeetingSetup = ({
     );
 
   return (
-    <div className="flex h-screen w-full flex-col items-center justify-center gap-3 text-white px-4">
+  <div className="flex h-screen w-full flex-col items-center justify-center gap-3 text-white px-4">
     <h1 className="text-center text-2xl font-bold">Setup</h1>
-    <div className="w-full max-w-[600px] aspect-video"> 
-      <VideoPreview className="w-full h-full rounded-lg overflow-hidden" />
-    </div>
-      <div className="flex h-16 items-center justify-center gap-3">
-        <label className="flex items-center justify-center gap-2 font-medium">
-          <input
-            type="checkbox"
-            checked={isMicCamToggled}
-            onChange={(e) => setIsMicCamToggled(e.target.checked)}
-          />
-          Join with mic and camera off
-        </label>
-        <DeviceSettings />
+    <div className="w-full max-w-[600px] aspect-video relative"> 
+      <div className="absolute inset-0">
+        <VideoPreview className="w-full h-full rounded-lg overflow-hidden bg-gray-900" />
       </div>
-      <Button
-  className="rounded-md bg-green-500 px-4 py-2.5"
-  onClick={() => {
-    console.log("Joining call with MicCamToggled:", isMicCamToggled);
-    call.join();
-    setIsSetupComplete(true);
-  }}
->
-  Join meeting
-</Button>
     </div>
-  );
+    <div className="flex h-16 items-center justify-center gap-3">
+      <label className="flex items-center justify-center gap-2 font-medium">
+        <input
+          type="checkbox"
+          checked={isMicCamToggled}
+          onChange={(e) => setIsMicCamToggled(e.target.checked)}
+        />
+        Join with mic and camera off
+      </label>
+      <DeviceSettings />
+    </div>
+    <Button
+      className="rounded-md bg-green-500 px-4 py-2.5"
+      onClick={() => {
+        console.log("Joining call with MicCamToggled:", isMicCamToggled);
+        call.join();
+        setIsSetupComplete(true);
+      }}
+    >
+      Join meeting
+    </Button>
+  </div>
+ );
 };
 
 export default MeetingSetup;
