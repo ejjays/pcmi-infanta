@@ -64,8 +64,9 @@ const MeetingSetup = ({
   <div className="flex h-screen w-full flex-col items-center justify-center gap-3 text-white px-4">
     <h1 className="text-center text-2xl font-bold">Setup</h1>
     <div className="w-full max-w-[600px] relative"> 
-      <div className="w-full" style={{ height: '40vh' }}> {/* Reduced height to 40vh */}
-        <VideoPreview className="w-full h-full rounded-lg overflow-hidden bg-gray-900 object-cover" />
+      <div className="w-full"> 
+        {/* Using CSS classes for responsive height */}
+        <VideoPreview className="w-full rounded-lg overflow-hidden bg-gray-900 object-cover h-[40vh] lg:h-[30vh]" />
       </div>
     </div>
     <div className="flex h-16 items-center justify-center gap-3">
