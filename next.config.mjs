@@ -11,21 +11,22 @@ const pwaConfig = withPWA({
     document: '/offline',
   },
   runtimeCaching: [{
-  urlPattern: /^https?.*/,
-  handler: 'CacheFirst',
-  options: {
-    cacheName: 'offline-cache',
-    expiration: {
-      maxEntries: 200,
-      maxAgeSeconds: 30 * 24 * 60 * 60 
-    },
-    plugins: [
-      {
-        handlerDidError: async () => await caches.match('/offline'),
+    urlPattern: /^https?.*/,
+    handler: 'NetworkFirst', 
+    options: {
+      cacheName: 'offline-cache',
+      expiration: {
+        maxEntries: 200,
+        maxAgeSeconds: 30 * 24 * 60 * 60 
       },
-    ],
-  },
-}],
+      networkTimeoutSeconds: 10,
+      plugins: [
+        {
+          handlerDidError: async () => await caches.match('/offline'),
+        },
+      ], 
+    }, 
+  }], 
   buildExcludes: [/middleware-manifest.json$/],
   scope: '/',
 });
