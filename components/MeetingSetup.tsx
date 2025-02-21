@@ -63,8 +63,9 @@ const MeetingSetup = ({
   return (
   <div className="flex h-screen w-full flex-col items-center justify-center gap-3 text-white px-4">
     <h1 className="text-center text-2xl font-bold">Setup</h1>
-    <div className="w-full max-w-[600px] aspect-video relative"> 
-      <div className="absolute inset-0">
+    {/* Modified container with better mobile height */}
+    <div className="w-full max-w-[600px] relative"> 
+      <div className="w-full" style={{ minHeight: '60vh' }}> {/* Increased minimum height */}
         <VideoPreview className="w-full h-full rounded-lg overflow-hidden bg-gray-900" />
       </div>
     </div>
@@ -90,7 +91,7 @@ const MeetingSetup = ({
       Join meeting
     </Button>
   </div>
- );
+);
 };
 
 export default MeetingSetup;
