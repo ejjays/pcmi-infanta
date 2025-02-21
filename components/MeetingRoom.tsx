@@ -307,7 +307,7 @@ const MeetingRoom = () => {
                   <DropdownMenuItem
                     onClick={() =>
                       setLayout(item.toLowerCase() as CallLayoutType)
-                    }
+                    } 
                   >
                     {item}
                   </DropdownMenuItem>
