@@ -200,8 +200,8 @@ if (participants.length === 4) {
 // For 5+ Participants
 if (participants.length >= 5) {
   return (
-    <div className="absolute inset-0 overflow-y-auto"> {/* Changed container styling */}
-      <div className="grid grid-cols-2 gap-2 p-2">
+    <div className="h-[calc(100vh-120px)] w-full flex flex-col gap-2 pb-20 p-2 overflow-y-auto">
+      <div className="grid grid-cols-2 gap-2">
         {participants.map((participant, index) => {
           const isLastAndOdd = index === participants.length - 1 && participants.length % 2 !== 0;
           
@@ -209,8 +209,8 @@ if (participants.length >= 5) {
             <div 
               key={participant.sessionId}
               className={`
-                aspect-video 
-                ${isLastAndOdd ? 'col-span-2 mx-auto w-[calc(50%-0.25rem)]' : 'w-full'}
+                h-[calc((100vh-140px)/2)]
+                ${isLastAndOdd ? 'col-span-2 mx-auto w-1/2' : 'w-full'}
               `}
             >
               <div className="relative size-full">
@@ -230,7 +230,7 @@ if (participants.length >= 5) {
       </div>
     </div>
   );
- } return null;
+} return null;
 };
 
 const MeetingRoom = () => {
