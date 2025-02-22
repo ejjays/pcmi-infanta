@@ -200,8 +200,8 @@ if (participants.length === 4) {
 // For 5+ Participants
 if (participants.length >= 5) {
   return (
-    <div className="h-[calc(100vh-120px)] w-full flex flex-col gap-2 pb-20 p-2 overflow-y-auto">
-      <div className="grid grid-cols-2 gap-2">
+    <div className="h-[calc(100vh-120px)] w-full flex flex-col gap-2 p-2 pt-0 overflow-y-auto"> {/* Changed padding-top to 0 */}
+      <div className="grid grid-cols-2 gap-2 mt-0"> {/* Added margin-top: 0 */}
         {participants.map((participant, index) => {
           const isLastAndOdd = index === participants.length - 1 && participants.length % 2 !== 0;
           
@@ -230,7 +230,7 @@ if (participants.length >= 5) {
       </div>
     </div>
   );
-} return null;
+ } return null;
 };
 
 const MeetingRoom = () => {
@@ -278,7 +278,7 @@ const MeetingRoom = () => {
   };
 
   return (
-    <section className="relative h-screen w-full overflow-hidden pt-4 text-white">
+    <section className="relative h-screen w-full overflow-hidden text-white">
       <div className="relative flex size-full items-center justify-center">
         <div className="flex size-full max-w-[1000px] items-center overflow-hidden">
           <CallLayout />
