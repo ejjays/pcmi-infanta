@@ -456,3 +456,21 @@ textarea {
     padding-bottom: 80px !important;
   }
 }
+
+
+
+/* Add these styles to handle the grid layout better */
+.str-video__grid-layout {
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+.str-video__grid {
+  height: 100% !important;
+}
+
+/* Ensure proper aspect ratio for video containers */
+.aspect-video {
+  aspect-ratio: 16/9;
+  height: auto !important;
+}
