@@ -11,11 +11,6 @@ import {
   useCallStateHooks,
   useCall,
   ParticipantView, 
-  StreamReactionType,
-  Call,
-  CallContent,
-  StreamCall,
-  ReactionsButton,
 } from '@stream-io/video-react-sdk';
 import { Users, LayoutList } from 'lucide-react';
 import {
@@ -281,61 +276,12 @@ const MeetingRoom = () => {
         return <SpeakerLayout participantsBarPosition="right" />;
     }
   };
-  
-  const CustomCallControls = () => {
-  const reactions: StreamReactionType[] = [
-    {
-      type: 'reaction',
-      emoji_code: ':rolling_on_the_floor_laughing:',
-      custom: {},
-      icon: '🤣',
-    },
-    {
-      type: 'reaction',
-      emoji_code: ':like:',
-      custom: {},
-      icon: '👍',
-    },
-    {
-      type: 'reaction',
-      emoji_code: ':rocket:',
-      custom: {},
-      icon: '🚀',
-    },
-    {
-      type: 'reaction',
-      emoji_code: ':dislike:',
-      custom: {},
-      icon: '👎',
-    },
-    {
-      type: 'reaction',
-      emoji_code: ':fireworks:',
-      custom: {},
-      icon: '🎉',
-    },
-    {
-      type: 'reaction',
-      emoji_code: ':raised-hands:',
-      custom: {},
-      icon: '🙌',
-    },
-    {
-      type: 'raised-hand',
-      emoji_code: ':raised-hand:',
-      custom: {},
-      icon: '✋',
-    },
-  ];
 
   return (
     <section className="relative h-screen w-full overflow-hidden pt-4 text-white">
       <div className="relative flex size-full items-center justify-center">
         <div className="flex size-full max-w-[1000px] items-center overflow-hidden">
           <CallLayout />
-          <StreamCall call={call}>
-            <CallContent CallControls={CustomCallControls} />
-          </StreamCall>
         </div>
         <div
           className={cn('h-[calc(100vh-86px)] hidden ml-2 lg:block', {
