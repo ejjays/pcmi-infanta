@@ -200,8 +200,8 @@ if (participants.length === 4) {
 // For 5+ Participants
 if (participants.length >= 5) {
   return (
-    <div className="h-[calc(100vh-120px)] w-full flex flex-col gap-2 p-2 pt-0 overflow-y-auto"> {/* Changed padding-top to 0 */}
-      <div className="grid grid-cols-2 gap-2 mt-0"> {/* Added margin-top: 0 */}
+    <div className="h-screen w-full flex flex-col gap-2 overflow-y-auto pb-24"> 
+      <div className="grid grid-cols-2 gap-2">
         {participants.map((participant, index) => {
           const isLastAndOdd = index === participants.length - 1 && participants.length % 2 !== 0;
           
@@ -209,7 +209,7 @@ if (participants.length >= 5) {
             <div 
               key={participant.sessionId}
               className={`
-                h-[calc((100vh-140px)/2)]
+                h-[calc(50vh-60px)]
                 ${isLastAndOdd ? 'col-span-2 mx-auto w-1/2' : 'w-full'}
               `}
             >

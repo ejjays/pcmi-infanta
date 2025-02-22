@@ -474,3 +474,36 @@ textarea {
   aspect-ratio: 16/9;
   height: auto !important;
 }
+
+/* Add these to handle full-screen layout */
+.str-video__participant-view {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Ensure controls don't overlap with content */
+.str-video__call-controls {
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  padding: 8px;
+  border-radius: 30px;
+  margin-bottom: 20px;
+}
+
+/* Handle mobile scrolling */
+@media (max-width: 1024px) {
+  .str-video__grid-layout {
+    height: 100vh !important;
+    padding-bottom: 80px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .str-video__grid {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
