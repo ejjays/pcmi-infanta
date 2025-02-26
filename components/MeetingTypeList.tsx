@@ -46,7 +46,11 @@ const MeetingTypeList = () => {
   {
     code: "7777",
     link: "PersonaLinkuser_2sABqr7qHlfl0Sf3Goi4UAYk1Z7"
-  }
+  }, 
+  {
+    code: "2115",
+    link: "PersonaLinkuser_2pNBsKMcT3yj2PXM3XbImRjcYVG"
+  } 
 ];
 
 const ALLOWED_ADMIN_IDS = [
