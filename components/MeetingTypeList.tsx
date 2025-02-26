@@ -66,7 +66,7 @@ const ALLOWED_ADMIN_IDS = [
         toast({ title: 'Please select a date and time' });
         return;
       }
-      const id = crypto.randomUUID();
+      const id = user.id;
       const call = client.call('default', id);
       if (!call) throw new Error('Failed to create meeting');
       const startsAt =
