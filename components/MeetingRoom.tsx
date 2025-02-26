@@ -293,7 +293,7 @@ const MeetingRoom = () => {
           )}
         </div>
       </div>
-      <div className="fixed bottom-5 flex w-full flex-wrap items-center justify-center gap-5 scale-90">
+      <div className="fixed bottom-1 flex w-full flex-wrap items-center justify-center gap-5 scale-90">
         <CallControls onLeave={() => router.push(`/`)} />
         
         <div className="hidden lg:flex items-center gap-5">
