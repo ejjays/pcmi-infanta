@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     
     // Get all subscriptions from database
     const client = await clientPromise;
-    const db = client.db('your-db-name');
+    const db = client.db('christsonalloso021');
     const subscriptions = await db.collection('push-subscriptions').find({}).toArray();
     
     // Send notifications to all subscriptions
