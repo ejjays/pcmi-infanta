@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs';
+import { getAuth } from '@clerk/nextjs/server';
 import webpush from 'web-push';
 import clientPromise from '@/lib/mongodb';
 
@@ -12,7 +12,7 @@ webpush.setVapidDetails(
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    const { userId } = getAuth(req);
     
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
