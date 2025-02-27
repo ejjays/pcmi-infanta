@@ -1,0 +1,11 @@
+{
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next",
+      "config": {
+        "installCommand": "npm install --no-save tailwindcss postcss autoprefixer next-pwa @types/web-push"
+      }
+    }
+  ]
+}
