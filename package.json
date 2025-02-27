@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "npm install tailwindcss postcss autoprefixer --save && next build --no-lint && rm -rf .next/cache",
+    "vercel-build": "npm install tailwindcss postcss autoprefixer next-pwa --save && next build --no-lint && rm -rf .next/cache",
     "postbuild": "next-pwa-clearcache"
   },
   "dependencies": {
@@ -31,7 +31,8 @@
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^9.0.1",
-    "web-push": "^3.6.7"
+    "web-push": "^3.6.7",
+    "next-pwa": "^5.6.0"
   },
   "devDependencies": {
     "@types/node": "^20",
