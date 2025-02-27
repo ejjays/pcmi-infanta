@@ -1,23 +1,24 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs';
+import { currentUser } from '@clerk/nextjs';
 import webpush from 'web-push';
 import clientPromise from '@/lib/mongodb';
 
 // Configure web-push with your VAPID keys
 webpush.setVapidDetails(
-  process.env.VAPID_SUBJECT,
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
-  process.env.VAPID_PRIVATE_KEY
+  process.env.VAPID_SUBJECT || 'mailto:christsonalloso021@gmail.com',
+  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '',
+  process.env.VAPID_PRIVATE_KEY || ''
 );
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    const user = await currentUser();
     
-    if (!userId) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
+    const userId = user.id;
     const { meetingId, meetingTitle, message, url } = await req.json();
     
     if (!meetingId || !message) {

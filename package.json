@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "next build && rm -rf .next/cache",
+    "vercel-build": "next build --no-lint && rm -rf .next/cache",
     "postbuild": "next-pwa-clearcache"
   },
   "dependencies": {

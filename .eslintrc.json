@@ -10,6 +10,8 @@
     "tailwindcss/classnames-order": "warn",
     "tailwindcss/enforces-shorthand": "warn",
     "tailwindcss/no-custom-classname": "warn",
+    "no-unused-vars": "warn",
+    "no-undef": "error",
     "object-shorthand": "warn"
   }
 }

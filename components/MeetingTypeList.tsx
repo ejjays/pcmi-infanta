@@ -21,7 +21,7 @@ const initialValues = {
 };
 
 const MeetingTypeList = () => {
-  const { notificationsEnabled } = useNotifications();
+  const { enableNotifications } = useNotifications();
   const router = useRouter();
   const [meetingState, setMeetingState] = useState<
   'isScheduleMeeting' | 'isJoiningMeeting' | 'isInstantMeeting' | 'isUnauthorized' | undefined
