@@ -1,5 +1,5 @@
 {
-  "name": "yoom",
+  "name": "PCMI - Infanta",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "npm install tailwindcss postcss autoprefixer next-pwa --save && next build --no-lint && rm -rf .next/cache",
+    "vercel-build": "npm install tailwindcss postcss autoprefixer next-pwa --legacy-peer-deps && next build --no-lint && rm -rf .next/cache",
     "postbuild": "next-pwa-clearcache"
   },
   "dependencies": {
@@ -25,14 +25,17 @@
     "lucide-react": "^0.350.0",
     "mongodb": "^6.13.1",
     "next": "^14.2.24",
+    "next-pwa": "^5.6.0",
+    "postcss": "^8.4.35",
+    "autoprefixer": "^10.4.18",
+    "tailwindcss": "^3.4.1",
     "react": "^18",
     "react-datepicker": "^6.3.0",
     "react-dom": "^18",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^9.0.1",
-    "web-push": "^3.6.7",
-    "next-pwa": "^5.6.0"
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@types/node": "^20",
