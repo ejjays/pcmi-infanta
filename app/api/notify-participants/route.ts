@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { currentUser } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs';
 import webpush from 'web-push';
 import clientPromise from '@/lib/mongodb';
 
@@ -12,13 +12,12 @@ webpush.setVapidDetails(
 
 export async function POST(req: Request) {
   try {
-    const user = await currentUser();
+    const { userId } = auth();
     
-    if (!user) {
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const userId = user.id;
     const { meetingId, meetingTitle, message, url } = await req.json();
     
     if (!meetingId || !message) {

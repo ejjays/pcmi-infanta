@@ -1,16 +1,15 @@
 import { NextResponse } from 'next/server';
-import { currentUser } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs';
 import clientPromise from '@/lib/mongodb';
 
 export async function POST(req: Request) {
   try {
-    const user = await currentUser();
+    const { userId } = auth();
     
-    if (!user) {
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const userId = user.id;
     const subscription = await req.json();
     
     const client = await clientPromise;
