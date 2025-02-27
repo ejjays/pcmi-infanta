@@ -7,6 +7,7 @@ import "@stream-io/video-react-sdk/dist/css/styles.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { NotificationProvider } from '@/context/NotificationContext';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -59,7 +60,9 @@ export const viewport = {
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: ReactNode }>) {
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <head>
@@ -108,7 +111,9 @@ export default function RootLayout({
       >
         <body className={`${inter.className} bg-dark-2`}>
           <Toaster />
+          <NotificationProvider>
           {children}
+        </NotificationProvider>
         </body>
       </ClerkProvider>
     </html>

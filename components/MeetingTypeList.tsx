@@ -12,6 +12,7 @@ import { Textarea } from './ui/textarea';
 import ReactDatePicker from 'react-datepicker';
 import { useToast } from './ui/use-toast';
 import { Input } from './ui/input';
+import { useNotifications } from '@/context/NotificationContext';
 
 const initialValues = {
   dateTime: new Date(),
@@ -20,6 +21,7 @@ const initialValues = {
 };
 
 const MeetingTypeList = () => {
+  const { notificationsEnabled } = useNotifications();
   const router = useRouter();
   const [meetingState, setMeetingState] = useState<
   'isScheduleMeeting' | 'isJoiningMeeting' | 'isInstantMeeting' | 'isUnauthorized' | undefined
@@ -81,9 +83,26 @@ const ALLOWED_ADMIN_IDS = [
         },
       });
       setCallDetail(call);
+      
+      // If this is an instant meeting, notify participants
       if (!values.description) {
+        // Send notification to all users
+        await fetch('/api/notify-participants', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            meetingId: call.id,
+            meetingTitle: 'CG - Kamustahan',
+            message: `${user.firstName || 'An admin'} has started a meeting. Join now!`,
+            url: `/meeting/${call.id}`
+          }),
+        });
+        
         router.push(`/meeting/${call.id}`);
       }
+      
       toast({
         title: 'Meeting Created',
       });
