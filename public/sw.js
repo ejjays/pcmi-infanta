@@ -55,6 +55,21 @@ self.addEventListener('install', (event) => {
   self.skipWaiting(); 
 });
 
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+  console.log('Service worker activated');
+});
+
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request)
@@ -85,23 +100,10 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-  );
-});
-
-
 // Handle push events
 self.addEventListener('push', event => {
+  console.log('Push event received', event);
+  
   const data = event.data ? event.data.json() : { title: 'New Notification', body: 'Something happened in your app' };
   
   const options = {
@@ -121,6 +123,7 @@ self.addEventListener('push', event => {
 
 // Handle notification click
 self.addEventListener('notificationclick', event => {
+  console.log('Notification clicked', event);
   event.notification.close();
   
   if (event.notification.data && event.notification.data.url) {
@@ -128,4 +131,9 @@ self.addEventListener('notificationclick', event => {
       clients.openWindow(event.notification.data.url)
     );
   }
+});
+
+// Log when a notification is shown
+self.addEventListener('notificationshow', event => {
+  console.log('Notification shown', event);
 });
