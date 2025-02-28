@@ -104,7 +104,10 @@ self.addEventListener('fetch', (event) => {
 self.addEventListener('push', event => {
   console.log('Push event received', event);
   
-  const data = event.data ? event.data.json() : { title: 'New Notification', body: 'Something happened in your app' };
+  const data = event.data ? event.data.json() : { 
+    title: 'New Notification', 
+    body: 'Something happened in your app' 
+  };
   
   const options = {
     body: data.body,
@@ -113,7 +116,17 @@ self.addEventListener('push', event => {
     vibrate: [100, 50, 100],
     data: {
       url: data.url || '/'
-    }
+    },
+    actions: [
+      {
+        action: 'join',
+        title: 'Join Meeting'
+      },
+      {
+        action: 'dismiss',
+        title: 'Dismiss'
+      }
+    ]
   };
   
   event.waitUntil(
@@ -126,10 +139,13 @@ self.addEventListener('notificationclick', event => {
   console.log('Notification clicked', event);
   event.notification.close();
   
-  if (event.notification.data && event.notification.data.url) {
-    event.waitUntil(
-      clients.openWindow(event.notification.data.url)
-    );
+  // If the user clicked the "Join Meeting" action or the notification itself
+  if (event.action === 'join' || !event.action) {
+    if (event.notification.data && event.notification.data.url) {
+      event.waitUntil(
+        clients.openWindow(event.notification.data.url)
+      );
+    }
   }
 });
 
