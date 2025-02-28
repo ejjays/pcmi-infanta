@@ -3,10 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import MeetingTypeList from '@/components/MeetingTypeList';
 import NotificationPermission from '@/components/NotificationPermission'; 
-import { Button } from '@/components/ui/button'; // Import the Button component
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 
 const Home = () => {
   const [dateTime, setDateTime] = useState(new Date());
+  const { toast } = useToast();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -45,16 +47,45 @@ const Home = () => {
       {/* Test Notification Button */}
       <Button 
         onClick={async () => {
-          if (typeof window !== 'undefined') {
-            const registration = await navigator.serviceWorker.ready;
-            const permission = await Notification.requestPermission();
-            
-            if (permission === 'granted') {
-              registration.showNotification('Test Notification', {
-                body: 'This is a test notification from your app!',
-                icon: '/icons/icon-192x192.png'
-              });
+          try {
+            if (typeof window !== 'undefined') {
+              // Check if service worker is registered
+              if (!navigator.serviceWorker.controller) {
+                console.log("Service worker not controlling the page. Registering now...");
+                await navigator.serviceWorker.register('/sw.js');
+                toast({
+                  title: "Service worker registered",
+                  description: "Please try the notification button again"
+                });
+                return;
+              }
+              
+              const permission = await Notification.requestPermission();
+              console.log("Notification permission:", permission);
+              
+              if (permission === 'granted') {
+                const registration = await navigator.serviceWorker.ready;
+                console.log("Service worker registration:", registration);
+                
+                registration.showNotification('Test Notification', {
+                  body: 'This is a test notification from your app!',
+                  icon: '/icons/icon-192x192.png'
+                });
+                console.log("Notification sent");
+              } else {
+                toast({
+                  title: "Notification permission denied",
+                  description: "Please enable notifications in your browser settings"
+                });
+              }
             }
+          } catch (error) {
+            console.error("Notification error:", error);
+            toast({
+              title: "Error showing notification",
+              description: error.message,
+              variant: "error"
+            });
           }
         }}
         className="mb-6 bg-blue-1 hover:bg-blue-2"
