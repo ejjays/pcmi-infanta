@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "npm install --no-save tailwindcss postcss autoprefixer next-pwa --legacy-peer-deps && next build --no-lint && rm -rf .next/cache",
+    "vercel-build": "npm install --no-save tailwindcss postcss autoprefixer next-pwa --legacy-peer-deps && next build --no-lint && rm -rf .next/cache && npm install --save-dev @types/react-datepicker",
     "postbuild": "next-pwa-clearcache"
   },
   "dependencies": {
