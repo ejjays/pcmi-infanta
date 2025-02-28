@@ -35,9 +35,7 @@ export const subscribeToPushNotifications = async () => {
       VAPID_PUBLIC_KEY is a string
 const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '';
 const applicationServerKey = urlBase64ToUint8Array(VAPID_PUBLIC_KEY);
-      
-      // Convert VAPID key to the format required by the browser
-      const applicationServerKey = urlBase64ToUint8Array(VAPID_PUBLIC_KEY);
+  
       
       subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
