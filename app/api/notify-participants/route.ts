@@ -15,7 +15,7 @@ interface WebPushError extends Error {
   statusCode?: number;
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const { userId } = getAuth(req);
     
