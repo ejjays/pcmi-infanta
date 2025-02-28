@@ -10,6 +10,11 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY || ''
 );
 
+// Custom error interface for better error handling
+interface WebPushError extends Error {
+  statusCode?: number;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { userId } = getAuth(req);
@@ -46,8 +51,10 @@ export async function POST(req: NextRequest) {
         return true;
       } catch (error) {
         console.error('Error sending notification:', error);
+        // Type assertion for better error handling
+        const webPushError = error as WebPushError;
         // If subscription is invalid, remove it
-        if (error.statusCode === 410) {
+        if (webPushError.statusCode === 410) {
           await db.collection('push-subscriptions').deleteOne({ 'subscription.endpoint': subscription.endpoint });
         }
         return false;
