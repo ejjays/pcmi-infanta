@@ -86,7 +86,7 @@ export const saveSubscription = async (subscription: PushSubscription) => {
 };
 
 // Show a notification (for testing or local notifications)
-export const showLocalNotification = async (title, options) => {
+export const showLocalNotification = async (title: string, options: NotificationOptions) => {
   if (!checkNotificationSupport()) return;
   
   try {
