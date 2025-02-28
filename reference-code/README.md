@@ -1,1 +1,0 @@
-NOTE THAT THIS FILE DIRECTORY : "reference-code" is the ORIGINAL CODE use for reference and guide for our main PCMI app. This directory is the ORIGINAL CODE BEFORE and our main app pcmi is the latest modified version of this original code. 
