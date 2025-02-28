@@ -41,7 +41,7 @@
     "autoprefixer": "^10.0.1",
     "typescript": "^5",
     "@types/react": "^18",
-    "@types/web-push": "^3.6.4",
+    "@types/web-push": "^3.6.4"
   },
   "devDependencies": {
     "@types/node": "^20",
