@@ -38,11 +38,12 @@
     "web-push": "^3.6.7",
     "tailwindcss": "^3.3.0",
     "postcss": "^8",
-    "autoprefixer": "^10.0.1"
+    "autoprefixer": "^10.0.1",
+    "typescript": "^5",
+    "@types/react": "^18"
   },
   "devDependencies": {
     "@types/node": "^20",
-    "@types/react": "^18",
     "@types/react-datepicker": "^6.2.0",
     "@types/react-dom": "^18",
     "@types/uuid": "^9.0.8",
@@ -52,7 +53,6 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-tailwindcss": "^3.14.3",
-    "prettier": "^3.2.5",
-    "typescript": "^5"
+    "prettier": "^3.2.5"
   }
 }
