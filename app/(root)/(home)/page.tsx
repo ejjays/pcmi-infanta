@@ -49,29 +49,47 @@ const Home = () => {
   onClick={async () => {
     try {
       if (typeof window !== 'undefined') {
-        // Check if service worker is registered
-        if (!navigator.serviceWorker.controller) {
-          console.log("Service worker not controlling the page. Registering now...");
-          await navigator.serviceWorker.register('/sw.js');
+        // Check if service worker is supported
+        if (!('serviceWorker' in navigator)) {
           toast({
-            title: "Service worker registered",
-            description: "Please try the notification button again"
+            title: "Service Worker not supported",
+            description: "Your browser doesn't support service workers",
+            variant: "error"
           });
           return;
         }
         
+        // Request notification permission
         const permission = await Notification.requestPermission();
         console.log("Notification permission:", permission);
         
         if (permission === 'granted') {
-          const registration = await navigator.serviceWorker.ready;
-          console.log("Service worker registration:", registration);
+          // Get service worker registration
+          let registration;
+          try {
+            // Try to get existing registration
+            registration = await navigator.serviceWorker.ready;
+          } catch (error) {
+            console.log("No service worker registered, registering now...");
+            registration = await navigator.serviceWorker.register('/sw.js');
+            toast({
+              title: "Service worker registered",
+              description: "Please try the notification button again"
+            });
+            return;
+          }
           
-          registration.showNotification('Test Notification', {
+          // Show notification
+          await registration.showNotification('Test Notification', {
             body: 'This is a test notification from your app!',
             icon: '/icons/icon-192x192.png'
           });
           console.log("Notification sent");
+          
+          toast({
+            title: "Notification sent",
+            description: "Check your notifications"
+          });
         } else {
           toast({
             title: "Notification permission denied",
@@ -79,7 +97,7 @@ const Home = () => {
           });
         }
       }
-    } catch (error: any) { // Type the error as 'any' to access its properties
+    } catch (error: any) {
       console.error("Notification error:", error);
       toast({
         title: "Error showing notification",
