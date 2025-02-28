@@ -1,17 +1,19 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { 
-  checkNotificationSupport, 
-  requestNotificationPermission,
-  subscribeToPushNotifications,
-  saveSubscription
-} from '@/lib/notifications';
 
 type NotificationContextType = {
   notificationsEnabled: boolean;
   notificationsSupported: boolean;
   enableNotifications: () => Promise<boolean>;
+};
+
+// Utility function to convert base64 string to Uint8Array
+const urlBase64ToUint8Array = (base64String: string) => {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  return new Uint8Array([...Array(rawData.length)].map((_, i) => rawData.charCodeAt(i)));
 };
 
 const NotificationContext = createContext<NotificationContextType>({
@@ -32,7 +34,7 @@ export const NotificationProvider = ({
 
   useEffect(() => {
     // Check if notifications are supported
-    const supported = checkNotificationSupport();
+    const supported = 'Notification' in window && 'serviceWorker' in navigator;
     setNotificationsSupported(supported);
     
     // Check if permission is already granted
@@ -48,20 +50,76 @@ export const NotificationProvider = ({
     }
   }, []);
 
+  const subscribeToPushNotifications = async () => {
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      let subscription = await registration.pushManager.getSubscription();
+
+      // If no subscription exists, create one
+      if (!subscription) {
+        subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '')
+        });
+        
+        console.log('Created new subscription:', subscription);
+      }
+
+      return subscription;
+    } catch (error) {
+      console.error('Failed to subscribe to push notifications:', error);
+      return null;
+    }
+  };
+
+  const saveSubscription = async (subscription: PushSubscription) => {
+    try {
+      const response = await fetch('/api/save-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ subscription }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save subscription');
+      }
+      
+      console.log('Subscription saved successfully');
+    } catch (error) {
+      console.error('Error saving subscription:', error);
+    }
+  };
+
   const enableNotifications = async () => {
     if (!notificationsSupported) return false;
-    
-    const permissionGranted = await requestNotificationPermission();
-    setNotificationsEnabled(permissionGranted);
-    
-    if (permissionGranted) {
+
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        console.log('Notification permission denied');
+        return false;
+      }
+
       const subscription = await subscribeToPushNotifications();
       if (subscription) {
         await saveSubscription(subscription);
+        setNotificationsEnabled(true);
+        localStorage.setItem('notificationsEnabled', 'true');
+
+        const registration = await navigator.serviceWorker.ready;
+        await registration.showNotification('Notifications Enabled', {
+          body: 'You will now receive notifications when meetings start.',
+          icon: '/icons/icon-192x192.png'
+        });
       }
+
+      return true;
+    } catch (error) {
+      console.error('Error enabling notifications:', error);
+      return false;
     }
-    
-    return permissionGranted;
   };
 
   return (

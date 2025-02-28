@@ -19,6 +19,22 @@ export const requestNotificationPermission = async () => {
   }
 };
 
+// Convert base64 string to Uint8Array for push manager
+export function urlBase64ToUint8Array(base64String: string) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding)
+    .replace(/-/g, '+')
+    .replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
 // Subscribe to push notifications
 export const subscribeToPushNotifications = async () => {
   if (!checkNotificationSupport()) return null;
@@ -31,7 +47,6 @@ export const subscribeToPushNotifications = async () => {
 
     if (!subscription) {
       // You'll need to generate VAPID keys for your application
-      // For development, you can use tools like web-push to generate these
       const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '';
       const applicationServerKey = urlBase64ToUint8Array(VAPID_PUBLIC_KEY);
 
@@ -47,23 +62,6 @@ export const subscribeToPushNotifications = async () => {
     return null;
   }
 };
-
-// Helper function to convert base64 string to Uint8Array
-function urlBase64ToUint8Array(base64String: string) {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding)
-    .replace(/-/g, '+')
-    .replace(/_/g, '/');
-
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-
-  return outputArray;
-}
 
 // Send subscription to your server
 export const saveSubscription = async (subscription: PushSubscription) => {

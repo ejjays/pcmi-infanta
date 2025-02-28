@@ -44,30 +44,48 @@ export async function POST(req: NextRequest) {
     const db = client.db('christsonalloso021');
     const subscriptions = await db.collection('push-subscriptions').find({}).toArray();
     
+    console.log(`Found ${subscriptions.length} subscriptions to notify`);
+    
+    if (subscriptions.length === 0) {
+      console.log('No subscriptions found in database');
+      return NextResponse.json({ 
+        success: false, 
+        message: 'No subscriptions found' 
+      });
+    }
+    
     // Send notifications to all subscriptions
-    const notificationPromises = subscriptions.map(async ({ subscription }) => {
-      try {
-        await webpush.sendNotification(subscription, payload);
-        return true;
-      } catch (error) {
-        console.error('Error sending notification:', error);
-        // Type assertion for better error handling
-        const webPushError = error as WebPushError;
-        // If subscription is invalid, remove it
-        if (webPushError.statusCode === 410) {
-          await db.collection('push-subscriptions').deleteOne({ 'subscription.endpoint': subscription.endpoint });
+    const notificationResults = await Promise.all(
+      subscriptions.map(async ({ subscription }) => {
+        try {
+          console.log('Sending notification to:', subscription.endpoint.substring(0, 30) + '...');
+          await webpush.sendNotification(subscription, payload);
+          return { success: true, endpoint: subscription.endpoint };
+        } catch (error) {
+          console.error('Error sending notification:', error);
+          // Type assertion for better error handling
+          const webPushError = error as WebPushError;
+          // If subscription is invalid, remove it
+          if (webPushError.statusCode === 410) {
+            await db.collection('push-subscriptions').deleteOne({ 'subscription.endpoint': subscription.endpoint });
+            return { success: false, endpoint: subscription.endpoint, error: 'Subscription expired' };
+          }
+          return { success: false, endpoint: subscription.endpoint, error: webPushError.message };
         }
-        return false;
-      }
+      })
+    );
+    
+    const successCount = notificationResults.filter(r => r.success).length;
+    
+    return NextResponse.json({ 
+      success: true, 
+      message: `Sent ${successCount} of ${subscriptions.length} notifications`,
+      results: notificationResults
     });
-    
-    await Promise.all(notificationPromises);
-    
-    return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error sending notifications:', error);
     return NextResponse.json(
-      { error: 'Failed to send notifications' },
+      { error: 'Failed to send notifications', details: (error as Error).message },
       { status: 500 }
     );
   }
