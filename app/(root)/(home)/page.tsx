@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import MeetingTypeList from '@/components/MeetingTypeList';
 import NotificationPermission from '@/components/NotificationPermission'; 
+import { Button } from '@/components/ui/button'; // Import the Button component
 
 const Home = () => {
   const [dateTime, setDateTime] = useState(new Date());
@@ -40,6 +41,27 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      {/* Test Notification Button */}
+      <Button 
+        onClick={async () => {
+          if (typeof window !== 'undefined') {
+            const registration = await navigator.serviceWorker.ready;
+            const permission = await Notification.requestPermission();
+            
+            if (permission === 'granted') {
+              registration.showNotification('Test Notification', {
+                body: 'This is a test notification from your app!',
+                icon: '/icons/icon-192x192.png'
+              });
+            }
+          }
+        }}
+        className="mb-6 bg-blue-1 hover:bg-blue-2"
+      >
+        Test Notification
+      </Button>
+
       <MeetingTypeList />
       <NotificationPermission /> 
     </section>
