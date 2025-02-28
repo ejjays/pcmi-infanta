@@ -28,6 +28,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { error: 'Failed to save subscription' },
       { status: 500 }
-    );
+    ); 
   }
 }
