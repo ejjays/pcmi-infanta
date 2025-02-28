@@ -41,6 +41,41 @@ const NotificationPermission = () => {
     setShowPrompt(false);
   };
 
+  // Add the test notification function
+  const testNotification = async () => {
+    try {
+      if (!('serviceWorker' in navigator)) {
+        console.error('Service Worker not supported');
+        return;
+      }
+
+      const registration = await navigator.serviceWorker.ready;
+
+      // Show a local notification
+      await registration.showNotification('Test Notification', {
+        body: 'This is a test notification',
+        icon: '/icons/icon-192x192.png',
+        badge: '/icons/icon-192x192.png',
+        vibrate: [100, 50, 100],
+        data: {
+          url: '/'
+        }
+      });
+
+      toast({
+        title: "Test notification sent",
+        description: "If you didn't see a notification, check your browser settings",
+      });
+    } catch (error) {
+      console.error('Error sending test notification:', error);
+      toast({
+        title: "Test notification failed",
+        description: error.message,
+        variant: "error"
+      });
+    }
+  };
+
   if (!showPrompt) return null;
 
   return (
@@ -64,6 +99,13 @@ const NotificationPermission = () => {
           Enable
         </Button>
       </div>
+      {/* Add the Test Notification button */}
+      <Button 
+        onClick={testNotification}
+        className="mt-2 bg-gray-500 hover:bg-gray-600"
+      >
+        Test Notification
+      </Button>
     </div>
   );
 };

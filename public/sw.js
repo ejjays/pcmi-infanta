@@ -46,6 +46,8 @@ const urlsToCache = [
   '/robots.txt'
 ];
 
+console.log('Service Worker loaded');
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -102,7 +104,7 @@ self.addEventListener('fetch', (event) => {
 
 // Handle push events
 self.addEventListener('push', event => {
-  console.log('Push event received', event);
+  console.log('Push event received with data:', event.data ? event.data.text() : 'no data');
   
   const data = event.data ? event.data.json() : { 
     title: 'New Notification', 

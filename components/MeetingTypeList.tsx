@@ -85,45 +85,39 @@ const MeetingTypeList = () => {
 
       // If this is an instant meeting and the user is an admin, notify participants
       if (!values.description && ALLOWED_ADMIN_IDS.includes(user?.id)) {
-        try {
-          const response = await fetch('/api/notify-participants', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              meetingId: call.id,
-              meetingTitle: 'Instant Meeting Started',
-              message: `${user.firstName || 'An admin'} has started an instant meeting. Join now!`,
-              url: `/meeting/${call.id}`
-            }),
-          });
-
-          const result = await response.json();
-          
-          if (response.ok) {
-            toast({
-              title: "Notifications sent",
-              description: result.message || "All users have been notified about this meeting",
-            });
-          } else {
-            console.error("Failed to send notifications:", result);
-            toast({
-              title: "Notification issue",
-              description: result.error || "There was a problem sending notifications",
-              variant: "error"
-            });
-          }
-        } catch (error) {
-          console.error("Error sending notifications:", error);
+        console.log("Admin started an instant meeting, sending notifications...");
+        
+        const response = await fetch('/api/notify-participants', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            meetingId: call.id,
+            meetingTitle: 'Instant Meeting Started',
+            message: `${user.firstName || 'An admin'} has started an instant meeting. Join now!`,
+            url: `/meeting/${call.id}`
+          }),
+        });
+        
+        const result = await response.json();
+        console.log("Notification API response:", result);
+        
+        if (response.ok) {
           toast({
-            title: "Notification error",
-            description: "Failed to send notifications to participants",
+            title: "Notifications sent",
+            description: `Sent to ${result.sentCount || 0} users`,
+          });
+        } else {
+          console.error("Failed to send notifications:", result);
+          toast({
+            title: "Notification issue",
+            description: result.error || "There was a problem sending notifications",
             variant: "error"
           });
         }
       }
-      
+
       router.push(`/meeting/${call.id}`);
       toast({
         title: 'Meeting Created',

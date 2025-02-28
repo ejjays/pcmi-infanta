@@ -87,7 +87,7 @@ export const showLocalNotification = async (title: string, options: Notification
 
   try {
     const registration = await navigator.serviceWorker.ready;
-    registration.showNotification(title, options);
+    await registration.showNotification(title, options);
   } catch (error) {
     console.error('Error showing notification:', error);
   }
