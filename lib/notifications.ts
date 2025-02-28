@@ -68,7 +68,7 @@ function urlBase64ToUint8Array(base64String: string) {
 }
 
 // Send subscription to your server
-export const saveSubscription = async (subscription) => {
+export const saveSubscription = async (subscription: PushSubscription) => {
   try {
     const response = await fetch('/api/save-subscription', {
       method: 'POST',
