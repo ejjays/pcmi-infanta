@@ -5,6 +5,11 @@ import { useNotifications } from '@/context/NotificationContext';
 import { Button } from './ui/button';
 import { useToast } from './ui/use-toast';
 
+// Add this interface to extend NotificationOptions
+interface ExtendedNotificationOptions extends NotificationOptions {
+  vibrate?: number[];
+}
+
 const NotificationPermission = () => {
   const { notificationsEnabled, notificationsSupported, enableNotifications } = useNotifications();
   const [showPrompt, setShowPrompt] = useState(false);
@@ -60,7 +65,7 @@ const NotificationPermission = () => {
         data: {
           url: '/'
         }
-      });
+      } as ExtendedNotificationOptions); // Cast to ExtendedNotificationOptions
 
       toast({
         title: "Test notification sent",
