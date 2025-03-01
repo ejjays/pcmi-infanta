@@ -1,4 +1,4 @@
-'use client';
+'use lient';
 
 import { useEffect, useState } from 'react';
 import { useNotifications } from '@/context/NotificationContext';
@@ -72,14 +72,15 @@ const NotificationPermission = () => {
         description: "If you didn't see a notification, check your browser settings",
       });
     } catch (error) {
-      console.error('Error sending test notification:', error);
-      toast({
-        title: "Test notification failed",
-        description: error.message,
-        variant: "error"
-      });
-    }
-  };
+  console.error('Error sending test notification:', error);
+  toast({
+    title: "Test notification failed",
+    description: error instanceof Error ? error.message : 'Unknown error occurred',
+    variant: "error"
+   });
+  }
+ }
+};
 
   if (!showPrompt) return null;
 
