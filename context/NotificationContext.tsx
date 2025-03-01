@@ -103,17 +103,28 @@ export const NotificationProvider = ({
       }
 
       const subscription = await subscribeToPushNotifications();
-      if (subscription) {
-        await saveSubscription(subscription);
-        setNotificationsEnabled(true);
-        localStorage.setItem('notificationsEnabled', 'true');
-
-        const registration = await navigator.serviceWorker.ready;
-        await registration.showNotification('Notifications Enabled', {
-          body: 'You will now receive notifications when meetings start.',
-          icon: '/icons/icon-192x192.png'
-        });
+      if (!subscription) {
+        console.error('Failed to get push subscription');
+        return false;
       }
+      
+      console.log('Got subscription:', subscription.endpoint);
+      
+      const saved = await saveSubscription(subscription);
+      if (!saved) {
+        console.error('Failed to save subscription to server');
+        return false;
+      }
+      
+      console.log('Subscription saved successfully');
+      setNotificationsEnabled(true);
+      localStorage.setItem('notificationsEnabled', 'true');
+
+      const registration = await navigator.serviceWorker.ready;
+      await registration.showNotification('Notifications Enabled', {
+        body: 'You will now receive notifications when meetings start.',
+        icon: '/icons/icon-192x192.png'
+      });
 
       return true;
     } catch (error) {

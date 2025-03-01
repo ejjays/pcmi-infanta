@@ -40,6 +40,10 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    // Detailed logging at the beginning of the POST function
+    console.log('Notification API called with user ID:', userId);
+    console.log('Request body:', { meetingId, meetingTitle, message, url });
     
     // Prepare notification payload
     const payload = JSON.stringify({
@@ -62,6 +66,12 @@ export async function POST(req: NextRequest) {
         sentCount: 0
       });
     }
+    
+    // Log subscription details
+    console.log('Subscription details:', subscriptions.map(s => ({
+      endpoint: s.subscription.endpoint.substring(0, 30) + '...',
+      keys: !!s.subscription.keys
+    })));
     
     // Send notifications to all subscriptions
     const results = await Promise.all(

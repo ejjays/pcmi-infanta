@@ -12,6 +12,7 @@ import ReactDatePicker from 'react-datepicker';
 import { useToast } from './ui/use-toast';
 import { Input } from './ui/input';
 import { useNotifications } from '@/context/NotificationContext';
+import { Button } from './ui/button'; // Import the Button component
 
 const initialValues = {
   dateTime: new Date(),
@@ -128,6 +129,39 @@ const MeetingTypeList = () => {
     }
   };
 
+  // Function to handle test notification
+  const sendTestNotification = async () => {
+    try {
+      const response = await fetch('/api/notify-participants', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          meetingId: 'test-meeting',
+          meetingTitle: 'Test Notification',
+          message: 'This is a test notification',
+          url: '/'
+        }),
+      });
+      
+      const result = await response.json();
+      console.log("Test notification result:", result);
+      
+      toast({
+        title: "Test notification sent",
+        description: `Result: ${JSON.stringify(result)}`,
+      });
+    } catch (error) {
+      console.error("Test notification error:", error);
+      toast({
+        title: "Test notification failed",
+        description: error instanceof Error ? error.message : 'Unknown error',
+        variant: "error"
+      });
+    }
+  };
+
   if (!client || !user) return <Loader />;
 
   const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetail?.id}`;
@@ -167,6 +201,13 @@ const MeetingTypeList = () => {
         className="bg-yellow-1"
         handleClick={() => router.push('/recordings')}
       />
+
+      <Button 
+        onClick={sendTestNotification}
+        className="mt-4 bg-red-500 hover:bg-red-600"
+      >
+        Test Send Notification
+      </Button>
 
       {!callDetail ? (
         <MeetingModal
@@ -286,7 +327,7 @@ const MeetingTypeList = () => {
         className="text-center"
         buttonText="Close"
         image="/icons/lock.svg"
-        handleClick={() => setMeetingState(undefined)}  // Add this line
+        handleClick={() => setMeetingState(undefined)}  
       >
         <div className="flex flex-col items-center justify-center w-full gap-4">
           <p className="text-base text-sky-2 text-center w-full">

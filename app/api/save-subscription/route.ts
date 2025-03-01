@@ -19,6 +19,8 @@ export async function POST(req: NextRequest) {
       );
     }
     
+    console.log('Saving subscription:', subscription.endpoint); // Added logging
+
     const client = await clientPromise;
     const db = client.db('christsonalloso021');
     
@@ -28,13 +30,11 @@ export async function POST(req: NextRequest) {
     });
     
     if (existingSubscription) {
-      // Update the existing subscription with the latest data
       await db.collection('push-subscriptions').updateOne(
         { 'subscription.endpoint': subscription.endpoint },
         { $set: { subscription, userId, updatedAt: new Date() } }
       );
     } else {
-      // Insert new subscription
       await db.collection('push-subscriptions').insertOne({
         subscription,
         userId,
