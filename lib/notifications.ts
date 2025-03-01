@@ -64,17 +64,17 @@ export const subscribeToPushNotifications = async () => {
 };
 
 // Send subscription to your server
-export const saveSubscription = async (subscription: PushSubscription) => {
+export const saveSubscription = async (subscription: PushSubscription): Promise<boolean> => {
   try {
     const response = await fetch('/api/save-subscription', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(subscription),
+      body: JSON.stringify({ subscription }),
     });
 
-    return response.ok;
+    return response.ok; // Returns true if status is 2xx, false otherwise
   } catch (error) {
     console.error('Error saving subscription:', error);
     return false;

@@ -104,7 +104,10 @@ self.addEventListener('fetch', (event) => {
 
 // Handle push events
 self.addEventListener('push', event => {
-  console.log('Push event received with data:', event.data ? event.data.text() : 'no data');
+  console.log('Push event received!', {
+    data: event.data ? event.data.text() : 'no data',
+    timestamp: new Date().toISOString()
+  });
   
   const data = event.data ? event.data.json() : { 
     title: 'New Notification', 

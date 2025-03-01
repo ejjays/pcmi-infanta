@@ -26,6 +26,7 @@ function isWebPushError(error: unknown): error is WebPushError {
 
 export async function POST(req: NextRequest) {
   try {
+    console.log('Notification API called');
     const { userId } = getAuth(req);
     
     if (!userId) {
@@ -33,6 +34,7 @@ export async function POST(req: NextRequest) {
     }
     
     const { meetingId, meetingTitle, message, url } = await req.json();
+    console.log('Meeting details:', { meetingId, meetingTitle, message, url });
     
     if (!meetingId || !message) {
       return NextResponse.json(

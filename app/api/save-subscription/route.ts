@@ -34,15 +34,15 @@ export async function POST(req: NextRequest) {
         { 'subscription.endpoint': subscription.endpoint },
         { $set: { subscription, userId, updatedAt: new Date() } }
       );
+      return NextResponse.json({ success: true }, { status: 200 });
     } else {
       await db.collection('push-subscriptions').insertOne({
         subscription,
         userId,
         createdAt: new Date()
       });
+      return NextResponse.json({ success: true }, { status: 201 }); // Created
     }
-    
-    return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error saving subscription:', error);
     return NextResponse.json(
