@@ -1,11 +1,10 @@
-'use lient';
+'use client'; 
 
 import { useEffect, useState } from 'react';
 import { useNotifications } from '@/context/NotificationContext';
 import { Button } from './ui/button';
 import { useToast } from './ui/use-toast';
 
-// Add this interface to extend NotificationOptions
 interface ExtendedNotificationOptions extends NotificationOptions {
   vibrate?: number[];
 }
@@ -16,9 +15,7 @@ const NotificationPermission = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Only show the prompt if notifications are supported but not enabled
     if (notificationsSupported && !notificationsEnabled) {
-      // Wait a bit before showing the prompt to not overwhelm the user
       const timer = setTimeout(() => {
         setShowPrompt(true);
       }, 3000);
@@ -46,7 +43,6 @@ const NotificationPermission = () => {
     setShowPrompt(false);
   };
 
-  // Add the test notification function
   const testNotification = async () => {
     try {
       if (!('serviceWorker' in navigator)) {
@@ -65,22 +61,20 @@ const NotificationPermission = () => {
         data: {
           url: '/'
         }
-      } as ExtendedNotificationOptions); // Cast to ExtendedNotificationOptions
-
+      } as ExtendedNotificationOptions); 
       toast({
         title: "Test notification sent",
         description: "If you didn't see a notification, check your browser settings",
       });
     } catch (error) {
-  console.error('Error sending test notification:', error);
-  toast({
-    title: "Test notification failed",
-    description: error instanceof Error ? error.message : 'Unknown error occurred',
-    variant: "error"
-   });
-  }
- }
-};
+      console.error('Error sending test notification:', error);
+      toast({
+        title: "Test notification failed",
+        description: error instanceof Error ? error.message : 'Unknown error occurred',
+        variant: "error"
+      });
+    }
+  };
 
   if (!showPrompt) return null;
 
@@ -105,7 +99,6 @@ const NotificationPermission = () => {
           Enable
         </Button>
       </div>
-      {/* Add the Test Notification button */}
       <Button 
         onClick={testNotification}
         className="mt-2 bg-gray-500 hover:bg-gray-600"
