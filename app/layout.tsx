@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { NotificationProvider } from '@/context/NotificationContext';
+import ServiceWorkerRegistration from '@/components/ServiceWorkerRegistration';
 
 const inter = Inter({ subsets: ["latin"] });
 
