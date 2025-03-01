@@ -76,34 +76,33 @@ export async function POST(req: NextRequest) {
     })));
     
     // Send notifications to all subscriptions
-    const results = await Promise.all(
-      subscriptions.map(async ({ subscription }) => {
-        try {
-          console.log('Sending notification to:', subscription.endpoint.substring(0, 30) + '...');
-          await webpush.sendNotification(subscription, payload);
-          return { success: true, endpoint: subscription.endpoint };
-        } catch (error) {
-          console.error('Error sending notification:', {
-            endpoint: subscription.endpoint,
-            error: error instanceof Error ? error.message : String(error),
-            stack: error instanceof Error ? error.stack : undefined
-          });
-          
-          // Type assertion to tell TypeScript this is a WebPushError
-          if (isWebPushError(error) && error.statusCode === 410) {
-            await db.collection('push-subscriptions').deleteOne({ 'subscription.endpoint': subscription.endpoint });
-            return { success: false, endpoint: subscription.endpoint, error: 'Subscription expired' };
-          }
-          return { success: false, endpoint: subscription.endpoint, error: (error instanceof Error ? error.message : 'Unknown error') };
+    const notificationPromises = subscriptions.map(async (sub) => {
+      try {
+        console.log('Sending notification to:', sub.subscription.endpoint.substring(0, 30) + '...');
+        await webpush.sendNotification(sub.subscription, payload);
+        return { success: true, endpoint: sub.subscription.endpoint };
+      } catch (error) {
+        console.error('Error sending notification:', {
+          endpoint: sub.subscription.endpoint,
+          error: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined
+        });
+        
+        // Handle expired subscriptions
+        if (isWebPushError(error) && error.statusCode === 410) {
+          await db.collection('push-subscriptions').deleteOne({ 'subscription.endpoint': sub.subscription.endpoint });
+          return { success: false, endpoint: sub.subscription.endpoint, error: 'Subscription expired' };
         }
-      })
-    );
-    
+        return { success: false, endpoint: sub.subscription.endpoint, error: (error instanceof Error ? error.message : 'Unknown error') };
+      }
+    });
+
+    const results = await Promise.all(notificationPromises);
     const successCount = results.filter(r => r.success).length;
-    
-    return NextResponse.json({ 
-      success: true, 
-      message: `Sent ${successCount} of ${subscriptions.length} notifications`,
+
+    return NextResponse.json({
+      success: true,
+      message: `Sent notifications to ${successCount} of ${subscriptions.length} subscribers`,
       sentCount: successCount,
       results
     });

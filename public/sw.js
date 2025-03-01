@@ -109,34 +109,41 @@ self.addEventListener('push', event => {
     timestamp: new Date().toISOString()
   });
   
-  const data = event.data ? event.data.json() : { 
-    title: 'New Notification', 
-    body: 'Something happened in your app' 
-  };
+  if (!event.data) {
+    console.log('No data received in push event');
+    return;
+  }
   
-  const options = {
-    body: data.body,
-    icon: '/icons/icon-192x192.png',
-    badge: '/icons/icon-192x192.png',
-    vibrate: [100, 50, 100],
-    data: {
-      url: data.url || '/'
-    },
-    actions: [
-      {
-        action: 'join',
-        title: 'Join Meeting'
+  try {
+    const data = event.data.json();
+    console.log('Push data:', data);
+    
+    const options = {
+      body: data.body || 'New notification',
+      icon: '/icons/icon-192x192.png',
+      badge: '/icons/icon-192x192.png',
+      vibrate: [100, 50, 100],
+      data: {
+        url: data.url || '/'
       },
-      {
-        action: 'dismiss',
-        title: 'Dismiss'
-      }
-    ]
-  };
-  
-  event.waitUntil(
-    self.registration.showNotification(data.title || 'CG - Kamustahan', options)
-  );
+      actions: [
+        {
+          action: 'join',
+          title: 'Join Meeting'
+        },
+        {
+          action: 'dismiss',
+          title: 'Dismiss'
+        }
+      ]
+    };
+    
+    event.waitUntil(
+      self.registration.showNotification(data.title || 'PCMI Notification', options)
+    );
+  } catch (error) {
+    console.error('Error processing push notification:', error);
+  }
 });
 
 // Handle notification click
@@ -144,7 +151,6 @@ self.addEventListener('notificationclick', event => {
   console.log('Notification clicked', event);
   event.notification.close();
   
-  // If the user clicked the "Join Meeting" action or the notification itself
   if (event.action === 'join' || !event.action) {
     if (event.notification.data && event.notification.data.url) {
       event.waitUntil(

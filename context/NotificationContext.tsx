@@ -72,25 +72,27 @@ export const NotificationProvider = ({
     }
   };
 
-  const saveSubscription = async (subscription: PushSubscription) => {
-    try {
-      const response = await fetch('/api/save-subscription', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ subscription }),
-      });
+  const saveSubscription = async (subscription: PushSubscription): Promise<boolean> => {
+  try {
+    const response = await fetch('/api/save-subscription', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ subscription }),
+    });
 
-      if (!response.ok) {
-        throw new Error('Failed to save subscription');
-      }
-      
-      console.log('Subscription saved successfully');
-    } catch (error) {
-      console.error('Error saving subscription:', error);
+    if (!response.ok) {
+      throw new Error('Failed to save subscription');
     }
-  };
+    
+    console.log('Subscription saved successfully');
+    return true; // Return true on success
+  } catch (error) {
+    console.error('Error saving subscription:', error);
+    return false; 
+  }
+};
 
   const enableNotifications = async () => {
     if (!notificationsSupported) return false;
