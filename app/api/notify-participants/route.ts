@@ -15,6 +15,15 @@ interface WebPushError extends Error {
   statusCode?: number;
 }
 
+// Type guard function to check for WebPushError
+function isWebPushError(error: unknown): error is WebPushError {
+  return (
+    typeof error === 'object' && 
+    error !== null && 
+    'statusCode' in error
+  );
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { userId } = getAuth(req);
@@ -62,14 +71,18 @@ export async function POST(req: NextRequest) {
           await webpush.sendNotification(subscription, payload);
           return { success: true, endpoint: subscription.endpoint };
         } catch (error) {
-          console.error('Error sending notification:', error);
+          console.error('Error sending notification:', {
+            endpoint: subscription.endpoint,
+            error: error instanceof Error ? error.message : String(error),
+            stack: error instanceof Error ? error.stack : undefined
+          });
           
-          // If subscription is invalid, remove it
-          if (error.statusCode === 410) {
+          // Type assertion to tell TypeScript this is a WebPushError
+          if (isWebPushError(error) && error.statusCode === 410) {
             await db.collection('push-subscriptions').deleteOne({ 'subscription.endpoint': subscription.endpoint });
             return { success: false, endpoint: subscription.endpoint, error: 'Subscription expired' };
           }
-          return { success: false, endpoint: subscription.endpoint, error: error.message };
+          return { success: false, endpoint: subscription.endpoint, error: (error instanceof Error ? error.message : 'Unknown error') };
         }
       })
     );
@@ -85,7 +98,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('Error sending notifications:', error);
     return NextResponse.json(
-      { error: 'Failed to send notifications', details: error.message },
+      { error: 'Failed to send notifications', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }
