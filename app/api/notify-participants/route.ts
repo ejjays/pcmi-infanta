@@ -47,12 +47,11 @@ export async function POST(req: NextRequest) {
     console.log('Notification API called with user ID:', userId);
     console.log('Request body:', { meetingId, meetingTitle, message, url });
     
-    // Prepare notification payload
-    const payload = JSON.stringify({
-      title: meetingTitle || 'CG - Kamustahan',
-      body: message,
-      url: url || `/meeting/${meetingId}`
-    });
+  const payload = JSON.stringify({
+  title: meetingTitle || 'CG - Kamustahan',
+  body: message,
+  url: url || `/meeting/${meetingId}`
+});
     
     // Get all subscriptions from database
     const client = await clientPromise;

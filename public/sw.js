@@ -122,8 +122,20 @@ self.addEventListener('push', event => {
   }
   
   try {
-    const data = event.data.json();
-    console.log('[Service Worker] Push data:', data);
+    // First try to get the text data
+    const text = event.data.text();
+    console.log('[Service Worker] Push data text:', text);
+    
+    // Try to parse as JSON, but have a fallback if it fails
+    let data;
+    try {
+      data = JSON.parse(text);
+      console.log('[Service Worker] Push data parsed:', data);
+    } catch (e) {
+      console.error('[Service Worker] Error parsing push data:', e);
+      // If JSON parsing fails, use the text as the notification body
+      data = { title: 'New Notification', body: text };
+    }
     
     const options = {
       body: data.body || 'New notification',
