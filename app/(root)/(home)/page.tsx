@@ -136,8 +136,7 @@ const Home = () => {
       const registration = await navigator.serviceWorker.ready;
       await registration.showNotification('Direct Test Notification', {
         body: 'This is a direct test notification',
-        icon: '/icons/icon-192x192.png',
-        vibrate: [100, 50, 100]
+        icon: '/icons/icon-192x192.png'
       });
       
       console.log('Direct notification sent');
