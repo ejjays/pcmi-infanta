@@ -59,57 +59,98 @@ const Home = () => {
 
       {/* Test Notification Button */}
       <Button 
-        onClick={async () => {
-          try {
-            if (typeof window !== 'undefined') {
-              const { showLocalNotification } = await import('@/lib/notifications');
-              
-              const permission = await Notification.requestPermission();
-              console.log("Notification permission:", permission);
-              
-              if (permission === 'granted') {
-                if (!navigator.serviceWorker.controller) {
-                  await navigator.serviceWorker.register('/sw.js');
-                  toast({
-                    title: "Service worker registered",
-                    description: "Please try the notification button again"
-                  });
-                  return;
-                }
-                
-                const registration = await navigator.serviceWorker.ready;
-                console.log("Service worker ready:", registration);
-                
-                await showLocalNotification('Test Notification', {
-                  body: 'This is a test notification from your app!',
-                  icon: '/icons/icon-192x192.png'
-                });
-                
-                console.log("Notification sent");
-                toast({
-                  title: "Notification sent",
-                  description: "Check your notifications"
-                });
-              } else {
-                toast({
-                  title: "Notification permission denied",
-                  description: "Please enable notifications in your browser settings"
-                });
-              }
-            }
-          } catch (error: any) {
-            console.error("Notification error:", error);
-            toast({
-              title: "Error showing notification",
-              description: error?.message || "Unknown error occurred",
-              variant: "error"
-            });
-          }
-        }}
-        className="mb-6 bg-blue-1 hover:bg-blue-2"
-      >
-        Test Notification
-      </Button>
+  onClick={async () => {
+    try {
+      const response = await fetch('/api/notify-participants', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          meetingId: 'test-meeting',
+          meetingTitle: 'Simple Test',
+          message: 'This is a simple test notification',
+          url: '/'
+        }),
+      });
+      
+      const result = await response.json();
+      console.log('Simple test notification result:', result);
+      toast({
+        title: "Test notification sent",
+        description: `Sent to ${result.sentCount} subscribers`
+      });
+    } catch (error) {
+      console.error('Error sending test notification:', error);
+    }
+  }}
+  className="mb-2 bg-yellow-500 hover:bg-yellow-600"
+>
+  Simple Test Notification
+</Button>
+      
+      <Button 
+  onClick={async () => {
+    if ('serviceWorker' in navigator) {
+      try {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        for (const registration of registrations) {
+          await registration.unregister();
+          console.log('Service worker unregistered');
+        }
+        
+        // Register again
+        const newRegistration = await navigator.serviceWorker.register('/sw.js');
+        console.log('Service worker registered with scope:', newRegistration.scope);
+        
+        // Force update
+        await newRegistration.update();
+        console.log('Service worker updated');
+        
+        toast({
+          title: "Service worker refreshed",
+          description: "Please reload the page and try again"
+        });
+      } catch (error) {
+        console.error('Error refreshing service worker:', error);
+      }
+    }
+  }}
+  className="mb-2 bg-red-500 hover:bg-red-600"
+>
+  Refresh Service Worker
+</Button>
+<Button 
+  onClick={async () => {
+    try {
+      if (Notification.permission !== 'granted') {
+        const permission = await Notification.requestPermission();
+        console.log('Permission result:', permission);
+        if (permission !== 'granted') {
+          alert('Notification permission denied');
+          return;
+        }
+      }
+      
+      // Test with a direct notification
+      const registration = await navigator.serviceWorker.ready;
+      await registration.showNotification('Direct Test Notification', {
+        body: 'This is a direct test notification',
+        icon: '/icons/icon-192x192.png',
+        vibrate: [100, 50, 100]
+      });
+      
+      console.log('Direct notification sent');
+    } catch (error) {
+      console.error('Error sending direct notification:', error);
+      alert('Error: ' + (error instanceof Error ? error.message : 'Unknown error'));
+    }
+  }}
+  className="mb-2 bg-purple-500 hover:bg-purple-600"
+>
+  Direct Notification Test
+</Button>
+
 
       <MeetingTypeList />
       <NotificationPermission /> 

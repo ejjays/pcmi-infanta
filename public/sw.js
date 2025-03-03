@@ -49,8 +49,10 @@ const urlsToCache = [
 console.log('Service Worker loaded');
 
 self.addEventListener('install', (event) => {
+  console.log('[Service Worker] Installing Service Worker...', event);
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
+      console.log('[Service Worker] Caching App Shell');
       return cache.addAll(urlsToCache);
     })
   );
@@ -58,18 +60,21 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
+  console.log('[Service Worker] Activating Service Worker...', event);
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
+            console.log('[Service Worker] Removing old cache', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
     })
   );
-  console.log('Service worker activated');
+  console.log('[Service Worker] Service worker activated');
+  return self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
@@ -89,6 +94,7 @@ self.addEventListener('fetch', (event) => {
               const responseToCache = response.clone();
               caches.open(CACHE_NAME)
                 .then((cache) => {
+                  console.log('[Service Worker] Caching new resource:', event.request.url);
                   cache.put(event.request, responseToCache);
                 });
             }
@@ -96,6 +102,7 @@ self.addEventListener('fetch', (event) => {
           })
           .catch(() => {
             // If both cache and network fail, show offline page
+            console.log('[Service Worker] Network request failed, serving offline page');
             return caches.match('/offline');
           });
       })
@@ -104,19 +111,19 @@ self.addEventListener('fetch', (event) => {
 
 // Handle push events
 self.addEventListener('push', event => {
-  console.log('Push event received!', {
+  console.log('[Service Worker] Push Received', {
     data: event.data ? event.data.text() : 'no data',
     timestamp: new Date().toISOString()
   });
   
   if (!event.data) {
-    console.log('No data received in push event');
+    console.log('[Service Worker] No data received in push event');
     return;
   }
   
   try {
     const data = event.data.json();
-    console.log('Push data:', data);
+    console.log('[Service Worker] Push data:', data);
     
     const options = {
       body: data.body || 'New notification',
@@ -138,17 +145,21 @@ self.addEventListener('push', event => {
       ]
     };
     
+    console.log('[Service Worker] Showing notification with options:', options);
+    
     event.waitUntil(
       self.registration.showNotification(data.title || 'PCMI Notification', options)
+        .then(() => console.log('[Service Worker] Notification shown successfully'))
+        .catch(error => console.error('[Service Worker] Error showing notification:', error))
     );
   } catch (error) {
-    console.error('Error processing push notification:', error);
+    console.error('[Service Worker] Error processing push notification:', error);
   }
 });
 
 // Handle notification click
 self.addEventListener('notificationclick', event => {
-  console.log('Notification clicked', event);
+  console.log('[Service Worker] Notification clicked', event);
   event.notification.close();
   
   if (event.action === 'join' || !event.action) {
@@ -162,5 +173,5 @@ self.addEventListener('notificationclick', event => {
 
 // Log when a notification is shown
 self.addEventListener('notificationshow', event => {
-  console.log('Notification shown', event);
+  console.log('[Service Worker] Notification shown', event);
 });
