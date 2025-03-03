@@ -10,10 +10,10 @@
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none;
-  touch-action: manipulation; 
+ /* user-select: none; */
+  touch-action: manipulation;  
   -ms-touch-action: manipulation;
-  overscroll-behavior: contain;
+  overscroll-behavior: contain; 
 }
 
 html,
