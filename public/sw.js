@@ -124,7 +124,6 @@ self.addEventListener('push', event => {
           body: 'New notification',
           icon: '/icons/icon-192x192.png',
           badge: '/icons/icon-192x192.png',
-          vibrate: [100, 50, 100],
           tag: 'pcmi-notification-' + Date.now(),
           renotify: true,
           requireInteraction: true, // Add this to make notification persist
