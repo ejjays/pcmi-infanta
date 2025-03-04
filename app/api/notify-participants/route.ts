@@ -3,6 +3,22 @@ import { getAuth } from '@clerk/nextjs/server';
 import webpush from 'web-push';
 import clientPromise from '@/lib/mongodb';
 
+const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
+const vapidSubject = process.env.VAPID_SUBJECT;
+
+console.log('VAPID Configuration:', {
+  publicKeyExists: !!vapidPublicKey,
+  privateKeyExists: !!vapidPrivateKey,
+  subjectExists: !!vapidSubject
+});
+
+webpush.setVapidDetails(
+  vapidSubject!,
+  vapidPublicKey!,
+  vapidPrivateKey!
+);
+
 // Configure web-push with your VAPID keys
 webpush.setVapidDetails(
   process.env.VAPID_SUBJECT || 'mailto:christsonalloso021@gmail.com',
@@ -73,6 +89,8 @@ export async function POST(req: NextRequest) {
       endpoint: s.subscription.endpoint.substring(0, 30) + '...',
       keys: !!s.subscription.keys
     })));
+    
+    console.log(`Found ${subscriptions.length} subscriptions in database`);
     
     // Send notifications to all subscriptions
     const notificationPromises = subscriptions.map(async (sub) => {

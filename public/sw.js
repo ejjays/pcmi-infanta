@@ -111,57 +111,33 @@ self.addEventListener('fetch', (event) => {
 
 // Updated push event handler
 self.addEventListener('push', event => {
-  console.log('[Service Worker] Push Received', {
-    data: event.data ? event.data.text() : 'no data',
-    timestamp: new Date().toISOString()
+  console.log('[Service Worker] Push Received:', {
+    data: event.data ? event.data.text() : 'no data'
   });
 
   event.waitUntil(
     (async () => {
       try {
-        let title = 'PCMI Notification';
-        let options = {
-          body: 'New notification',
+        const data = event.data ? JSON.parse(event.data.text()) : {};
+        
+        const title = data.meetingTitle || 'PCMI Notification';
+        const options = {
+          body: data.message || 'New notification',
           icon: '/icons/icon-192x192.png',
           badge: '/icons/icon-192x192.png',
           tag: 'pcmi-notification-' + Date.now(),
-          renotify: true,
-          requireInteraction: true, // Add this to make notification persist
+          requireInteraction: true,
           data: { 
-            url: '/',
+            url: data.url || '/',
             timestamp: new Date().toISOString()
           }
         };
 
-        if (event.data) {
-          try {
-            const data = JSON.parse(event.data.text());
-            console.log('[Service Worker] Parsed push data:', data);
-            title = data.meetingTitle || data.title || title;
-            options.body = data.message || data.body || options.body;
-            options.data = { 
-              url: data.url || '/',
-              timestamp: new Date().toISOString()
-            };
-          } catch (e) {
-            console.error('[Service Worker] Error parsing push data:', e);
-            options.body = event.data.text();
-          }
-        }
-
-        // Log before showing notification
-        console.log('[Service Worker] About to show notification:', { title, options });
-        
-        // Try showing a test notification first
-        await self.registration.showNotification('Test - ' + title, {
-          ...options,
-          body: 'Test notification - ' + options.body
-        });
-        
-        console.log('[Service Worker] Test notification shown successfully');
-
+        console.log('[Service Worker] Showing notification:', { title, options });
+        await self.registration.showNotification(title, options);
+        console.log('[Service Worker] Notification shown successfully');
       } catch (error) {
-        console.error('[Service Worker] Error showing notification:', error);
+        console.error('[Service Worker] Error in push event:', error);
       }
     })()
   );
