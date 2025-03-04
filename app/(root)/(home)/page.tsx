@@ -61,6 +61,11 @@ const Home = () => {
       <Button 
   onClick={async () => {
     try {
+      // First check if we have an active service worker
+      const registration = await navigator.serviceWorker.ready;
+      console.log('Service worker ready:', registration);
+
+      // Then send the notification
       const response = await fetch('/api/notify-participants', {
         method: 'POST',
         headers: {
@@ -68,20 +73,30 @@ const Home = () => {
         },
         body: JSON.stringify({
           meetingId: 'test-meeting',
-          meetingTitle: 'Simple Test',
-          message: 'This is a simple test notification',
+          meetingTitle: 'Test Notification',
+          message: 'This is a test notification ' + new Date().toISOString(),
           url: '/'
         }),
       });
       
       const result = await response.json();
       console.log('Simple test notification result:', result);
-      toast({
-        title: "Test notification sent",
-        description: `Sent to ${result.sentCount} subscribers`
-      });
+      
+      if (result.success) {
+        toast({
+          title: "Notification sent",
+          description: `Sent to ${result.sentCount} subscribers`
+        });
+      } else {
+        throw new Error(result.error || 'Failed to send notification');
+      }
     } catch (error) {
       console.error('Error sending test notification:', error);
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : 'Failed to send notification',
+        variant: "destructive"
+      });
     }
   }}
   className="mb-2 bg-yellow-500 hover:bg-yellow-600"

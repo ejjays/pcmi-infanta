@@ -109,64 +109,47 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Handle push events
+// Updated push event handler
 self.addEventListener('push', event => {
   console.log('[Service Worker] Push Received', {
     data: event.data ? event.data.text() : 'no data',
     timestamp: new Date().toISOString()
   });
   
-  if (!event.data) {
-    console.log('[Service Worker] No data received in push event');
-    return;
-  }
-  
-  try {
-    // First try to get the text data
-    const text = event.data.text();
-    console.log('[Service Worker] Push data text:', text);
-    
-    // Try to parse as JSON, but have a fallback if it fails
-    let data;
-    try {
-      data = JSON.parse(text);
-      console.log('[Service Worker] Push data parsed:', data);
-    } catch (e) {
-      console.error('[Service Worker] Error parsing push data:', e);
-      // If JSON parsing fails, use the text as the notification body
-      data = { title: 'New Notification', body: text };
-    }
-    
-    const options = {
-      body: data.body || 'New notification',
-      icon: '/icons/icon-192x192.png',
-      badge: '/icons/icon-192x192.png',
-      vibrate: [100, 50, 100],
-      data: {
-        url: data.url || '/'
-      },
-      actions: [
-        {
-          action: 'join',
-          title: 'Join Meeting'
-        },
-        {
-          action: 'dismiss',
-          title: 'Dismiss'
+  // Always show a notification even if there's no data
+  event.waitUntil(
+    (async () => {
+      try {
+        let title = 'PCMI Notification';
+        let options = {
+          body: 'New notification',
+          icon: '/icons/icon-192x192.png',
+          badge: '/icons/icon-192x192.png',
+          tag: 'pcmi-notification-' + Date.now(),
+          renotify: true,
+          data: { url: '/' }
+        };
+
+        if (event.data) {
+          try {
+            const data = JSON.parse(event.data.text());
+            title = data.title || title;
+            options.body = data.body || options.body;
+            options.data = { url: data.url || '/' };
+          } catch (e) {
+            console.error('[Service Worker] Error parsing push data:', e);
+            options.body = event.data.text();
+          }
         }
-      ]
-    };
-    
-    console.log('[Service Worker] Showing notification with options:', options);
-    
-    event.waitUntil(
-      self.registration.showNotification(data.title || 'PCMI Notification', options)
-        .then(() => console.log('[Service Worker] Notification shown successfully'))
-        .catch(error => console.error('[Service Worker] Error showing notification:', error))
-    );
-  } catch (error) {
-    console.error('[Service Worker] Error processing push notification:', error);
-  }
+
+        console.log('[Service Worker] Showing notification:', { title, options });
+        await self.registration.showNotification(title, options);
+        console.log('[Service Worker] Notification shown successfully');
+      } catch (error) {
+        console.error('[Service Worker] Error showing notification:', error);
+      }
+    })()
+  );
 });
 
 // Handle notification click
@@ -174,12 +157,10 @@ self.addEventListener('notificationclick', event => {
   console.log('[Service Worker] Notification clicked', event);
   event.notification.close();
   
-  if (event.action === 'join' || !event.action) {
-    if (event.notification.data && event.notification.data.url) {
-      event.waitUntil(
-        clients.openWindow(event.notification.data.url)
-      );
-    }
+  if (event.notification.data && event.notification.data.url) {
+    event.waitUntil(
+      clients.openWindow(event.notification.data.url)
+    );
   }
 });
 
