@@ -117,58 +117,39 @@ self.addEventListener('fetch', (event) => {
 
 // Updated push event handler
 self.addEventListener('push', event => {
-  console.log('[Service Worker] Push Received:', event.data?.text());
+  console.log('[Service Worker] Push Received:', {
+    data: event.data ? event.data.text() : 'no data'
+  });
 
   event.waitUntil(
     (async () => {
       try {
         const data = event.data ? JSON.parse(event.data.text()) : {};
-        console.log('[Service Worker] Processing push data:', data);
+        
+        // Log the parsed data
+        console.log('[Service Worker] Parsed push data:', data);
 
-        // Ensure we have the required data
-        if (!data.title || !data.message) {
-          throw new Error('Missing required notification data');
-        }
-
+        const title = data.meetingTitle || 'PCMI Notification';
         const options = {
-          body: data.message,
+          body: data.message || 'New notification',
           icon: '/icons/icon-192x192.png',
           badge: '/icons/icon-192x192.png',
-          tag: `pcmi-notification-${Date.now()}`,
+          tag: 'pcmi-notification-' + Date.now(),
           requireInteraction: true,
           vibrate: [200, 100, 200],
-          data: {
+          data: { 
             url: data.url || '/',
             timestamp: new Date().toISOString()
-          },
-          actions: [
-            {
-              action: 'open',
-              title: 'Open'
-            }
-          ]
+          }
         };
 
-        // Get all windows clients
-        const clients = await self.clients.matchAll({
-          type: 'window',
-          includeUncontrolled: true
-        });
-
-        // If we have an active window, focus it instead of showing notification
-        if (clients.length > 0 && 'focus' in clients[0]) {
-          await clients[0].focus();
-          clients[0].postMessage({
-            type: 'PUSH_RECEIVED',
-            data: data
-          });
-        } else {
-          // Show notification if no active windows
-          await self.registration.showNotification(data.title, options);
-        }
+        // Remove the client check - always show notification
+        console.log('[Service Worker] Showing notification:', { title, options });
+        await self.registration.showNotification(title, options);
+        console.log('[Service Worker] Notification shown successfully');
       } catch (error) {
-        console.error('[Service Worker] Push event error:', error);
-        // Show a fallback notification
+        console.error('[Service Worker] Error in push event:', error);
+        // Show a fallback notification on error
         await self.registration.showNotification('New Message', {
           body: 'You have a new notification',
           icon: '/icons/icon-192x192.png'
@@ -178,12 +159,13 @@ self.addEventListener('push', event => {
   );
 });
 
-// Handle notification click
+// Add notification click handler
 self.addEventListener('notificationclick', event => {
-  console.log('[Service Worker] Notification clicked', event);
+  console.log('[Service Worker] Notification click:', event);
   event.notification.close();
-  
-  if (event.notification.data && event.notification.data.url) {
+
+  // Open the app when notification is clicked
+  if (event.notification.data?.url) {
     event.waitUntil(
       clients.openWindow(event.notification.data.url)
     );
