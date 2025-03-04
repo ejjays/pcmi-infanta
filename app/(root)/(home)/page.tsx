@@ -156,6 +156,25 @@ const Home = () => {
 >
   Check Subscription
 </Button>
+
+<Button 
+  onClick={async () => {
+    try {
+      const response = await fetch('/api/list-subscriptions');
+      const data = await response.json();
+      console.log('Current subscriptions:', data);
+      toast({
+        title: "Subscriptions",
+        description: `Found ${data.subscriptions?.length || 0} active subscriptions`
+      });
+    } catch (error) {
+      console.error('Error checking subscriptions:', error);
+    }
+  }}
+  className="mb-2 bg-purple-500 hover:bg-purple-600"
+>
+  List All Subscriptions
+</Button>
       
       <Button 
   onClick={async () => {
