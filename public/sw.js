@@ -120,7 +120,7 @@ self.addEventListener('push', event => {
       try {
         const data = event.data ? JSON.parse(event.data.text()) : {};
         
-        const title = data.meetingTitle || 'PCMI Notification';
+        const title = data.title || 'PCMI Notification';
         const options = {
           body: data.message || 'New notification',
           icon: '/icons/icon-192x192.png',
@@ -135,7 +135,6 @@ self.addEventListener('push', event => {
 
         console.log('[Service Worker] Showing notification:', { title, options });
         await self.registration.showNotification(title, options);
-        console.log('[Service Worker] Notification shown successfully');
       } catch (error) {
         console.error('[Service Worker] Error in push event:', error);
       }

@@ -19,13 +19,6 @@ webpush.setVapidDetails(
   vapidPrivateKey!
 );
 
-// Configure web-push with your VAPID keys
-webpush.setVapidDetails(
-  process.env.VAPID_SUBJECT || 'mailto:christsonalloso021@gmail.com',
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '',
-  process.env.VAPID_PRIVATE_KEY || ''
-);
-
 // Custom error interface for better error handling
 interface WebPushError extends Error {
   statusCode?: number;
@@ -65,7 +58,7 @@ export async function POST(req: NextRequest) {
     
   const payload = JSON.stringify({
   title: meetingTitle || 'CG - Kamustahan',
-  body: message,
+  message: message,
   url: url || `/meeting/${meetingId}`
 });
     

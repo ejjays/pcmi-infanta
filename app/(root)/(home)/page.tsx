@@ -237,6 +237,43 @@ const Home = () => {
   Direct Notification Test
 </Button>
 
+<Button 
+  onClick={async () => {
+    try {
+      const response = await fetch('/api/notify-participants', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          meetingId: 'test-remote',
+          meetingTitle: 'Remote Test',
+          message: 'Testing remote push notification ' + new Date().toISOString(),
+          url: '/'
+        }),
+      });
+      
+      const result = await response.json();
+      console.log('Remote push test result:', result);
+      
+      toast({
+        title: "Remote notification sent",
+        description: `Sent to ${result.sentCount} subscribers`
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : 'Failed to send remote notification',
+        variant: "destructive"
+      });
+    }
+  }}
+  className="mb-2 bg-blue-500 hover:bg-blue-600"
+>
+  Test Remote Push
+</Button>
+
 
       <MeetingTypeList />
       <NotificationPermission /> 
