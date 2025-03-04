@@ -120,7 +120,7 @@ const Home = () => {
       toast({
         title: "Notifications sent",
         description: `Direct notification shown and push notification sent to ${result.sentCount} subscribers`
-      });
+      }); 
     } catch (error) {
       console.error('Error in notification test:', error);
       toast({
