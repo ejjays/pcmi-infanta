@@ -265,7 +265,7 @@ const Home = () => {
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : 'Failed to send remote notification',
-        variant: "destructive"
+        variant: "error"
       });
     }
   }}
