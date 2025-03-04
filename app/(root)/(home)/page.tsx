@@ -65,18 +65,32 @@ const Home = () => {
       const registration = await navigator.serviceWorker.ready;
       console.log('Service worker ready:', registration);
 
+      // Check notification permission explicitly
+      if (Notification.permission !== 'granted') {
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') {
+          throw new Error('Notification permission not granted');
+        }
+      }
+
       // Get current subscription
       const subscription = await registration.pushManager.getSubscription();
       if (!subscription) {
-        toast({
-          title: "Error",
-          description: "No push subscription found. Please enable notifications first.",
-          variant: "error"
-        });
-        return;
+        throw new Error("No push subscription found. Please enable notifications first.");
       }
 
-      // Send the notification
+      // Try a direct notification first
+      await registration.showNotification('Direct Test', {
+        body: 'This is a direct test notification',
+        icon: '/icons/icon-192x192.png',
+        badge: '/icons/icon-192x192.png',
+        vibrate: [100, 50, 100],
+        tag: 'direct-test-' + Date.now(),
+        renotify: true,
+        requireInteraction: true
+      });
+
+      // Then try the push notification
       const response = await fetch('/api/notify-participants', {
         method: 'POST',
         headers: {
@@ -85,24 +99,24 @@ const Home = () => {
         body: JSON.stringify({
           meetingId: 'test-meeting',
           meetingTitle: 'Test Meeting',
-          message: 'This is a test notification ' + new Date().toISOString(),
+          message: 'Push test notification ' + new Date().toISOString(),
           url: '/'
         }),
       });
       
       const result = await response.json();
-      console.log('Simple test notification result:', result);
+      console.log('Push notification test result:', result);
       
-      if (result.success) {
-        toast({
-          title: "Notification sent",
-          description: `Sent to ${result.sentCount} subscribers`
-        });
-      } else {
-        throw new Error(result.error || 'Failed to send notification');
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to send push notification');
       }
+
+      toast({
+        title: "Notifications sent",
+        description: `Direct notification shown and push notification sent to ${result.sentCount} subscribers`
+      });
     } catch (error) {
-      console.error('Error sending test notification:', error);
+      console.error('Error in notification test:', error);
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : 'Failed to send notification',
@@ -112,7 +126,7 @@ const Home = () => {
   }}
   className="mb-2 bg-yellow-500 hover:bg-yellow-600"
 >
-  Simple Test Notification
+  Test Both Notifications
 </Button>
 
 <Button 

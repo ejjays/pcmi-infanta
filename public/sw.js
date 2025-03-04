@@ -124,27 +124,43 @@ self.addEventListener('push', event => {
           body: 'New notification',
           icon: '/icons/icon-192x192.png',
           badge: '/icons/icon-192x192.png',
+          vibrate: [100, 50, 100],
           tag: 'pcmi-notification-' + Date.now(),
           renotify: true,
-          data: { url: '/' }
+          requireInteraction: true, // Add this to make notification persist
+          data: { 
+            url: '/',
+            timestamp: new Date().toISOString()
+          }
         };
 
         if (event.data) {
           try {
             const data = JSON.parse(event.data.text());
             console.log('[Service Worker] Parsed push data:', data);
-            title = data.meetingTitle || title;
-            options.body = data.message || options.body;
-            options.data = { url: data.url || '/' };
+            title = data.meetingTitle || data.title || title;
+            options.body = data.message || data.body || options.body;
+            options.data = { 
+              url: data.url || '/',
+              timestamp: new Date().toISOString()
+            };
           } catch (e) {
             console.error('[Service Worker] Error parsing push data:', e);
             options.body = event.data.text();
           }
         }
 
-        console.log('[Service Worker] Showing notification:', { title, options });
-        await self.registration.showNotification(title, options);
-        console.log('[Service Worker] Notification shown successfully');
+        // Log before showing notification
+        console.log('[Service Worker] About to show notification:', { title, options });
+        
+        // Try showing a test notification first
+        await self.registration.showNotification('Test - ' + title, {
+          ...options,
+          body: 'Test notification - ' + options.body
+        });
+        
+        console.log('[Service Worker] Test notification shown successfully');
+
       } catch (error) {
         console.error('[Service Worker] Error showing notification:', error);
       }
