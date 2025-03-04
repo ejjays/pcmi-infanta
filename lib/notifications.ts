@@ -63,6 +63,31 @@ export const subscribeToPushNotifications = async () => {
   }
 };
 
+// Validate subscription
+export const validateSubscription = async (subscription: PushSubscription) => {
+  try {
+    // Try sending a test message
+    const response = await fetch('/api/notify-participants', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        meetingId: 'validation-test',
+        meetingTitle: 'Subscription Test',
+        message: 'Validating subscription...',
+        url: '/'
+      }),
+    });
+
+    const result = await response.json();
+    return result.success;
+  } catch (error) {
+    console.error('Error validating subscription:', error);
+    return false;
+  }
+};
+
 // Send subscription to your server
 export const saveSubscription = async (subscription: PushSubscription): Promise<boolean> => {
   try {

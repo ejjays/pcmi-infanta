@@ -56,10 +56,15 @@ export async function POST(req: NextRequest) {
     console.log('Notification API called with user ID:', userId);
     console.log('Request body:', { meetingId, meetingTitle, message, url });
     
-  const payload = JSON.stringify({
+const payload = JSON.stringify({
   title: meetingTitle || 'CG - Kamustahan',
   message: message,
-  url: url || `/meeting/${meetingId}`
+  url: url || `/meeting/${meetingId}`,
+  timestamp: new Date().toISOString(),
+  icon: '/icons/icon-192x192.png',
+  badge: '/icons/icon-192x192.png',
+  tag: 'pcmi-notification-' + Date.now(),
+  requireInteraction: true
 });
     
     // Get all subscriptions from database

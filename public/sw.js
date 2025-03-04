@@ -119,22 +119,31 @@ self.addEventListener('push', event => {
     (async () => {
       try {
         const data = event.data ? JSON.parse(event.data.text()) : {};
+        console.log('[Service Worker] Parsed push data:', data);
         
         const title = data.title || 'PCMI Notification';
         const options = {
           body: data.message || 'New notification',
-          icon: '/icons/icon-192x192.png',
-          badge: '/icons/icon-192x192.png',
-          tag: 'pcmi-notification-' + Date.now(),
+          icon: data.icon || '/icons/icon-192x192.png',
+          badge: data.badge || '/icons/icon-192x192.png',
+          tag: data.tag || 'pcmi-notification-' + Date.now(),
           requireInteraction: true,
           data: { 
             url: data.url || '/',
-            timestamp: new Date().toISOString()
-          }
+            timestamp: data.timestamp || new Date().toISOString()
+          },
+          vibrate: [100, 50, 100], // Add vibration pattern
+          actions: [
+            {
+              action: 'open',
+              title: 'Open'
+            }
+          ]
         };
 
         console.log('[Service Worker] Showing notification:', { title, options });
-        await self.registration.showNotification(title, options);
+        const result = await self.registration.showNotification(title, options);
+        console.log('[Service Worker] Notification shown successfully:', result);
       } catch (error) {
         console.error('[Service Worker] Error in push event:', error);
       }

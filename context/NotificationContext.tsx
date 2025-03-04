@@ -33,36 +33,80 @@ export const NotificationProvider = ({
   const [notificationsSupported, setNotificationsSupported] = useState(false);
 
   useEffect(() => {
-    // Check if notifications are supported
     const supported = 'Notification' in window && 'serviceWorker' in navigator;
     setNotificationsSupported(supported);
     
-    // Check if permission is already granted
-    if (supported && Notification.permission === 'granted') {
+    const notificationsEnabledInStorage = localStorage.getItem('notificationsEnabled') === 'true';
+    if (notificationsEnabledInStorage) {
       setNotificationsEnabled(true);
-      
-      // Subscribe to push notifications if permission is already granted
-      subscribeToPushNotifications().then(subscription => {
-        if (subscription) {
-          saveSubscription(subscription);
-        }
-      });
+    }
+
+    if (supported) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(async (registration) => {
+          console.log('Service Worker registered with scope:', registration.scope);
+          
+          if (Notification.permission === 'granted') {
+            setNotificationsEnabled(true);
+            const subscription = await subscribeToPushNotifications();
+            if (subscription) {
+              await saveSubscription(subscription);
+            }
+          }
+        })
+        .catch(error => {
+          console.error('Service Worker registration failed:', error);
+          setNotificationsSupported(false);
+        });
     }
   }, []);
+
+  const validateSubscription = async (subscription: PushSubscription) => {
+    try {
+      const response = await fetch('/api/notify-participants', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          meetingId: 'validation-test',
+          meetingTitle: 'Subscription Test',
+          message: 'Validating subscription...',
+          url: '/'
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to validate subscription');
+      }
+
+      const result = await response.json();
+      return result.success;
+    } catch (error) {
+      console.error('Error validating subscription:', error);
+      return false;
+    }
+  };
 
   const subscribeToPushNotifications = async () => {
     try {
       const registration = await navigator.serviceWorker.ready;
       let subscription = await registration.pushManager.getSubscription();
 
-      // If no subscription exists, create one
+      if (subscription) {
+        const isValid = await validateSubscription(subscription);
+        if (!isValid) {
+          await subscription.unsubscribe();
+          subscription = null;
+        }
+      }
+
       if (!subscription) {
         subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '')
         });
-        
-        console.log('Created new subscription:', subscription);
+        console.log('New subscription created:', subscription);
       }
 
       return subscription;
@@ -73,26 +117,60 @@ export const NotificationProvider = ({
   };
 
   const saveSubscription = async (subscription: PushSubscription): Promise<boolean> => {
-  try {
-    const response = await fetch('/api/save-subscription', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ subscription }),
-    });
+    try {
+      const response = await fetch('/api/save-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ subscription }),
+      });
 
-    if (!response.ok) {
-      throw new Error('Failed to save subscription');
+      if (!response.ok) {
+        throw new Error('Failed to save subscription');
+      }
+      
+      console.log('Subscription saved successfully');
+      return true;
+    } catch (error) {
+      console.error('Error saving subscription:', error);
+      return false; 
     }
-    
-    console.log('Subscription saved successfully');
-    return true; // Return true on success
-  } catch (error) {
-    console.error('Error saving subscription:', error);
-    return false; 
-  }
-};
+  };
+
+  const cleanupInvalidSubscriptions = async () => {
+    try {
+      const response = await fetch('/api/list-subscriptions');
+      const data = await response.json();
+      
+      for (const sub of data.subscriptions) {
+        try {
+          const testResponse = await fetch('/api/notify-participants', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              meetingId: 'cleanup-test',
+              meetingTitle: 'Cleanup Test',
+              message: 'Testing subscription validity',
+              url: '/'
+            })
+          });
+          
+          if (!testResponse.ok) {
+            await fetch('/api/remove-subscription', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ endpoint: sub.subscription.endpoint })
+            });
+          }
+        } catch (error) {
+          console.error('Error testing subscription:', error);
+        }
+      }
+    } catch (error) {
+      console.error('Error cleaning up subscriptions:', error);
+    }
+  };
 
   const enableNotifications = async () => {
     if (!notificationsSupported) return false;
