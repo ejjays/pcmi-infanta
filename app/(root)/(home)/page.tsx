@@ -85,7 +85,6 @@ const Home = () => {
         icon: '/icons/icon-192x192.png',
         badge: '/icons/icon-192x192.png',
         tag: 'direct-test-' + Date.now(),
-        renotify: true,
         requireInteraction: true
       });
 
