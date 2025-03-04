@@ -20,16 +20,24 @@ const Home = () => {
 
   // Service Worker Registration
   useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then(registration => {
-          console.log('Service Worker registered with scope:', registration.scope);
-        })
-        .catch(error => {
-          console.error('Service Worker registration failed:', error);
-        });
-    }
-  }, []);
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+      .then(async (registration) => {
+        console.log('Service Worker registered with scope:', registration.scope);
+        
+        // Force update the service worker
+        await registration.update();
+        
+        // Check if there's a waiting worker and activate it
+        if (registration.waiting) {
+          registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+        }
+      })
+      .catch(error => {
+        console.error('Service Worker registration failed:', error);
+      });
+  }
+}, []);
 
   const localTime = new Date(dateTime.toLocaleString('en-PH', { timeZone: 'Asia/Manila' }));
 

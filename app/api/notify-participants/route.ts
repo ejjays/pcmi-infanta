@@ -61,13 +61,16 @@ const payload = JSON.stringify({
   message: message,
   url: url || `/meeting/${meetingId}`,
   timestamp: new Date().toISOString(),
-  icon: '/icons/icon-192x192.png',
-  badge: '/icons/icon-192x192.png',
-  tag: 'pcmi-notification-' + Date.now(),
-  requireInteraction: true
+  type: 'meeting_notification',
+  data: {
+    meetingId,
+    url: url || `/meeting/${meetingId}`,
+    timestamp: new Date().toISOString()
+  }
 });
+
+console.log('Sending notification payload:', payload);
     
-    // Get all subscriptions from database
     const client = await clientPromise;
     const db = client.db('christsonalloso021');
     const subscriptions = await db.collection('push-subscriptions').find({}).toArray();

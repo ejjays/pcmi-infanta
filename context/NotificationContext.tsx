@@ -61,27 +61,29 @@ export const NotificationProvider = ({
     }
   }, []);
 
-  const validateSubscription = async (subscription: PushSubscription) => {
+  const validateAndUpdateSubscription = async (subscription: PushSubscription) => {
     try {
-      const response = await fetch('/api/notify-participants', {
+      // Test the subscription
+      const testResponse = await fetch('/api/notify-participants', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          meetingId: 'validation-test',
+          meetingId: 'test',
           meetingTitle: 'Subscription Test',
-          message: 'Validating subscription...',
+          message: 'Testing subscription...',
           url: '/'
         }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to validate subscription');
+      if (!testResponse.ok) {
+        // If test fails, remove the subscription
+        await subscription.unsubscribe();
+        return false;
       }
 
-      const result = await response.json();
-      return result.success;
+      return true;
     } catch (error) {
       console.error('Error validating subscription:', error);
       return false;
@@ -94,7 +96,7 @@ export const NotificationProvider = ({
       let subscription = await registration.pushManager.getSubscription();
 
       if (subscription) {
-        const isValid = await validateSubscription(subscription);
+        const isValid = await validateAndUpdateSubscription(subscription);
         if (!isValid) {
           await subscription.unsubscribe();
           subscription = null;

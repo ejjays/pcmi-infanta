@@ -48,6 +48,12 @@ const urlsToCache = [
 
 console.log('Service Worker loaded');
 
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
 self.addEventListener('install', (event) => {
   console.log('[Service Worker] Installing Service Worker...', event);
   event.waitUntil(
@@ -111,28 +117,30 @@ self.addEventListener('fetch', (event) => {
 
 // Updated push event handler
 self.addEventListener('push', event => {
-  console.log('[Service Worker] Push Received:', {
-    data: event.data ? event.data.text() : 'no data'
-  });
+  console.log('[Service Worker] Push Received:', event.data?.text());
 
   event.waitUntil(
     (async () => {
       try {
         const data = event.data ? JSON.parse(event.data.text()) : {};
-        console.log('[Service Worker] Parsed push data:', data);
-        
-        const title = data.title || 'PCMI Notification';
+        console.log('[Service Worker] Processing push data:', data);
+
+        // Ensure we have the required data
+        if (!data.title || !data.message) {
+          throw new Error('Missing required notification data');
+        }
+
         const options = {
-          body: data.message || 'New notification',
-          icon: data.icon || '/icons/icon-192x192.png',
-          badge: data.badge || '/icons/icon-192x192.png',
-          tag: data.tag || 'pcmi-notification-' + Date.now(),
+          body: data.message,
+          icon: '/icons/icon-192x192.png',
+          badge: '/icons/icon-192x192.png',
+          tag: `pcmi-notification-${Date.now()}`,
           requireInteraction: true,
-          data: { 
+          vibrate: [200, 100, 200],
+          data: {
             url: data.url || '/',
-            timestamp: data.timestamp || new Date().toISOString()
+            timestamp: new Date().toISOString()
           },
-          vibrate: [100, 50, 100], // Add vibration pattern
           actions: [
             {
               action: 'open',
@@ -141,11 +149,30 @@ self.addEventListener('push', event => {
           ]
         };
 
-        console.log('[Service Worker] Showing notification:', { title, options });
-        const result = await self.registration.showNotification(title, options);
-        console.log('[Service Worker] Notification shown successfully:', result);
+        // Get all windows clients
+        const clients = await self.clients.matchAll({
+          type: 'window',
+          includeUncontrolled: true
+        });
+
+        // If we have an active window, focus it instead of showing notification
+        if (clients.length > 0 && 'focus' in clients[0]) {
+          await clients[0].focus();
+          clients[0].postMessage({
+            type: 'PUSH_RECEIVED',
+            data: data
+          });
+        } else {
+          // Show notification if no active windows
+          await self.registration.showNotification(data.title, options);
+        }
       } catch (error) {
-        console.error('[Service Worker] Error in push event:', error);
+        console.error('[Service Worker] Push event error:', error);
+        // Show a fallback notification
+        await self.registration.showNotification('New Message', {
+          body: 'You have a new notification',
+          icon: '/icons/icon-192x192.png'
+        });
       }
     })()
   );
