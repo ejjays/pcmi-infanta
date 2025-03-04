@@ -202,8 +202,8 @@ const Home = () => {
       
       // Test with a direct notification
       const registration = await navigator.serviceWorker.ready;
-      await registration.showNotification('Direct Test Notification', {
-        body: 'This is a direct test notification',
+      await registration.showNotification('Test Notification 😍', {
+        body: 'I love you Hannah Ruth',
         icon: '/icons/icon-192x192.png'
       });
       
