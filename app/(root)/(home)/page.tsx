@@ -65,7 +65,18 @@ const Home = () => {
       const registration = await navigator.serviceWorker.ready;
       console.log('Service worker ready:', registration);
 
-      // Then send the notification
+      // Get current subscription
+      const subscription = await registration.pushManager.getSubscription();
+      if (!subscription) {
+        toast({
+          title: "Error",
+          description: "No push subscription found. Please enable notifications first.",
+          variant: "error"
+        });
+        return;
+      }
+
+      // Send the notification
       const response = await fetch('/api/notify-participants', {
         method: 'POST',
         headers: {
@@ -73,7 +84,7 @@ const Home = () => {
         },
         body: JSON.stringify({
           meetingId: 'test-meeting',
-          meetingTitle: 'Test Notification',
+          meetingTitle: 'Test Meeting',
           message: 'This is a test notification ' + new Date().toISOString(),
           url: '/'
         }),
@@ -102,6 +113,36 @@ const Home = () => {
   className="mb-2 bg-yellow-500 hover:bg-yellow-600"
 >
   Simple Test Notification
+</Button>
+
+<Button 
+  onClick={async () => {
+    if ('serviceWorker' in navigator) {
+      try {
+        const registration = await navigator.serviceWorker.ready;
+        const subscription = await registration.pushManager.getSubscription();
+        
+        if (subscription) {
+          console.log('Current subscription:', subscription);
+          toast({
+            title: "Subscription Active",
+            description: "Push subscription exists and is logged to console"
+          });
+        } else {
+          toast({
+            title: "No Subscription",
+            description: "No push subscription found. Try enabling notifications again.",
+            variant: "error"
+          });
+        }
+      } catch (error) {
+        console.error('Error checking subscription:', error);
+      }
+    }
+  }}
+  className="mb-2 bg-green-500 hover:bg-green-600"
+>
+  Check Subscription
 </Button>
       
       <Button 

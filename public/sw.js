@@ -115,8 +115,7 @@ self.addEventListener('push', event => {
     data: event.data ? event.data.text() : 'no data',
     timestamp: new Date().toISOString()
   });
-  
-  // Always show a notification even if there's no data
+
   event.waitUntil(
     (async () => {
       try {
@@ -133,8 +132,9 @@ self.addEventListener('push', event => {
         if (event.data) {
           try {
             const data = JSON.parse(event.data.text());
-            title = data.title || title;
-            options.body = data.body || options.body;
+            console.log('[Service Worker] Parsed push data:', data);
+            title = data.meetingTitle || title;
+            options.body = data.message || options.body;
             options.data = { url: data.url || '/' };
           } catch (e) {
             console.error('[Service Worker] Error parsing push data:', e);
