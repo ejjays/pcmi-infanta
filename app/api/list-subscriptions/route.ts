@@ -5,14 +5,13 @@ import clientPromise from '@/lib/mongodb';
 export async function GET() {
   try {
     const client = await clientPromise;
-    const db = client.db();
+    const db = client.db('christsonalloso021'); 
     
-    // Get all subscriptions from the database
     const subscriptions = await db.collection('push-subscriptions')
       .find({})
       .toArray();
 
-    console.log(`Found ${subscriptions.length} subscriptions`);
+    console.log(`Found ${subscriptions.length} subscriptions in database`);
 
     return NextResponse.json({
       success: true,
