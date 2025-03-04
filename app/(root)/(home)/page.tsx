@@ -80,8 +80,8 @@ const Home = () => {
       }
 
       // Try a direct notification first
-      await registration.showNotification('Direct Test', {
-        body: 'This is a direct test notification',
+      await registration.showNotification('😍', {
+        body: 'I love you Hannah Ruth',
         icon: '/icons/icon-192x192.png',
         badge: '/icons/icon-192x192.png',
         tag: 'direct-test-' + Date.now(),
