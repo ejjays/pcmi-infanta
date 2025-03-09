@@ -3,6 +3,22 @@
 @tailwind components;
 @tailwind utilities; 
 
+:root {
+  --stream-video-control-bar-bg: transparent !important;
+}
+
+/* Style the Stream SDK control buttons */
+[data-stream-video-control-bar] button {
+  border-radius: 9999px !important;
+  background: #19232d !important;
+  padding: 10px !important;
+  margin: 0 2px !important;
+}
+
+[data-stream-video-control-bar] button:hover {
+  background: #4c535b !important;
+}
+
 * {
   margin: 0;
   padding: 0;
