@@ -3,16 +3,33 @@
 @tailwind components;
 @tailwind utilities; 
 
+/* Add or modify in globals.css */
 :root {
   --stream-video-control-bar-bg: transparent !important;
 }
 
-/* Style the Stream SDK control buttons */
+/* Base styles for Stream SDK control buttons */
+[data-stream-video-control-bar] {
+  transform: scale(0.75) !important; /* Make everything smaller by default */
+}
+
 [data-stream-video-control-bar] button {
   border-radius: 9999px !important;
   background: #19232d !important;
-  padding: 10px !important;
-  margin: 0 2px !important;
+  padding: 8px !important; /* Reduced padding */
+  margin: 0 1px !important; /* Minimal margin */
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  [data-stream-video-control-bar] {
+    transform: scale(0.65) !important; /* Even smaller on mobile */
+    margin-bottom: -12px !important; /* Adjust position due to scaling */
+  }
+  
+  [data-stream-video-control-bar] button {
+    padding: 6px !important; /* Further reduced padding for mobile */
+  }
 }
 
 [data-stream-video-control-bar] button:hover {
