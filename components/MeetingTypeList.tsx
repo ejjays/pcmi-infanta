@@ -202,13 +202,6 @@ const MeetingTypeList = () => {
         handleClick={() => router.push('/recordings')}
       />
 
-      <Button 
-        onClick={sendTestNotification}
-        className="mt-4 bg-red-500 hover:bg-red-600"
-      >
-        Test Send Notification
-      </Button>
-
       {!callDetail ? (
         <MeetingModal
           isOpen={meetingState === 'isScheduleMeeting'}
