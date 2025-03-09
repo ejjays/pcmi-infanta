@@ -293,14 +293,15 @@ const MeetingRoom = () => {
           )}
         </div>
       </div>
-      <div className="fixed bottom-1 flex w-full flex-wrap items-center justify-center gap-5 scale-90">
-        <CallControls onLeave={() => router.push(`/`)} />
-        
-        <div className="hidden lg:flex items-center gap-5">
-          <DropdownMenu>
-            <DropdownMenuTrigger className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
-              <LayoutList size={20} className="text-white" />
-            </DropdownMenuTrigger>
+      <div className="fixed bottom-4 flex w-full flex-wrap items-center justify-center gap-5">
+  <div className="flex items-center gap-3 rounded-full bg-[#19232d]/80 backdrop-blur-sm px-4 py-2">
+    <CallControls onLeave={() => router.push(`/`)} />
+    
+    <div className="hidden lg:flex items-center gap-3">
+      <DropdownMenu>
+        <DropdownMenuTrigger className="cursor-pointer rounded-full bg-[#19232d] p-2.5 hover:bg-[#4c535b]">
+          <LayoutList size={20} className="text-white" />
+        </DropdownMenuTrigger>
             <DropdownMenuContent className="border-dark-1 bg-dark-1 text-white">
               {['Grid', 'Speaker-Left', 'Speaker-Right'].map((item, index) => (
                 <div key={index}>
@@ -318,18 +319,19 @@ const MeetingRoom = () => {
           </DropdownMenu>
 
           <CallStatsButton />
-          
-          <button onClick={() => setShowParticipants((prev) => !prev)}>
-            <div className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
-              <Users size={20} className="text-white" />
-            </div>
-          </button>
+      
+      <button onClick={() => setShowParticipants((prev) => !prev)}>
+        <div className="cursor-pointer rounded-full bg-[#19232d] p-2.5 hover:bg-[#4c535b]">
+          <Users size={20} className="text-white" />
         </div>
+      </button>
+    </div>
 
-        {!isPersonalRoom && <EndCallButton />}
-      </div>
-    </section>
-  );
+    {!isPersonalRoom && <EndCallButton />}
+  </div>
+ </div> 
+  </section>
+ );
 };
 
 export default MeetingRoom;
