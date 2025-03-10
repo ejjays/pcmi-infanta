@@ -540,3 +540,17 @@ textarea {
     padding: 0 !important;
   }
 }
+
+@media (max-width: 640px) {
+  .video-preview-container {
+    height: auto;
+    min-height: 200px;
+  }
+}
+
+@media (max-width: 640px) {
+  .str-video__preview {
+    min-height: 200px !important;
+    max-height: 40vh !important;
+  }
+}

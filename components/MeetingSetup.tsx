@@ -59,41 +59,50 @@ const MeetingSetup = ({
     );
 
   return (
-    <div className="flex h-screen w-full flex-col items-center justify-center gap-3 text-white px-4">
+    <div className="flex min-h-screen w-full flex-col items-center justify-center gap-3 text-white px-4 py-8">
       <h1 className="text-center text-2xl font-bold">Setup</h1>
-      <div className="flex flex-col items-center w-full">
-        {/* Updated video preview container with better mobile responsiveness */}
-        <div className="w-full max-w-[500px] mx-auto relative px-4 sm:px-0"> 
+      
+      {/* Main container with better mobile spacing */}
+      <div className="flex flex-col items-center w-full max-w-[500px] mx-auto">
+        {/* Video preview container with adjusted height and padding */}
+        <div className="w-full relative mb-4"> 
           <div className="aspect-video w-full">
-            <VideoPreview className="w-full h-full rounded-lg overflow-hidden bg-gray-900 object-cover" />
+            <VideoPreview 
+              className="w-full h-full rounded-lg overflow-hidden bg-gray-900 object-cover"
+            />
           </div>
         </div>
+
+        {/* Controls with better spacing */}
+        <div className="flex flex-col w-full gap-4 px-4">
+          <label className="flex items-center justify-center gap-2 font-medium">
+            <input
+              type="checkbox"
+              checked={isMicCamToggled}
+              onChange={(e) => setIsMicCamToggled(e.target.checked)}
+              className="h-4 w-4"
+            />
+            <span className="text-sm">Join with mic and camera off</span>
+          </label>
+
+          {/* Device settings with proper spacing */}
+          <div className="w-full">
+            <DeviceSettings />
+          </div>
+
+          {/* Join button with proper spacing */}
+          <Button
+            className="w-full bg-green-500 py-3 rounded-lg mt-2"
+            onClick={() => {
+              console.log("Joining call with MicCamToggled:", isMicCamToggled);
+              call.join();
+              setIsSetupComplete(true);
+            }}
+          >
+            Join meeting
+          </Button>
+        </div>
       </div>
-      
-      {/* Updated controls layout */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-[500px] px-4">
-        <label className="flex items-center justify-center gap-2 font-medium text-sm sm:text-base">
-          <input
-            type="checkbox"
-            checked={isMicCamToggled}
-            onChange={(e) => setIsMicCamToggled(e.target.checked)}
-          />
-          Join with mic and camera off
-        </label>
-        <DeviceSettings />
-      </div>
-      
-      {/* Updated join button */}
-      <Button
-        className="rounded-md bg-green-500 px-4 py-2.5 w-full max-w-[500px] mx-4"
-        onClick={() => {
-          console.log("Joining call with MicCamToggled:", isMicCamToggled);
-          call.join();
-          setIsSetupComplete(true);
-        }}
-      >
-        Join meeting
-      </Button>
     </div>
   );
 };
