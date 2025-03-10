@@ -58,25 +58,24 @@ const MeetingSetup = ({
       />
     );
 
-  // MeetingSetup.tsx
 return (
   <div className="flex min-h-screen w-full flex-col items-center justify-center p-2 text-white">
     <h1 className="text-center text-xl font-bold mb-4">Setup</h1>
     
-    {/* Main container with strict mobile constraints */}
-    <div className="w-full max-w-[320px] sm:max-w-[400px] mx-auto flex flex-col items-center">
-      {/* Video preview with fixed mobile dimensions */}
-      <div className="w-full aspect-[4/3] mb-4"> 
-        <div className="relative h-full w-full">
+    {/* Main container with much smaller width for mobile */}
+    <div className="w-[280px] sm:w-[320px] mx-auto flex flex-col items-center"> {/* Fixed width for mobile */}
+      {/* Video preview with strict dimensions */}
+      <div className="w-full mb-4">
+        <div className="aspect-video w-full"> {/* Changed to aspect-video */}
           <VideoPreview 
-            className="absolute inset-0 rounded-lg overflow-hidden bg-gray-900 object-cover"
+            className="w-full h-full rounded-lg overflow-hidden bg-gray-900 object-cover"
           />
         </div>
       </div>
 
-      {/* Controls with proper mobile spacing */}
+      {/* Controls with strict width */}
       <div className="w-full space-y-3">
-        <label className="flex items-center justify-center gap-2 text-sm">
+        <label className="flex items-center justify-center gap-2 text-xs sm:text-sm">
           <input
             type="checkbox"
             checked={isMicCamToggled}
@@ -86,12 +85,11 @@ return (
           Join with mic and camera off
         </label>
 
-        {/* Device settings */}
+        {/* Device settings with strict width */}
         <div className="w-full">
           <DeviceSettings />
         </div>
 
-        {/* Join button */}
         <Button
           className="w-full bg-green-500 py-2.5 text-sm rounded-lg"
           onClick={() => {

@@ -552,17 +552,22 @@ textarea {
 @media (max-width: 640px) {
   .str-video__preview {
     width: 100% !important;
-    height: 100% !important;
-    max-height: none !important;
+    max-width: 280px !important;
+    height: auto !important;
   }
 
   .str-video__device-settings {
     width: 100% !important;
-    max-width: 320px !important;
+    max-width: 280px !important;
   }
 
   .str-video__device-settings-container {
     width: 100% !important;
-    max-width: 300px !important;
+    max-width: 260px !important;
+    margin: 0 auto !important;
+  }
+  
+  .str-video__select-container {
+    max-width: 100% !important;
   }
 }
