@@ -34,7 +34,7 @@ const MobileCallLayout = () => {
 
   // If someone is screen sharing, show only the shared screen
   if (screenShareStatus === 'enabled' && screenShare) {
-    const screenShareParticipant = participants.find(p => p.publishedScreenShare);
+    const screenShareParticipant = participants.find(p => p.screenShareTrack);
     
     if (screenShareParticipant) {
       return (
