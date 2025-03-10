@@ -27,7 +27,7 @@ import { cn } from '@/lib/utils';
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
 const MobileCallLayout = () => {
-  const { useParticipants, useLocalParticipant, useScreenShareState } = useCallStateHooks();
+  const { useParticipants, useLocalParticipant, useScreenShareState } =  useCallStateHooks();
   const participants = useParticipants();
   const localParticipant = useLocalParticipant();
   const { status: screenShareStatus, screenShare } = useScreenShareState();
