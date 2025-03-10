@@ -30,21 +30,20 @@ const MobileCallLayout = () => {
   const { useParticipants, useLocalParticipant, useScreenShareState } = useCallStateHooks();
   const participants = useParticipants();
   const localParticipant = useLocalParticipant();
-  const { status: screenShareStatus, participant: screenShareParticipant } = useScreenShareState();
+  const { status: screenShareStatus, screenShare } = useScreenShareState();
 
-  // If someone is screen sharing, show only the shared screen
-  if (screenShareStatus === 'enabled' && screenShareParticipant) {
+  if (screenShareStatus === 'enabled') {
     return (
       <div className="h-[calc(100vh-120px)] w-full flex items-center justify-center p-2">
         <div className="w-full h-full">
           <div className="relative h-full w-full">
             <ParticipantView 
-              participant={screenShareParticipant}
+              participant={participants[0]} // Show the participant who is sharing
               className="h-full w-full rounded-lg overflow-hidden bg-dark-1"
-              screenShareView
+              screenShareView // This prop tells Stream to show screen share content
             />
             <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
-              {screenShareParticipant === localParticipant ? 'You are sharing' : `${screenShareParticipant.name || 'Someone'} is sharing`}
+              Screen Share Active
             </div>
           </div>
         </div>
