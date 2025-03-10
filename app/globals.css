@@ -548,9 +548,14 @@ textarea {
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .str-video__preview {
-    min-height: 200px !important;
+    width: 100% !important;
     max-height: 40vh !important;
+  }
+  
+  .str-video__device-settings {
+    max-width: 100% !important;
+    overflow: hidden !important;
   }
 }

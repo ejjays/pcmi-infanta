@@ -59,13 +59,13 @@ const MeetingSetup = ({
     );
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center gap-3 text-white px-4 py-8">
-      <h1 className="text-center text-2xl font-bold">Setup</h1>
+    <div className="flex min-h-screen w-full flex-col items-center justify-center gap-3 text-white p-4">
+      <h1 className="text-center text-2xl font-bold mb-4">Setup</h1>
       
-      {/* Main container with better mobile spacing */}
-      <div className="flex flex-col items-center w-full max-w-[500px] mx-auto">
-        {/* Video preview container with adjusted height and padding */}
-        <div className="w-full relative mb-4"> 
+      {/* Added mobile-first container with proper width constraints */}
+      <div className="w-full max-w-[90%] md:max-w-[500px] mx-auto flex flex-col items-center">
+        {/* Video preview container with better mobile sizing */}
+        <div className="w-full relative mb-6"> 
           <div className="aspect-video w-full">
             <VideoPreview 
               className="w-full h-full rounded-lg overflow-hidden bg-gray-900 object-cover"
@@ -73,26 +73,26 @@ const MeetingSetup = ({
           </div>
         </div>
 
-        {/* Controls with better spacing */}
-        <div className="flex flex-col w-full gap-4 px-4">
-          <label className="flex items-center justify-center gap-2 font-medium">
+        {/* Controls container with better spacing and mobile width */}
+        <div className="w-full flex flex-col gap-4">
+          <label className="flex items-center justify-center gap-2">
             <input
               type="checkbox"
               checked={isMicCamToggled}
               onChange={(e) => setIsMicCamToggled(e.target.checked)}
-              className="h-4 w-4"
+              className="h-5 w-5" // Increased touch target size
             />
-            <span className="text-sm">Join with mic and camera off</span>
+            <span className="text-sm md:text-base">Join with mic and camera off</span>
           </label>
 
-          {/* Device settings with proper spacing */}
+          {/* Device settings with full width */}
           <div className="w-full">
             <DeviceSettings />
           </div>
 
-          {/* Join button with proper spacing */}
+          {/* Join button with proper mobile sizing */}
           <Button
-            className="w-full bg-green-500 py-3 rounded-lg mt-2"
+            className="w-full bg-green-500 py-3 text-base rounded-lg mt-2"
             onClick={() => {
               console.log("Joining call with MicCamToggled:", isMicCamToggled);
               call.join();
