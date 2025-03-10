@@ -11,6 +11,7 @@ import {
   useCallStateHooks,
   useCall,
   ParticipantView, 
+  VideoTrackType,
 } from '@stream-io/video-react-sdk';
 import { Users, LayoutList } from 'lucide-react';
 import {
@@ -34,23 +35,23 @@ const MobileCallLayout = () => {
 
   // If someone is screen sharing, show only the shared screen
   if (screenShareStatus === 'enabled') {
-    return (
-      <div className="h-[calc(100vh-120px)] w-full flex items-center justify-center p-2">
-        <div className="w-full h-full">
-          <div className="relative h-full w-full">
-            <ParticipantView 
-              participant={participants[0]}
-              className="h-full w-full rounded-lg overflow-hidden bg-dark-1"
-              trackType="screenShare"
-            />
-            <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
-              Screen Share Active
-            </div>
+  return (
+    <div className="h-[calc(100vh-120px)] w-full flex items-center justify-center p-2">
+      <div className="w-full h-full">
+        <div className="relative h-full w-full">
+          <ParticipantView 
+            participant={participants[0]}
+            className="h-full w-full rounded-lg overflow-hidden bg-dark-1"
+            trackType={VideoTrackType.Screenshare} // Use the enum value instead of string
+          />
+          <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
+            Screen Share Active
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
   
   if (participants.length === 1) {
     return (
