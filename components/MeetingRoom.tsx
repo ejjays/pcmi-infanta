@@ -34,27 +34,27 @@ const MobileCallLayout = () => {
 
   // If someone is screen sharing, show only the shared screen
   if (screenShareStatus === 'enabled' && screenShare) {
-    const screenShareParticipant = participants.find(p => p.screenShareTrack);
-    
-    if (screenShareParticipant) {
-      return (
-        <div className="h-[calc(100vh-120px)] w-full flex items-center justify-center p-2">
-          <div className="w-full h-full">
-            <div className="relative h-full w-full">
-              <ParticipantView 
-                participant={screenShareParticipant}
-                className="h-full w-full rounded-lg overflow-hidden bg-dark-1"
-                trackType="screenShare"
-              />
-              <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
-                Screen Share Active
-              </div>
+  const screenShareParticipant = participants.find(p => p.screenShareStream);
+  
+  if (screenShareParticipant) {
+    return (
+      <div className="h-[calc(100vh-120px)] w-full flex items-center justify-center p-2">
+        <div className="w-full h-full">
+          <div className="relative h-full w-full">
+            <ParticipantView 
+              participant={screenShareParticipant}
+              className="h-full w-full rounded-lg overflow-hidden bg-dark-1"
+              trackType="screenShare"
+            />
+            <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
+              Screen Share Active
             </div>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
   }
+}
   
   if (participants.length === 1) {
     return (
