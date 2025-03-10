@@ -58,40 +58,41 @@ const MeetingSetup = ({
       />
     );
 
+// MeetingSetup.tsx
 return (
   <div className="flex min-h-screen w-full flex-col items-center justify-center p-2 text-white">
     <h1 className="text-center text-xl font-bold mb-4">Setup</h1>
     
-    {/* Main container with much smaller width for mobile */}
-    <div className="w-[280px] sm:w-[320px] mx-auto flex flex-col items-center"> {/* Fixed width for mobile */}
-      {/* Video preview with strict dimensions */}
-      <div className="w-full mb-4">
-        <div className="aspect-video w-full"> {/* Changed to aspect-video */}
+    {/* Super strict container with fixed width */}
+    <div className="w-[280px] mx-auto"> {/* Fixed width that works on all devices */}
+      {/* Video preview with forced dimensions */}
+      <div className="w-[280px] mb-4"> {/* Matching fixed width */}
+        <div className="relative aspect-video w-full">
           <VideoPreview 
-            className="w-full h-full rounded-lg overflow-hidden bg-gray-900 object-cover"
+            className="absolute inset-0 rounded-lg overflow-hidden bg-gray-900 object-contain"
           />
         </div>
       </div>
 
-      {/* Controls with strict width */}
-      <div className="w-full space-y-3">
-        <label className="flex items-center justify-center gap-2 text-xs sm:text-sm">
+      {/* Controls with fixed width */}
+      <div className="w-[280px] space-y-3"> {/* Matching fixed width */}
+        <label className="flex items-center justify-start gap-2 text-xs">
           <input
             type="checkbox"
             checked={isMicCamToggled}
             onChange={(e) => setIsMicCamToggled(e.target.checked)}
             className="h-4 w-4"
           />
-          Join with mic and camera off
+          <span>Join with mic and camera off</span>
         </label>
 
-        {/* Device settings with strict width */}
-        <div className="w-full">
+        {/* Device settings with forced width */}
+        <div className="w-[280px]"> {/* Matching fixed width */}
           <DeviceSettings />
         </div>
 
         <Button
-          className="w-full bg-green-500 py-2.5 text-sm rounded-lg"
+          className="w-full bg-green-500 py-2 text-sm rounded-lg"
           onClick={() => {
             call.join();
             setIsSetupComplete(true);
@@ -102,7 +103,7 @@ return (
       </div>
     </div>
   </div>
- );
+);
 };
 
 export default MeetingSetup;
