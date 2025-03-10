@@ -41,7 +41,7 @@ const MobileCallLayout = () => {
           <ParticipantView 
   participant={participants[0]}
   className="h-full w-full rounded-lg overflow-hidden bg-dark-1"
-  trackType="screenshare"
+  trackType="screenShare"
 />
           <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
             Screen Share Active
