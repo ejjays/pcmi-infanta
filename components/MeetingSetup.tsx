@@ -58,53 +58,53 @@ const MeetingSetup = ({
       />
     );
 
-  return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center gap-3 text-white p-4">
-      <h1 className="text-center text-2xl font-bold mb-4">Setup</h1>
-      
-      {/* Added mobile-first container with proper width constraints */}
-      <div className="w-full max-w-[90%] md:max-w-[500px] mx-auto flex flex-col items-center">
-        {/* Video preview container with better mobile sizing */}
-        <div className="w-full relative mb-6"> 
-          <div className="aspect-video w-full">
-            <VideoPreview 
-              className="w-full h-full rounded-lg overflow-hidden bg-gray-900 object-cover"
-            />
-          </div>
-        </div>
-
-        {/* Controls container with better spacing and mobile width */}
-        <div className="w-full flex flex-col gap-4">
-          <label className="flex items-center justify-center gap-2">
-            <input
-              type="checkbox"
-              checked={isMicCamToggled}
-              onChange={(e) => setIsMicCamToggled(e.target.checked)}
-              className="h-5 w-5" // Increased touch target size
-            />
-            <span className="text-sm md:text-base">Join with mic and camera off</span>
-          </label>
-
-          {/* Device settings with full width */}
-          <div className="w-full">
-            <DeviceSettings />
-          </div>
-
-          {/* Join button with proper mobile sizing */}
-          <Button
-            className="w-full bg-green-500 py-3 text-base rounded-lg mt-2"
-            onClick={() => {
-              console.log("Joining call with MicCamToggled:", isMicCamToggled);
-              call.join();
-              setIsSetupComplete(true);
-            }}
-          >
-            Join meeting
-          </Button>
+  // MeetingSetup.tsx
+return (
+  <div className="flex min-h-screen w-full flex-col items-center justify-center p-2 text-white">
+    <h1 className="text-center text-xl font-bold mb-4">Setup</h1>
+    
+    {/* Main container with strict mobile constraints */}
+    <div className="w-full max-w-[320px] sm:max-w-[400px] mx-auto flex flex-col items-center">
+      {/* Video preview with fixed mobile dimensions */}
+      <div className="w-full aspect-[4/3] mb-4"> 
+        <div className="relative h-full w-full">
+          <VideoPreview 
+            className="absolute inset-0 rounded-lg overflow-hidden bg-gray-900 object-cover"
+          />
         </div>
       </div>
+
+      {/* Controls with proper mobile spacing */}
+      <div className="w-full space-y-3">
+        <label className="flex items-center justify-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={isMicCamToggled}
+            onChange={(e) => setIsMicCamToggled(e.target.checked)}
+            className="h-4 w-4"
+          />
+          Join with mic and camera off
+        </label>
+
+        {/* Device settings */}
+        <div className="w-full">
+          <DeviceSettings />
+        </div>
+
+        {/* Join button */}
+        <Button
+          className="w-full bg-green-500 py-2.5 text-sm rounded-lg"
+          onClick={() => {
+            call.join();
+            setIsSetupComplete(true);
+          }}
+        >
+          Join meeting
+        </Button>
+      </div>
     </div>
-  );
+  </div>
+ );
 };
 
 export default MeetingSetup;
