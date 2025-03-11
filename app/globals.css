@@ -547,3 +547,8 @@ textarea {
     min-height: 200px;
   }
 }
+
+
+span.str-video__speech-indicator.str-video__speech-indicator--dominant {
+  display: none;
+}
