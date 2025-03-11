@@ -27,10 +27,64 @@ import { cn } from '@/lib/utils';
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
 const MobileCallLayout = () => {
-  const { useParticipants, useLocalParticipant, useScreenShareState } =  useCallStateHooks();
+  const { useParticipants, useLocalParticipant, useScreenShareState } = useCallStateHooks();
   const participants = useParticipants();
   const localParticipant = useLocalParticipant();
   const { status: screenShareStatus, screenShare } = useScreenShareState();
+
+  // Add useEffect to handle screen share overlay
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleScreenShare = () => {
+      const overlay = document.querySelector('.str-video__screen-share-overlay');
+      if (!overlay) return;
+
+      // Check if our container already exists
+      let container = document.querySelector('.mobile-screen-share-container');
+      
+      if (screenShareStatus === 'enabled' && screenShare) {
+        // Create container if it doesn't exist
+        if (!container) {
+          container = document.createElement('div');
+          container.className = 'mobile-screen-share-container';
+          
+          // Create content wrapper
+          const content = document.createElement('div');
+          content.className = 'mobile-screen-share-content';
+          
+          container.appendChild(content);
+          document.body.appendChild(container);
+        }
+        
+        // Move overlay into our container
+        const contentWrapper = container.querySelector('.mobile-screen-share-content');
+        if (contentWrapper && overlay.parentElement !== contentWrapper) {
+          contentWrapper.appendChild(overlay);
+        }
+      } else {
+        // Remove container when screen share is disabled
+        if (container) {
+          // Move overlay back to original location if needed
+          const originalLocation = document.querySelector('.str-video__grid');
+          if (originalLocation && overlay) {
+            originalLocation.appendChild(overlay);
+          }
+          container.remove();
+        }
+      }
+    };
+
+    handleScreenShare();
+
+    // Cleanup function
+    return () => {
+      const container = document.querySelector('.mobile-screen-share-container');
+      if (container) {
+        container.remove();
+      }
+    };
+  }, [screenShareStatus, screenShare]);
 
   // If someone is screen sharing, show only the shared screen
   if (screenShareStatus === 'enabled' && screenShare) {
