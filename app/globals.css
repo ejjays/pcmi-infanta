@@ -550,7 +550,7 @@ textarea {
 
 
 /* Add this to globals.css */
-.local-participant .str-video__speech-indicator.str-video__speech-indicator--speaking.str-video__speech-indicator--dominant {
+.local-participant span.str-video__participant-details__name {
   display: none !important;
 }
 
