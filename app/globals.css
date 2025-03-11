@@ -552,3 +552,7 @@ textarea {
 span.str-video__speech-indicator.str-video__speech-indicator--dominant {
   display: none;
 }
+
+span.str-video__participant-details__connection-quality.str-video__participant-details__connection-quality--excellent {
+  display: none;
+}
