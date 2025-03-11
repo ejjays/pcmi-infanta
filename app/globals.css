@@ -549,8 +549,9 @@ textarea {
 }
 
 
-span.str-video__speech-indicator.str-video__speech-indicator--dominant {
-  display: none;
+/* Add this to globals.css */
+.local-participant .str-video__speech-indicator.str-video__speech-indicator--speaking.str-video__speech-indicator--dominant {
+  display: none !important;
 }
 
 span.str-video__participant-details__connection-quality.str-video__participant-details__connection-quality--excellent {
