@@ -116,7 +116,7 @@ if (participants.length === 3) {
         <div className="w-1/2">
           <div className="relative size-full">
             <ParticipantView
-  participant={participant}
+  participant={participants}
   className={cn(
     "size-full rounded-lg overflow-hidden bg-dark-1",
     participant === localParticipant ? "local-participant" : ""
