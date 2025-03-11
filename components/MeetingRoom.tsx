@@ -62,9 +62,12 @@ const MobileCallLayout = () => {
         <div className="w-full aspect-[4/3] max-h-[400px]"> {/* Adjusted size container */}
           <div className="relative h-full w-full">
             <ParticipantView 
-              participant={participants[0]}
-              className="h-full w-full rounded-lg overflow-hidden bg-dark-1"
-            />
+  participant={participants[0]}
+  className={cn(
+    "h-full w-full rounded-lg overflow-hidden bg-dark-1",
+    participants[0] === localParticipant ? "local-participant" : ""
+  )}
+/>
             {participants[0] === localParticipant && (
               <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
                 You
@@ -87,9 +90,12 @@ const MobileCallLayout = () => {
         >
           <div className="relative h-full w-full">
             <ParticipantView
-              participant={participant}
-              className="h-full w-full rounded-lg overflow-hidden bg-dark-1"
-            />
+  participant={participant}
+  className={cn(
+    "h-full w-full rounded-lg overflow-hidden bg-dark-1",
+    participant === localParticipant ? "local-participant" : ""
+  )}
+/>
             {participant === localParticipant && (
               <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
                 You
@@ -110,9 +116,12 @@ if (participants.length === 3) {
         <div className="w-1/2">
           <div className="relative size-full">
             <ParticipantView
-              participant={participants[0]}
-              className="size-full rounded-lg overflow-hidden bg-dark-1"
-            />
+  participant={participant}
+  className={cn(
+    "size-full rounded-lg overflow-hidden bg-dark-1",
+    participant === localParticipant ? "local-participant" : ""
+  )}
+/>
             {participants[0] === localParticipant && (
               <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
                 You
@@ -164,9 +173,12 @@ if (participants.length === 4) {
         <div className="w-1/2">
           <div className="relative size-full">
             <ParticipantView
-              participant={participants[0]}
-              className="size-full rounded-lg overflow-hidden bg-dark-1"
-            />
+  participant={participant}
+  className={cn(
+    "size-full rounded-lg overflow-hidden bg-dark-1",
+    participant === localParticipant ? "local-participant" : ""
+  )}
+/>
             {participants[0] === localParticipant && (
               <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
                 You
