@@ -90,7 +90,7 @@ const MobileCallLayout = () => {
         >
           <div className="relative h-full w-full">
             <ParticipantView
-  participant={participant}
+  participant={participants}
   className={cn(
     "h-full w-full rounded-lg overflow-hidden bg-dark-1",
     participant === localParticipant ? "local-participant" : ""
@@ -173,7 +173,7 @@ if (participants.length === 4) {
         <div className="w-1/2">
           <div className="relative size-full">
             <ParticipantView
-  participant={participant}
+  participant={participants}
   className={cn(
     "size-full rounded-lg overflow-hidden bg-dark-1",
     participant === localParticipant ? "local-participant" : ""
@@ -252,7 +252,7 @@ if (participants.length >= 5) {
             >
               <div className="relative size-full">
                 <ParticipantView
-  participant={participant}
+  participant={participants}
   className={cn(
     "size-full rounded-lg overflow-hidden bg-dark-1",
     participant === localParticipant ? "local-participant" : ""
