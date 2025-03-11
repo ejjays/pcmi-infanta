@@ -240,9 +240,12 @@ if (participants.length >= 5) {
             >
               <div className="relative size-full">
                 <ParticipantView
-                  participant={participant}
-                  className="size-full rounded-lg overflow-hidden bg-dark-1"
-                />
+  participant={participant}
+  className={cn(
+    "size-full rounded-lg overflow-hidden bg-dark-1",
+    participant === localParticipant ? "local-participant" : ""
+  )}
+/>
                 {participant === localParticipant && (
                   <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
                     You
@@ -322,7 +325,7 @@ const MeetingRoom = () => {
   <div className="flex items-center gap-1 md:gap-2 rounded-full bg-[#19232d]/80 backdrop-blur-sm px-1 py-1 md:px-3 md:py-2">
     <CallControls 
       onLeave={() => router.push(`/`)} 
-    />
+    /> 
     
     <div className="hidden lg:flex items-center gap-2">
       <DropdownMenu>
