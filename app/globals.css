@@ -595,3 +595,39 @@ span.str-video__participant-details__connection-quality.str-video__participant-d
     align-items: center;
   }
 }
+
+
+
+/* Add these styles to globals.css */
+[data-stream-participant-view] {
+  border-radius: 0 !important; /* Remove rounded corners */
+  margin: 0 !important; /* Remove margins/gaps */
+  padding: 0 !important; /* Remove padding */
+}
+
+/* For the grid container of participants */
+[data-stream-paginated-grid-layout],
+[data-stream-grid-layout] {
+  gap: 0 !important; /* Remove gaps between participants */
+  padding: 0 !important; /* Remove padding from grid */
+}
+
+/* Ensure videos fill their containers */
+[data-stream-participant-view] video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+/* Specific mobile styles */
+@media (max-width: 768px) {
+  [data-stream-participant-view] {
+    aspect-ratio: 16/9; /* Maintain video aspect ratio */
+  }
+  
+  [data-stream-paginated-grid-layout],
+  [data-stream-grid-layout] {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
