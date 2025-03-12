@@ -305,42 +305,45 @@ const MobileCallLayout = () => {
   }
 
   // For 5+ Participants
-  if (participants.length >= 5) {
-    return (
-      <div className="h-screen w-full flex flex-col gap-2 overflow-y-auto pb-24">
-        <div className="grid grid-cols-2 gap-2">
-          {participants.map((participant, index) => {
-            const isLastAndOdd = index === participants.length - 1 && participants.length % 2 !== 0;
-            
-            return (
-              <div 
-                key={participant.sessionId}
-                className={`
-                  h-[calc(50vh-60px)]
-                  ${isLastAndOdd ? 'col-span-2 mx-auto w-1/2' : 'w-full'}
-                `}
-              >
-                <div className="relative size-full">
-                  <ParticipantView
-                    participant={participant} // Pass single participant object
-                    className={cn(
-                      "size-full rounded-lg overflow-hidden bg-dark-1",
-                      participant === localParticipant ? "local-participant" : ""
-                    )}
-                  />
-                  {participant === localParticipant && (
-                    <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
-                      You
-                    </div>
+ if (participants.length >= 5) {
+  return (
+    // Remove gap-2 to eliminate spacing between rows
+    <div className="h-screen w-full flex flex-col overflow-y-auto pb-24">
+      {/* Remove gap-2 to eliminate spacing between grid items */}
+      <div className="grid grid-cols-2">
+        {participants.map((participant, index) => {
+          const isLastAndOdd = index === participants.length - 1 && participants.length % 2 !== 0;
+          
+          return (
+            <div 
+              key={participant.sessionId}
+              className={`
+                h-[calc(50vh-60px)]
+                ${isLastAndOdd ? 'col-span-2 mx-auto w-1/2' : 'w-full'}
+              `}
+            >
+              <div className="relative size-full">
+                <ParticipantView
+                  participant={participant}
+                  className={cn(
+                    // Remove rounded-lg to eliminate rounded corners
+                    "size-full overflow-hidden bg-dark-1",
+                    participant === localParticipant ? "local-participant" : ""
                   )}
-                </div>
+                />
+                {participant === localParticipant && (
+                  <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
+                    You
+                  </div>
+                )}
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   return null;
 };
