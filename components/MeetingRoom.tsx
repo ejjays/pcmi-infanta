@@ -305,20 +305,21 @@ const MobileCallLayout = () => {
   }
 
   // For 5+ Participants
- if (participants.length >= 5) {
+ // In MeetingRoom.tsx, update the 5+ participants section:
+if (participants.length >= 5) {
   return (
-    <div className="h-screen w-full flex flex-col pb-24">
-      <div className="grid grid-cols-2 h-full">
+    <div className="h-screen w-full pb-24">
+      <div className="mobile-grid-container">
         {participants.map((participant, index) => (
           <div 
             key={participant.sessionId}
-            className="w-full h-[33.33vh]" // Fixed height for each participant box
+            className="mobile-participant-container"
           >
             <div className="relative h-full w-full">
               <ParticipantView
                 participant={participant}
                 className={cn(
-                  "h-full w-full !rounded-none overflow-hidden bg-dark-1",
+                  "size-full !rounded-none overflow-hidden bg-dark-1",
                   participant === localParticipant ? "local-participant" : ""
                 )}
               />
