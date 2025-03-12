@@ -604,8 +604,6 @@ span.str-video__participant-details__connection-quality.str-video__participant-d
   border-radius: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
-  height: 100% !important;
-  width: 100% !important;
 }
 
 [data-stream-participant-view] video {
@@ -614,76 +612,12 @@ span.str-video__participant-details__connection-quality.str-video__participant-d
   height: 100% !important;
 }
 
-/* Grid layout for 5+ participants */
-.grid-cols-2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0 !important;
-  height: calc(100vh - 120px);
+.overflow-y-auto {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* Ensure proper sizing for participant containers */
-.h-[33.33vh] {
-  min-height: 33.33vh;
-  max-height: 33.33vh;
+.overflow-y-auto::-webkit-scrollbar {
+  display: none;
 }
 
-/* Remove any existing gaps or spacing */
-.str-video__grid {
-  gap: 0 !important;
-  padding: 0 !important;
-}
-
-
-
-/* Add these styles to globals.css */
-
-/* Mobile grid container for 5+ participants */
-.mobile-grid-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  height: calc(100vh - 150px); /* Account for bottom controls */
-  overflow-y: auto;
-  padding-bottom: 60px; /* Space for controls */
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Individual participant container */
-.mobile-participant-container {
-  aspect-ratio: 16/9;
-  width: 100%;
-  min-height: 150px; /* Minimum height for visibility */
-  height: auto;
-}
-
-/* Ensure videos fill their containers properly */
-.mobile-participant-container .str-video__participant-view {
-  width: 100% !important;
-  height: 100% !important;
-  aspect-ratio: 16/9;
-}
-
-.mobile-participant-container video {
-  object-fit: cover !important;
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* Handle scrolling */
-@media (max-width: 768px) {
-  .mobile-grid-container {
-    height: calc(100vh - 180px); /* More space for mobile controls */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-  }
-
-  .mobile-grid-container::-webkit-scrollbar {
-    display: none; /* Chrome, Safari and Opera */
-  }
-  
-  /* Ensure bottom controls don't overlap */
-  .str-video__call-controls {
-    bottom: 20px !important;
-  }
-}

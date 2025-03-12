@@ -305,33 +305,64 @@ const MobileCallLayout = () => {
   }
 
   // For 5+ Participants
- // In MeetingRoom.tsx, update the 5+ participants section:
+// For 5+ Participants
 if (participants.length >= 5) {
   return (
-    <div className="h-screen w-full pb-24">
-      <div className="mobile-grid-container">
-        {participants.map((participant, index) => (
+    <div className="h-[calc(100vh-120px)] w-full flex flex-col gap-0 pb-20 overflow-y-auto">
+      {/* Group participants into pairs */}
+      {Array.from({ length: Math.ceil(participants.length / 2) }).map((_, rowIndex) => {
+        const firstIndex = rowIndex * 2;
+        const secondIndex = firstIndex + 1;
+        const isLastRow = rowIndex === Math.floor(participants.length / 2) - 1;
+        const isOddParticipants = participants.length % 2 === 1 && isLastRow;
+
+        return (
           <div 
-            key={participant.sessionId}
-            className="mobile-participant-container"
+            key={rowIndex}
+            className={cn(
+              "flex flex-row gap-0 min-h-[33vh]",
+              isOddParticipants ? "justify-center" : "justify-between"
+            )}
           >
-            <div className="relative h-full w-full">
+            {/* First participant in row */}
+            <div className={cn(
+              "relative",
+              isOddParticipants ? "w-1/2" : "w-1/2"
+            )}>
               <ParticipantView
-                participant={participant}
+                participant={participants[firstIndex]}
                 className={cn(
                   "size-full !rounded-none overflow-hidden bg-dark-1",
-                  participant === localParticipant ? "local-participant" : ""
+                  participants[firstIndex] === localParticipant ? "local-participant" : ""
                 )}
               />
-              {participant === localParticipant && (
+              {participants[firstIndex] === localParticipant && (
                 <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
                   You
                 </div>
               )}
             </div>
+
+            {/* Second participant in row (if exists) */}
+            {!isOddParticipants && participants[secondIndex] && (
+              <div className="relative w-1/2">
+                <ParticipantView
+                  participant={participants[secondIndex]}
+                  className={cn(
+                    "size-full !rounded-none overflow-hidden bg-dark-1",
+                    participants[secondIndex] === localParticipant ? "local-participant" : ""
+                  )}
+                />
+                {participants[secondIndex] === localParticipant && (
+                  <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm">
+                    You
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-        ))}
-      </div>
+        );
+      })}
     </div>
   );
 }
