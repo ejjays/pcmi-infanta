@@ -598,36 +598,38 @@ span.str-video__participant-details__connection-quality.str-video__participant-d
 
 
 
-/* Add these styles to globals.css */
+
+/* Video participant styles for 5+ participants */
 [data-stream-participant-view] {
-  border-radius: 0 !important; /* Remove rounded corners */
-  margin: 0 !important; /* Remove margins/gaps */
-  padding: 0 !important; /* Remove padding */
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
 }
 
-/* For the grid container of participants */
-[data-stream-paginated-grid-layout],
-[data-stream-grid-layout] {
-  gap: 0 !important; /* Remove gaps between participants */
-  padding: 0 !important; /* Remove padding from grid */
-}
-
-/* Ensure videos fill their containers */
 [data-stream-participant-view] video {
+  object-fit: cover !important;
   width: 100% !important;
   height: 100% !important;
-  object-fit: cover !important;
 }
 
-/* Specific mobile styles */
-@media (max-width: 768px) {
-  [data-stream-participant-view] {
-    aspect-ratio: 16/9; /* Maintain video aspect ratio */
-  }
-  
-  [data-stream-paginated-grid-layout],
-  [data-stream-grid-layout] {
-    width: 100% !important;
-    height: 100% !important;
-  }
+/* Grid layout for 5+ participants */
+.grid-cols-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 !important;
+  height: calc(100vh - 120px);
+}
+
+/* Ensure proper sizing for participant containers */
+.h-[33.33vh] {
+  min-height: 33.33vh;
+  max-height: 33.33vh;
+}
+
+/* Remove any existing gaps or spacing */
+.str-video__grid {
+  gap: 0 !important;
+  padding: 0 !important;
 }
