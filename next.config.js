@@ -137,11 +137,12 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/api/:path*',
+        source: '/:path*',
         headers: [
-          { key: 'Access-Control-Allow-Origin', value: 'https://pcmi-infanta.vercel.app' },
+          { key: 'Access-Control-Allow-Origin', value: 'https://firebasestorage.googleapis.com' },
           { key: 'Access-Control-Allow-Methods', value: 'GET,OPTIONS,PATCH,DELETE,POST,PUT' },
-          { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization' },
+          { key: 'Access-Control-Allow-Headers', value: '*' },
+          { key: 'Access-Control-Allow-Credentials', value: 'true' },
         ],
       },
     ];

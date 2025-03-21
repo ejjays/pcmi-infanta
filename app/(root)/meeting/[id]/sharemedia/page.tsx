@@ -35,22 +35,23 @@ const MediaSharingAdminPage = () => {
   
   setIsUploading(true);
   try {
-    // Add metadata to the upload
-    const metadata = {
-      contentType: selectedFile.type,
-      customMetadata: {
-        'Access-Control-Allow-Origin': '*'
-      }
-    };
+    const formData = new FormData();
+    formData.append('file', selectedFile);
 
-    // Upload to Firebase Storage
-    const storageRef = ref(storage, `media/${Date.now()}_${selectedFile.name}`);
-    await uploadBytes(storageRef, selectedFile, metadata);
-    const url = await getDownloadURL(storageRef);
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error('Upload failed');
+    }
+
+    const data = await response.json();
 
     // Save to Firestore
     await addDoc(collection(db, 'media'), {
-      url,
+      url: data.url,
       type: selectedFile.type.startsWith('image/') ? 'image' : 'video',
       createdAt: new Date(),
       meetingId: id
