@@ -8,30 +8,6 @@
   --stream-video-control-bar-bg: transparent !important;
 }
 
-/* Base styles for Stream SDK control buttons */
-[data-stream-video-control-bar] {
-  transform: scale(0.65) !important; /* Reduced from 0.75 to 0.65 */
-}
-
-[data-stream-video-control-bar] button {
-  border-radius: 9999px !important;
-  background: #19232d !important;
-  padding: 6px !important; /* Reduced from 8px to 6px */
-  margin: 0 1px !important;
-}
-
-/* Mobile-specific adjustments */
-@media (max-width: 768px) {
-  [data-stream-video-control-bar] {
-    transform: scale(0.55) !important; /* Reduced from 0.65 to 0.55 */
-    margin-bottom: -12px !important;
-  }
-  
-  [data-stream-video-control-bar] button {
-    padding: 4px !important; /* Reduced from 6px to 4px */
-  }
-}
-
 * {
   margin: 0;
   padding: 0;
