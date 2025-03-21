@@ -23,6 +23,7 @@ import {
 import Loader from './Loader';
 import EndCallButton from './EndCallButton';
 import { cn } from '@/lib/utils';
+import MediaSharingBox from './MediaSharingBox';
 
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
@@ -308,6 +309,7 @@ const MobileCallLayout = () => {
   if (participants.length >= 5) {
     return (
       <div className="h-screen w-full flex flex-col gap-2 overflow-y-auto pb-24">
+        <MediaSharingBox />
         <div className="grid grid-cols-2 gap-2">
           {participants.map((participant, index) => {
             const isLastAndOdd = index === participants.length - 1 && participants.length % 2 !== 0;
