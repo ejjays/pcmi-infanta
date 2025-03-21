@@ -1,5 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@clerk/nextjs/server';
+import admin from 'firebase-admin';
+
+// Initialize Firebase Admin if not already initialized
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    }),
+  });
+}
 
 export async function GET(req: NextRequest) {
   try {
@@ -9,11 +21,12 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Since you're using Clerk for authentication, you can return a simple token
-    // or just the user ID as authentication is handled by Clerk
+    // Generate a Firebase custom token
+    const firebaseToken = await admin.auth().createCustomToken(userId);
+
     return NextResponse.json({
       success: true,
-      firebaseToken: userId // or any other token format you need
+      firebaseToken
     });
 
   } catch (error) {
