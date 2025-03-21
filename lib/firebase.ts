@@ -2,14 +2,15 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
-// Your Firebase configuration
+// Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDpFnEoKWRQG1fXXQ282hdwjGyLCtAYWuM",
-    authDomain: "pcmi---chatbot-abfd0.firebaseapp.com",
-    projectId: "pcmi---chatbot-abfd0",
-    storageBucket: "pcmi---chatbot-abfd0.firebasestorage.app",
-    messagingSenderId: "162065597510",
-    appId: "1:162065597510:web:9c1759f6b59d2e2d9db647"
+  apiKey: "AIzaSyA80oK9bOoaXYVAknMIANx1xZ9-m7MuTRY",
+  authDomain: "mediashare-6eb03.firebaseapp.com",
+  projectId: "mediashare-6eb03",
+  storageBucket: "mediashare-6eb03.firebasestorage.app",
+  messagingSenderId: "289581748973",
+  appId: "1:289581748973:web:87f5460485b16655ac32e4",
+  measurementId: "G-E8L3LTXJBK"
 };
 
 // Initialize Firebase
