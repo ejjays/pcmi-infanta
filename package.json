@@ -27,6 +27,7 @@
     "clsx": "^2.1.0",
     "date-fns": "^3.4.0",
     "firebase": "11.5.0",
+    "firebase-admin": "13.2.0",
     "lucide-react": "^0.350.0",
     "mongodb": "^6.13.1",
     "next": "^14.2.24",

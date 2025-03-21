@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import { Upload, X, Image as ImageIcon, Film } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { db } from '@/lib/firebase'; 
+import { db, auth } from '@/lib/firebase'; 
 import { collection, addDoc } from 'firebase/firestore';
-
+import { signInWithCustomToken } from 'firebase/auth';
 
 const MediaSharingAdminPage = () => {
   const { id } = useParams();
@@ -20,6 +20,29 @@ const MediaSharingAdminPage = () => {
   const ALLOWED_ADMIN_IDS = ['user_2pNBsKMcT3yj2PXM3XbImRjcYVG']; // Add your admin IDs
   const isAdmin = user && ALLOWED_ADMIN_IDS.includes(user.id);
 
+  useEffect(() => {
+    const setupFirebaseAuth = async () => {
+      if (user) {
+        try {
+          // Get a custom token from your backend
+          const response = await fetch('/api/get-firebase-token', {
+            headers: {
+              Authorization: `Bearer ${await user.getToken()}`,
+            },
+          });
+          const { firebaseToken } = await response.json();
+          
+          // Sign in to Firebase with the custom token
+          await signInWithCustomToken(auth, firebaseToken);
+        } catch (error) {
+          console.error('Firebase auth error:', error);
+        }
+      }
+    };
+
+    setupFirebaseAuth();
+  }, [user]);
+
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -31,41 +54,43 @@ const MediaSharingAdminPage = () => {
   };
 
   const handleUpload = async () => {
-  if (!selectedFile || !isAdmin) return;
+    if (!selectedFile || !isAdmin || !user) return; // Add user check here
   
-  setIsUploading(true);
-  try {
-    const formData = new FormData();
-    formData.append('file', selectedFile);
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
 
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      body: formData,
-    });
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
 
-    if (!response.ok) {
-      throw new Error('Upload failed');
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const data = await response.json();
+
+      // Save to Firestore with user information
+      await addDoc(collection(db, 'media'), {
+        url: data.url,
+        type: selectedFile.type.startsWith('image/') ? 'image' : 'video',
+        createdAt: new Date(),
+        meetingId: id,
+        userId: user.id, 
+        createdBy: user.fullName || user.username
+      });
+
+      // Clear selection after upload
+      setSelectedFile(null);
+      setPreviewUrl(null);
+    } catch (error) {
+      console.error('Upload error:', error);
+    } finally {
+      setIsUploading(false);
     }
-
-    const data = await response.json();
-
-    // Save to Firestore
-    await addDoc(collection(db, 'media'), {
-      url: data.url,
-      type: selectedFile.type.startsWith('image/') ? 'image' : 'video',
-      createdAt: new Date(),
-      meetingId: id
-    });
-
-    // Clear selection after upload
-    setSelectedFile(null);
-    setPreviewUrl(null);
-  } catch (error) {
-    console.error('Upload error:', error);
-  } finally {
-    setIsUploading(false);
-  }
-};
+  };
 
   if (!isAdmin) {
     return (
