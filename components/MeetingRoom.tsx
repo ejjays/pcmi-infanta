@@ -406,10 +406,10 @@ const MeetingRoom = () => {
         </div>
       </div>
       <div className="fixed bottom-1 md:bottom-2 flex w-full flex-wrap items-center justify-center">
-        <div className="flex items-center gap-1 md:gap-2 rounded-full bg-[#19232d]/80 backdrop-blur-sm p-2 sm:p-3 md:p-4">
-  <CallControls 
-    onLeave={() => router.push(`/`)} 
-  /> 
+  <div className="flex items-center gap-0.5 md:gap-1 rounded-full bg-[#19232d]/80 backdrop-blur-sm p-1 sm:p-1.5 md:p-2">
+    <CallControls 
+      onLeave={() => router.push(`/`)} 
+    /> 
           <div className="hidden lg:flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger className="cursor-pointer rounded-full bg-[#19232d] p-2.5 hover:bg-[#4c535b]">
