@@ -132,16 +132,16 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['img.clerk.com', 'firebasestorage.googleapis.com'], // Add Firebase storage domain
+    domains: ['img.clerk.com', 'firebasestorage.googleapis.com'],
   },
   async headers() {
     return [
       {
-        source: '/:path*',
+        source: '/api/:path*',
         headers: [
-          { key: 'Access-Control-Allow-Origin', value: 'https://firebasestorage.googleapis.com' },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
           { key: 'Access-Control-Allow-Methods', value: 'GET,OPTIONS,PATCH,DELETE,POST,PUT' },
-          { key: 'Access-Control-Allow-Headers', value: '*' },
+          { key: 'Access-Control-Allow-Headers', value: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version' },
           { key: 'Access-Control-Allow-Credentials', value: 'true' },
         ],
       },
