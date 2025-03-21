@@ -5,8 +5,7 @@ import { useParams } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import { Upload, X, Image as ImageIcon, Film } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { storage, db } from '@/lib/firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db } from '@/lib/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 
 const MediaSharingAdminPage = () => {

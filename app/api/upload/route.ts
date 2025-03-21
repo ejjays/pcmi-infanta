@@ -1,19 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { v2 as cloudinary } from 'cloudinary';
-
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
-});
+import { cloudinary } from '@/lib/cloudinary';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
-    // Get form data from request
     const formData = await req.formData();
     const file = formData.get('file') as File;
 
@@ -24,15 +16,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Convert file to buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Create unique filename
     const timestamp = Date.now();
     const filename = file.name.replace(/[^a-zA-Z0-9]/g, '_');
 
-    // Upload to Cloudinary
     const result = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload_stream(
         {
@@ -46,7 +35,6 @@ export async function POST(req: NextRequest) {
       ).end(buffer);
     });
 
-    // Return success response with Cloudinary URL
     return NextResponse.json({
       success: true,
       url: (result as any).secure_url
