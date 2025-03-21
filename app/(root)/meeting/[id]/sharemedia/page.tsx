@@ -2,15 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
-import { Upload, X, Image as ImageIcon, Film } from 'lucide-react';
+import { useUser, useAuth } from '@clerk/nextjs';
+import { Upload, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { db } from '@/lib/firebase'; 
 import { collection, addDoc } from 'firebase/firestore';
+import { signInWithCustomToken } from 'firebase/auth'; // Ensure this import is added
+import { auth } from '@/lib/firebase'; // Adjust this import based on your setup
 
 const MediaSharingAdminPage = () => {
   const { id } = useParams();
   const { user } = useUser();
+  const { getToken } = useAuth(); // Get the getToken function from useAuth
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -26,7 +29,7 @@ const MediaSharingAdminPage = () => {
           // Get a custom token from your backend
           const response = await fetch('/api/get-firebase-token', {
             headers: {
-              Authorization: `Bearer ${await user.getToken()}`,
+              Authorization: `Bearer ${await getToken()}`, // Use getToken() from useAuth
             },
           });
           const { firebaseToken } = await response.json();
@@ -40,7 +43,7 @@ const MediaSharingAdminPage = () => {
     };
 
     setupFirebaseAuth();
-  }, [user]);
+  }, [user, getToken]); // Add getToken to the dependency array
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
