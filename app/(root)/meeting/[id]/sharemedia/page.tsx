@@ -31,32 +31,40 @@ const MediaSharingAdminPage = () => {
   };
 
   const handleUpload = async () => {
-    if (!selectedFile || !isAdmin) return;
-    
-    setIsUploading(true);
-    try {
-      // Upload to Firebase Storage
-      const storageRef = ref(storage, `media/${Date.now()}_${selectedFile.name}`);
-      await uploadBytes(storageRef, selectedFile);
-      const url = await getDownloadURL(storageRef);
+  if (!selectedFile || !isAdmin) return;
+  
+  setIsUploading(true);
+  try {
+    // Add metadata to the upload
+    const metadata = {
+      contentType: selectedFile.type,
+      customMetadata: {
+        'Access-Control-Allow-Origin': '*'
+      }
+    };
 
-      // Save to Firestore
-      await addDoc(collection(db, 'media'), {
-        url,
-        type: selectedFile.type.startsWith('image/') ? 'image' : 'video',
-        createdAt: new Date(),
-        meetingId: id // Store the meeting ID
-      });
+    // Upload to Firebase Storage
+    const storageRef = ref(storage, `media/${Date.now()}_${selectedFile.name}`);
+    await uploadBytes(storageRef, selectedFile, metadata);
+    const url = await getDownloadURL(storageRef);
 
-      // Clear selection after upload
-      setSelectedFile(null);
-      setPreviewUrl(null);
-    } catch (error) {
-      console.error('Upload error:', error);
-    } finally {
-      setIsUploading(false);
-    }
-  };
+    // Save to Firestore
+    await addDoc(collection(db, 'media'), {
+      url,
+      type: selectedFile.type.startsWith('image/') ? 'image' : 'video',
+      createdAt: new Date(),
+      meetingId: id
+    });
+
+    // Clear selection after upload
+    setSelectedFile(null);
+    setPreviewUrl(null);
+  } catch (error) {
+    console.error('Upload error:', error);
+  } finally {
+    setIsUploading(false);
+  }
+};
 
   if (!isAdmin) {
     return (
