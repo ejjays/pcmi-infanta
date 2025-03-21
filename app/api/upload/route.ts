@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { storage } from '@/lib/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function POST(req: NextRequest) {
   try {
     // Add detailed logging
@@ -61,12 +65,4 @@ export async function POST(req: NextRequest) {
       details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
-}
-
-// Add headers configuration
-export const config = {
-  api: {
-    bodyParser: false,
-    responseLimit: '50mb',
-  },
 }
