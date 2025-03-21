@@ -160,6 +160,11 @@ const nextConfig = {
     }];
     return config;
   },
+  // Add this section to handle large files
+  api: {
+    bodyParser: false,
+    responseLimit: false,
+  },
 };
 
 module.exports = withPWA(nextConfig);
