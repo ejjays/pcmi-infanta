@@ -1,6 +1,8 @@
-// components/MediaSharingBox.tsx
 'use client';
+
 import { useState, useEffect } from 'react';
+import { db } from '@/lib/firebase';
+import { query, collection, orderBy, onSnapshot } from 'firebase/firestore'; 
 
 interface MediaItem {
   id: string;
