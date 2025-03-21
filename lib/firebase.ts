@@ -1,7 +1,6 @@
 import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
-// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyA80oK9bOoaXYVAknMIANx1xZ9-m7MuTRY",
   authDomain: "mediashare-6eb03.firebaseapp.com",
@@ -12,9 +11,8 @@ const firebaseConfig = {
   measurementId: "G-E8L3LTXJBK"
 };
 
-//Initialize Firebase
+// Initialize Firebase only if it hasn't been initialized
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
-
-// Initialize Firestore
 const db = getFirestore(app);
+
 export { db };
