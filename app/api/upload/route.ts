@@ -1,66 +1,62 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { storage } from '@/lib/firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { v2 as cloudinary } from 'cloudinary';
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
-    console.log('Starting upload process...');
-    
+    // Get form data from request
     const formData = await req.formData();
     const file = formData.get('file') as File;
-    
-    if (!file) {
-      console.log('No file received in request');
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
-    }
 
-    // Log file details
-    console.log('File details:', {
-      name: file.name,
-      type: file.type,
-      size: file.size
-    });
+    if (!file) {
+      return NextResponse.json(
+        { error: 'No file provided' },
+        { status: 400 }
+      );
+    }
 
     // Convert file to buffer
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
 
     // Create unique filename
-    const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
-    const storageRef = ref(storage, `media/${filename}`);
+    const timestamp = Date.now();
+    const filename = file.name.replace(/[^a-zA-Z0-9]/g, '_');
 
-    try {
-      // Upload to Firebase Storage
-      console.log('Attempting Firebase upload...');
-      const result = await uploadBytes(storageRef, buffer, {
-        contentType: file.type,
-      });
-      
-      console.log('Upload successful, getting download URL...');
-      const downloadURL = await getDownloadURL(result.ref);
-      
-      console.log('Process completed successfully');
-      return NextResponse.json({
-        success: true,
-        url: downloadURL
-      });
-      
-    } catch (firebaseError) {
-      console.error('Firebase Storage Error:', firebaseError);
-      return NextResponse.json({
-        error: 'Firebase Storage Error',
-        details: firebaseError instanceof Error ? firebaseError.message : 'Unknown error'
-      }, { status: 500 });
-    }
+    // Upload to Cloudinary
+    const result = await new Promise((resolve, reject) => {
+      cloudinary.uploader.upload_stream(
+        {
+          resource_type: 'auto',
+          public_id: `uploads/${timestamp}_${filename}`,
+        },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      ).end(buffer);
+    });
+
+    // Return success response with Cloudinary URL
+    return NextResponse.json({
+      success: true,
+      url: (result as any).secure_url
+    });
 
   } catch (error) {
-    console.error('Upload Route Error:', error);
-    return NextResponse.json({
-      error: 'Upload failed',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+    console.error('Upload error:', error);
+    return NextResponse.json(
+      { error: 'Failed to upload file' },
+      { status: 500 }
+    );
   }
 }

@@ -23,6 +23,7 @@
     "@types/web-push": "^3.6.4",
     "autoprefixer": "^10.0.1",
     "class-variance-authority": "^0.7.0",
+    "cloudinary": "2.6.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.4.0",
     "firebase": "11.5.0",
