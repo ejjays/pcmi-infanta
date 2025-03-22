@@ -13,7 +13,13 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase instances
+// Initialize Firebase
+let app;
+let db;
+let storage;
+let auth;
+
+// Validate config
 const validateConfig = () => {
   const requiredFields = [
     'apiKey',
@@ -31,24 +37,14 @@ const validateConfig = () => {
   });
 };
 
-// Initialize Firebase with default values
-let firebaseApp;
-let firebaseDb;
-let firebaseStorage;
-let firebaseAuth;
-
 try {
   validateConfig();
-  firebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
-  firebaseDb = getFirestore(firebaseApp);
-  firebaseStorage = getStorage(firebaseApp);
-  firebaseAuth = getAuth(firebaseApp);
+  app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+  db = getFirestore(app);
+  storage = getStorage(app);
+  auth = getAuth(app);
 } catch (error) {
   console.error('Firebase initialization error:', error);
 }
 
-// Export the initialized instances
-export const app = firebaseApp;
-export const db = firebaseDb;
-export const storage = firebaseStorage;
-export const auth = firebaseAuth;
+export { db, storage, app, auth };
