@@ -13,14 +13,14 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase outside try-catch
+// Initialize Firebase instances
 let app;
 let db;
 let storage;
 let auth;
 
-try {
-  // Validate config
+// Validate config
+const validateConfig = () => {
   const requiredFields = [
     'apiKey',
     'authDomain',
@@ -35,7 +35,10 @@ try {
       throw new Error(`Missing Firebase config field: ${field}`);
     }
   });
+};
 
+try {
+  validateConfig();
   app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
   db = getFirestore(app);
   storage = getStorage(app);
@@ -44,5 +47,5 @@ try {
   console.error('Firebase initialization error:', error);
 }
 
-// Export outside try-catch
+// Export the instances
 export { db, storage, app, auth };
