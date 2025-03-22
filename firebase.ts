@@ -13,11 +13,11 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase instances
-let app;
-let db;
-let storage;
-let auth;
+// Initialize Firebase instances with null defaults
+let app = null;
+let db = null;
+let storage = null;
+let auth = null;
 
 // Validate config
 const validateConfig = () => {
@@ -37,6 +37,7 @@ const validateConfig = () => {
   });
 };
 
+// Initialize Firebase
 try {
   validateConfig();
   app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
