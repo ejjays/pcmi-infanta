@@ -13,7 +13,7 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
+// Initialize variables outside try-catch
 let app;
 let db;
 let storage;
@@ -47,4 +47,5 @@ try {
   console.error('Firebase initialization error:', error);
 }
 
+// Export statements should be outside the try-catch block
 export { db, storage, app, auth };
