@@ -13,10 +13,32 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
-const db = getFirestore(app);
-const storage = getStorage(app);
-const auth = getAuth(app);
+// Validate config
+const validateConfig = () => {
+  const requiredFields = [
+    'apiKey',
+    'authDomain',
+    'projectId',
+    'storageBucket',
+    'messagingSenderId',
+    'appId'
+  ];
+  
+  requiredFields.forEach(field => {
+    if (!firebaseConfig[field]) {
+      throw new Error(`Missing Firebase config field: ${field}`);
+    }
+  });
+};
 
-export { db, storage, app, auth };
+try {
+  validateConfig();
+  const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+  const auth = getAuth(app);
+
+  export { db, storage, app, auth };
+} catch (error) {
+  console.error('Firebase initialization error:', error);
+}

@@ -23,24 +23,27 @@ const MediaSharingAdminPage = () => {
   const isAdmin = user && ALLOWED_ADMIN_IDS.includes(user.id);
 
   useEffect(() => {
-    const setupFirebaseAuth = async () => {
-      if (user) {
-        try {
-          // Get a custom token from your backend
-          const response = await fetch('/api/get-firebase-token', {
-            headers: {
-              Authorization: `Bearer ${await getToken()}`, // Use getToken() from useAuth
-            },
-          });
-          const { firebaseToken } = await response.json();
-          
-          // Sign in to Firebase with the custom token
-          await signInWithCustomToken(auth, firebaseToken);
-        } catch (error) {
-          console.error('Firebase auth error:', error);
-        }
+ const setupFirebaseAuth = async () => {
+  if (user) {
+    try {
+      // Get a custom token from your backend
+      const response = await fetch('/api/get-firebase-token');
+      if (!response.ok) {
+        throw new Error('Failed to get Firebase token');
       }
-    };
+      
+      const data = await response.json();
+      if (!data.firebaseToken) {
+        throw new Error('No Firebase token received');
+      }
+
+      // Sign in to Firebase with the custom token
+      await signInWithCustomToken(auth, data.firebaseToken);
+    } catch (error) {
+      console.error('Firebase auth error:', error);
+    }
+  }
+};
 
     setupFirebaseAuth();
   }, [user, getToken]); // Add getToken to the dependency array
@@ -56,43 +59,47 @@ const MediaSharingAdminPage = () => {
   };
 
   const handleUpload = async () => {
-    if (!selectedFile || !isAdmin || !user) return; // Add user check here
-  
-    setIsUploading(true);
+  if (!selectedFile || !isAdmin || !user) return;
+
+  setIsUploading(true);
+  try {
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error('Upload failed');
+    }
+
+    const data = await response.json();
+
+    // Only try to save to Firestore if Firebase is properly initialized
     try {
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Upload failed');
-      }
-
-      const data = await response.json();
-
-      // Save to Firestore with user information
       await addDoc(collection(db, 'media'), {
         url: data.url,
         type: selectedFile.type.startsWith('image/') ? 'image' : 'video',
         createdAt: new Date(),
         meetingId: id,
-        userId: user.id, 
+        userId: user.id,
         createdBy: user.fullName || user.username
       });
-
-      // Clear selection after upload
-      setSelectedFile(null);
-      setPreviewUrl(null);
-    } catch (error) {
-      console.error('Upload error:', error);
-    } finally {
-      setIsUploading(false);
+    } catch (firebaseError) {
+      console.error('Firebase storage error:', firebaseError);
+      // Continue without Firebase storage
     }
-  };
+
+    setSelectedFile(null);
+    setPreviewUrl(null);
+  } catch (error) {
+    console.error('Upload error:', error);
+  } finally {
+    setIsUploading(false);
+  }
+};
 
   if (!isAdmin) {
     return (
