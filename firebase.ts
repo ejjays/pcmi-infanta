@@ -10,7 +10,7 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize variables outside try-catch
@@ -27,10 +27,10 @@ const validateConfig = () => {
     'projectId',
     'storageBucket',
     'messagingSenderId',
-    'appId'
+    'appId',
   ];
-  
-  requiredFields.forEach(field => {
+
+  requiredFields.forEach((field) => {
     if (!firebaseConfig[field]) {
       throw new Error(`Missing Firebase config field: ${field}`);
     }
@@ -46,6 +46,4 @@ try {
 } catch (error) {
   console.error('Firebase initialization error:', error);
 }
-
-// Export statements should be outside the try-catch block
 export { db, storage, app, auth };
