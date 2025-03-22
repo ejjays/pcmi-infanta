@@ -13,13 +13,11 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase instances with null defaults
 let app = null;
 let db = null;
 let storage = null;
 let auth = null;
 
-// Validate config
 const validateConfig = () => {
   const requiredFields = [
     'apiKey',
@@ -37,7 +35,6 @@ const validateConfig = () => {
   });
 };
 
-// Initialize Firebase
 try {
   validateConfig();
   app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
@@ -48,5 +45,4 @@ try {
   console.error('Firebase initialization error:', error);
 }
 
-// Export the instances
 export { db, storage, app, auth };
