@@ -408,7 +408,7 @@ const MeetingRoom = () => {
         </div>
       </div>
       <div className="fixed bottom-1 md:bottom-2 flex w-full flex-wrap items-center justify-center">
-  <div className="flex items-center gap-0.5 md:gap-1 rounded-full bg-[#19232d]/80 backdrop-blur-sm p-1 sm:p-1.5 md:p-2">
+  <div className="flex items-center justify-center gap-3 rounded-full bg-black/40 p-2 shadow-lg ring-1 ring-white/20 backdrop-blur-lg">
     <CallControls 
       onLeave={() => router.push(`/`)} 
     /> 
